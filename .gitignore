@@ -1,0 +1,17 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/ServerWatch/.vs/ServerWatch
+/ServerWatch/ServerWatchAgent/bin/Debug
+/ServerWatch/ServerWatchAgent/obj/Debug
+/ServerWatch/ServerWatchAgentUpdater/bin/Debug/netcoreapp3.1
+/ServerWatch/ServerWatchAgentUpdater/obj
+/ServerWatch/.vs/ProjectEvaluation
+/ServerWatch/ServerWatchAgent/bin/Release
+/ServerWatch/ServerWatchAgent/obj/Release
+/ServerWatch/ServerWatchAgentUpdater/bin/Release/netcoreapp3.1
+/ServerWatch/deployService.txt
+/ServerWatch/ServerDb/obj/Debug
+/ServerWatch/MainDb/obj/Debug
+/ServerWatch/packages/Newtonsoft.Json.13.0.3
