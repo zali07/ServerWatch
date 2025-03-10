@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 
@@ -6,7 +7,7 @@ namespace ServerWatchAgent.Mirroring
 {
     public class MirroringDataCollector
     {
-        public static Dictionary<string, string> CheckMirroringOnServer()
+        public static string CheckMirroringOnServer()
         {
             using (var dl = new DataLayer())
             {
@@ -17,12 +18,7 @@ namespace ServerWatchAgent.Mirroring
                     throw new Exception("No databases found on server that are being mirrored.");
                 }
 
-                System.IO.File.AppendAllText(@"C:\ServiceLogs\MyServiceLog.txt", $"Databases: {databases}\r\n");
-
-
-                int mirroredDbCount = 0;
-                int desyncedDbCount = 0;
-                string desyncedDatabases = "";
+                var allDbStatusData = new List<MirroringData>();
 
                 foreach (DataRow dbRow in databases.Tables[0].Rows)
                 {
@@ -32,21 +28,33 @@ namespace ServerWatchAgent.Mirroring
                     try
                     {
                         DataSet dbStatus = dl.ExecuteMonitorResultsOnServer();
-                        System.IO.File.AppendAllText(@"C:\ServiceLogs\MyServiceLog.txt", $"Status: {dbStatus}\r\n");
 
-                        if (dbStatus.Tables.Count > 0 && dbStatus.Tables[0].Rows.Count > 0)
+                        if (dbStatus != null && dbStatus.Tables.Count > 0)
                         {
-                            var firstRow = dbStatus.Tables[0].Rows[0];
-                            string role = firstRow["role"].ToString();
-                            string mirroringState = firstRow["mirroring_state"].ToString();
-
-                            if (role == "1" && mirroringState != "4")
+                            foreach (DataRow statusRow in dbStatus.Tables[0].Rows)
                             {
-                                desyncedDatabases += $"\n{dbName}";
-                                desyncedDbCount++;
-                            }
+                                var mirroringData = new MirroringData
+                                {
+                                    ServerName = dl.GetServer(),
+                                    DatabaseName = statusRow["database_name"]?.ToString(),
+                                    Role = Convert.ToInt32(statusRow["role"]),
+                                    MirroringState = Convert.ToInt32(statusRow["mirroring_state"]),
+                                    WitnessStatus = Convert.ToInt32(statusRow["witness_status"]),
+                                    LogGenerationRate = Convert.ToInt32(statusRow["log_generation_rate"]),
+                                    UnsentLog = Convert.ToInt32(statusRow["unsent_log"]),
+                                    SendRate = Convert.ToInt32(statusRow["send_rate"]),
+                                    UnrestoredLog = Convert.ToInt32(statusRow["unrestored_log"]),
+                                    RecoveryRate = Convert.ToInt32(statusRow["recovery_rate"]),
+                                    TransactionDelay = Convert.ToInt32(statusRow["transaction_delay"]),
+                                    TransactionsPerSec = Convert.ToInt32(statusRow["transactions_per_sec"]),
+                                    AverageDelay = Convert.ToInt32(statusRow["average_delay"]),
+                                    TimeRecorded = Convert.ToDateTime(statusRow["time_recorded"]),
+                                    TimeBehind = Convert.ToDateTime(statusRow["time_behind"]),
+                                    LocalTime = Convert.ToDateTime(statusRow["local_time"])
+                                };
 
-                            mirroredDbCount++;
+                                allDbStatusData.Add(mirroringData);
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -55,14 +63,7 @@ namespace ServerWatchAgent.Mirroring
                     }
                 }
 
-                Dictionary<string, string> result = new Dictionary<string, string>()
-                {
-                    { "Databases", databases.ToString()},
-                    { "Mirrored_db_count", mirroredDbCount.ToString() },
-                    { "Desynced_db_count", desyncedDbCount.ToString() }
-                };
-
-                return result;
+                return JsonConvert.SerializeObject(allDbStatusData, Formatting.Indented);
             }
         }
     }

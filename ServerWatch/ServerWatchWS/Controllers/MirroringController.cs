@@ -1,0 +1,33 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using ServerWatchWS.Data;
+using ServerWatchWS.Model;
+
+namespace ServerWatchWS.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class MirroringController : Controller
+    {
+        private readonly AppDbContext _context;
+
+        public MirroringController(AppDbContext context)
+        {
+            _context = context;
+        }
+
+        [HttpPost("postMirroringData")]
+        public async Task<IActionResult> PostData([FromBody] List<MirroringData> entries)
+        {
+            if (entries == null || entries.Count == 0)
+            {
+                return BadRequest("Data is null");
+            }
+
+            _context.MirroringEntries.AddRange(entries);
+
+            await _context.SaveChangesAsync();
+
+            return Ok("Data inserted successfully.");
+        }
+    }
+}

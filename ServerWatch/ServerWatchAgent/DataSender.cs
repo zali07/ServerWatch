@@ -13,11 +13,11 @@ namespace ServerWatchAgent
 
             using (var client = new HttpClient(handler))
             {
-                //client.BaseAddress = new Uri("https://myurl.com");
+                client.BaseAddress = new Uri("http://localhost:5000");
 
                 var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
-                HttpResponseMessage response = await client.PostAsync("/postMirroringData", content);
+                HttpResponseMessage response = await client.PostAsync("/api/mirroring/postMirroringData", content);
 
                 if (!response.IsSuccessStatusCode)
                 {

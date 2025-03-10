@@ -72,7 +72,6 @@
     <Compile Include="Mirroring\DataLayer.cs" />
     <Compile Include="Mirroring\MirroringData.cs" />
     <Compile Include="Mirroring\MirroringDataCollector.cs" />
-    <Compile Include="Mirroring\MirroringState.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
     </Compile>

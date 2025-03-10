@@ -40,6 +40,11 @@ namespace ServerWatchAgent.Mirroring
             return defaultConnection;
         }
 
+        public string GetServer()
+        {
+            return defaultConnection.DataSource;
+        }
+
         /// <summary>
         /// Gets the databases that are being mirrored on the server.
         /// </summary>

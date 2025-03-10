@@ -17,6 +17,7 @@ namespace ServerWatchAgent
         public Service1()
         {
             InitializeComponent();
+            dataSender = new DataSender();
         }
 
         public void DebugRun(string[] args)
@@ -46,18 +47,15 @@ namespace ServerWatchAgent
             mirroringTimer.Start();
         }
 
-        private void GatherAndSendMirroringDataAsync(object sender, ElapsedEventArgs e)
+        private async void GatherAndSendMirroringDataAsync(object sender, ElapsedEventArgs e)
         {
             try
             {
-                System.IO.File.AppendAllText(@"C:\ServiceLogs\MyServiceLog.txt", $"Mirroring check started.\r\n");
-
-                var data = MirroringDataCollector.CheckMirroringOnServer();
-
-                string jsonData = JsonConvert.SerializeObject(data);
+                var jsonData = MirroringDataCollector.CheckMirroringOnServer();
 
                 System.IO.File.AppendAllText(@"C:\ServiceLogs\MyServiceLog.txt", $"{jsonData}\r\n");
-                //await dataSender.SendMirroringDataAsync(jsonData);
+                
+                await dataSender.SendMirroringDataAsync(jsonData);
             }
             catch (Exception ex)
             {

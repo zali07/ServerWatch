@@ -1,0 +1,6 @@
+@ServerWatchWS_HostAddress = http://localhost:5267
+
+GET {{ServerWatchWS_HostAddress}}/api/version
+Accept: application/json
+
+###
