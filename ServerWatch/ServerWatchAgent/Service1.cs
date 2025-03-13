@@ -1,6 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using CosysLib.ExceptionManagement;
 using ServerWatchAgent.Mirroring;
 using System;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Reflection;
 using System.ServiceProcess;
@@ -52,21 +53,30 @@ namespace ServerWatchAgent
             try
             {
                 var jsonData = MirroringDataCollector.CheckMirroringOnServer();
-
-                System.IO.File.AppendAllText(@"C:\ServiceLogs\MyServiceLog.txt", $"{jsonData}\r\n");
                 
                 await dataSender.SendMirroringDataAsync(jsonData);
             }
             catch (Exception ex)
             {
-                string text = $"Error while gathering and sending mirroring data: {ex.Message}\r\n";
-                System.IO.File.AppendAllText(@"C:\ServiceLogs\MyServiceLog.txt", text);
+                ExceptionManager.Publish(ex, this.CollectRequestInfo(("OperationtType", "Mirroring")));
             }
-            finally
+        }
+
+        private NameValueCollection CollectRequestInfo(params ValueTuple<string, string>[] operationInfo)
+        {
+            var requestInfo = new NameValueCollection();
+
+            const string app = "ServerWatchAgent";
+
+            if (operationInfo != null && operationInfo.Length > 0)
             {
-                string text = $"Mirroring data gathered and sent.\r\n";
-                System.IO.File.AppendAllText(@"C:\ServiceLogs\MyServiceLog.txt", text);
+                foreach (var i in operationInfo)
+                {
+                    requestInfo.Add(app + "." + i.Item1, i.Item2);
+                }
             }
+
+            return requestInfo;
         }
 
         private void CheckForUpdates(object sender, ElapsedEventArgs e)
@@ -90,8 +100,7 @@ namespace ServerWatchAgent
             }
             catch (Exception ex)
             {
-                string text = $"Error while checking for updates: {ex.Message}\r\n";
-                System.IO.File.AppendAllText(@"C:\ServiceLogs\MyServiceLog.txt", text);
+                ExceptionManager.Publish(ex, this.CollectRequestInfo(("OperationtType", "Update")));
             }
             finally
             {

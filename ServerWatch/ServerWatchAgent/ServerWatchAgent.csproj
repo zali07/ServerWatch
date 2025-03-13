@@ -51,6 +51,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CosysLib.ExceptionManagement, Version=2.2.225.0, Culture=neutral, PublicKeyToken=f6951d8168c04892, processorArchitecture=MSIL">
+      <HintPath>..\packages\CosysLib.ExceptionManagement.2.2.225\lib\net40\CosysLib.ExceptionManagement.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>

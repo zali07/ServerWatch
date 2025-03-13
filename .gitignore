@@ -19,4 +19,7 @@
 /ServerWatch/ServerWatchWS/obj
 /ServerWatch/ServerWatchWS/Migrations
 /ServerWatch/ServerWatchWS/publish
-/ServerWatch/ServerWatchWS/Properties
+/ServerWatch/EventLogSourceCreator/bin
+/ServerWatch/EventLogSourceCreator/obj
+/ServerWatch/packages/CosysLib.ExceptionManagement.2.2.225/lib/net40
+/ServerWatch/packages/CosysLib.ExceptionManagement.2.2.225
