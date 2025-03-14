@@ -14,11 +14,13 @@ namespace ServerWatchAgent
         private Timer checkUpdateTimer;
         private Timer mirroringTimer;
         private readonly DataSender dataSender;
+        private readonly Updater updater;
 
         public Service1()
         {
             InitializeComponent();
             dataSender = new DataSender();
+            updater = new Updater();
         }
 
         public void DebugRun(string[] args)
@@ -36,10 +38,10 @@ namespace ServerWatchAgent
 #if DEBUG
             System.Diagnostics.Debugger.Launch();
 #endif
-            //checkUpdateTimer = new Timer();
-            //checkUpdateTimer.Interval = 30000; // 30 sec interval
-            //checkUpdateTimer.Elapsed += CheckForUpdates;
-            //checkUpdateTimer.Start();
+            checkUpdateTimer = new Timer();
+            checkUpdateTimer.Interval = 15000; // 15 sec interval
+            checkUpdateTimer.Elapsed += CheckForUpdates;
+            checkUpdateTimer.Start();
 
             mirroringTimer = new Timer();
             //mirroringTimer.Interval = 3600000; // 1h interval
@@ -62,6 +64,18 @@ namespace ServerWatchAgent
             }
         }
 
+        private async void CheckForUpdates(object sender, ElapsedEventArgs e)
+        {
+            try
+            {
+                await updater.GetUpdateInfoAsync();
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.Publish(ex, this.CollectRequestInfo(("OperationtType", "Update")));
+            }
+        }
+
         private NameValueCollection CollectRequestInfo(params ValueTuple<string, string>[] operationInfo)
         {
             var requestInfo = new NameValueCollection();
@@ -77,52 +91,6 @@ namespace ServerWatchAgent
             }
 
             return requestInfo;
-        }
-
-        private void CheckForUpdates(object sender, ElapsedEventArgs e)
-        {
-            try
-            {
-                string oldExePath = Assembly.GetExecutingAssembly().Location;
-                string newExePath = @"C:\Users\Zalan\Desktop\Disszertáció\ServerWatch\ServerWatch\ServerWatchAgent\bin\Release\ServerWatchAgent.exe";
-                
-                var currentVersion = new Version(FileVersionInfo.GetVersionInfo(oldExePath).FileVersion);
-
-                var availableVersion = new Version(FileVersionInfo.GetVersionInfo(newExePath).FileVersion);
-
-                if (currentVersion.CompareTo(availableVersion) < 0)
-                {
-                    StartUpdaterProcess(serviceName: "ServerWatchAgent", newExePath, oldExePath);
-
-                    string text = $"Service updated successfully. {currentVersion} - {availableVersion}\r\n";
-                    System.IO.File.AppendAllText(@"C:\ServiceLogs\MyServiceLog.txt", text);
-                }
-            }
-            catch (Exception ex)
-            {
-                ExceptionManager.Publish(ex, this.CollectRequestInfo(("OperationtType", "Update")));
-            }
-            finally
-            {
-                string text = $"Service checked for update.\r\n";
-                System.IO.File.AppendAllText(@"C:\ServiceLogs\MyServiceLog.txt", text);
-            }
-        }
-
-        private void StartUpdaterProcess(string serviceName, string newExePath, string oldExePath)
-        {
-            var updaterExePath = @"C:\Users\Zalan\Desktop\Disszertáció\ServerWatch\ServerWatch\ServerWatchAgentUpdater\bin\Debug\netcoreapp3.1\ServerWatchAgentUpdater.exe";
-
-            // arguments:  <serviceName> <newExePath> <targetExePath>
-            var processInfo = new ProcessStartInfo
-            {
-                FileName = updaterExePath,
-                Arguments = $"\"{serviceName}\" \"{newExePath}\" \"{oldExePath}\"",
-                UseShellExecute = false,
-                CreateNoWindow = true
-            };
-
-            Process.Start(processInfo);
         }
 
         protected override void OnStop()
