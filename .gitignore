@@ -9,6 +9,7 @@
 /ServerWatch/ServerWatchAgentUpdater/obj
 /ServerWatch/ServerWatchAgent/bin/Release
 /ServerWatch/ServerWatchAgent/obj/Release
+/ServerWatch/ServerWatchAgent/.vs
 /ServerWatch/ServerWatchAgentUpdater/bin/Release/netcoreapp3.1
 /ServerWatch/.vs/ProjectEvaluation
 /ServerWatch/deployService.txt
@@ -24,3 +25,4 @@
 /ServerWatch/packages/CosysLib.ExceptionManagement.2.2.225/lib/net40
 /ServerWatch/packages/CosysLib.ExceptionManagement.2.2.225
 /ServerWatch/ServerWatchWS/wwwroot/downloads/ServerWatchAgent.exe
+/.vs

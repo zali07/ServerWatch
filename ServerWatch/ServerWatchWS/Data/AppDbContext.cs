@@ -8,5 +8,6 @@ namespace ServerWatchWS.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<MirroringData> MirroringEntries { get; set; }
+        public DbSet<DriverData> DriverEntries { get; set; }
     }
 }

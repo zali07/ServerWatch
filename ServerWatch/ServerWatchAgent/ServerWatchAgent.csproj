@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataSender.cs" />
+    <Compile Include="Driver\DriverDataCollector.cs" />
     <Compile Include="Mirroring\DataLayer.cs" />
     <Compile Include="Mirroring\MirroringData.cs" />
     <Compile Include="Mirroring\MirroringDataCollector.cs" />
@@ -93,6 +94,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Content Include="Driver\getDriveData.ps1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
