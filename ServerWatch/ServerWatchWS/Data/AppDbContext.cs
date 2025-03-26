@@ -9,5 +9,6 @@ namespace ServerWatchWS.Data
 
         public DbSet<MirroringData> MirroringEntries { get; set; }
         public DbSet<DriverData> DriverEntries { get; set; }
+        public DbSet<Servers> Servers { get; set; }
     }
 }

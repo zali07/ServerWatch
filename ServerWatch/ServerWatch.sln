@@ -16,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerWatchWS", "ServerWatc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventLogSourceCreator", "EventLogSourceCreator\EventLogSourceCreator.csproj", "{BA4B02E9-019D-49C4-9FF2-7898124E7FDA}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ServerWatchSetup", "ServerWatchSetup\ServerWatchSetup.vdproj", "{962816D3-8C5A-C2CA-B8FB-C999DBD684F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,13 +33,11 @@ Global
 		{94B0A496-A712-4B4A-8C5C-CCF122C7F531}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94B0A496-A712-4B4A-8C5C-CCF122C7F531}.Release|Any CPU.Build.0 = Release|Any CPU
 		{46CB5BEE-BA10-4A1D-ADA5-69B65C860F96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{46CB5BEE-BA10-4A1D-ADA5-69B65C860F96}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46CB5BEE-BA10-4A1D-ADA5-69B65C860F96}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{46CB5BEE-BA10-4A1D-ADA5-69B65C860F96}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BA4B02E9-019D-49C4-9FF2-7898124E7FDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BA4B02E9-019D-49C4-9FF2-7898124E7FDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA4B02E9-019D-49C4-9FF2-7898124E7FDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BA4B02E9-019D-49C4-9FF2-7898124E7FDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{962816D3-8C5A-C2CA-B8FB-C999DBD684F8}.Debug|Any CPU.ActiveCfg = Debug
+		{962816D3-8C5A-C2CA-B8FB-C999DBD684F8}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

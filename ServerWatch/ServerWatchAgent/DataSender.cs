@@ -46,5 +46,47 @@ namespace ServerWatchAgent
                 }
             }
         }
+
+        public async Task RegisterWithWebServiceAsync(string jsonPayload)
+        {
+            var handler = new HttpClientHandler();
+
+            using (var client = new HttpClient(handler))
+            {
+                client.BaseAddress = new Uri("http://localhost:5000");
+
+                var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await client.PostAsync("/api/register/registerNewServer", content);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    string error = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"HTTP Error: {response.StatusCode}, {error}");
+                }
+            }
+        }
+
+        public async Task<bool> CheckApprovalStatusAsync(string guid)
+        {
+            var handler = new HttpClientHandler();
+
+            using (var client = new HttpClient(handler))
+            {
+                client.BaseAddress = new Uri("http://localhost:5000");
+
+                HttpResponseMessage response = await client.PostAsync($"/api/register/getServerStatus?guid={guid}", null);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    string error = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"HTTP Error: {response.StatusCode}, {error}");
+                }
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                return responseContent.Contains("approved\":true");
+            }
+        }
     }
 }
