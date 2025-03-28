@@ -16,7 +16,7 @@ namespace ServerWatchAgent
 
             using (var client = new HttpClient(handler))
             {
-                client.BaseAddress = new Uri("http://localhost:5000");
+                client.BaseAddress = new Uri("http://192.168.1.138:5000");
 
                 HttpResponseMessage response = await client.GetAsync("/api/update/getAgentUpdateInfo");
 

@@ -7,13 +7,15 @@ namespace ServerWatchAgent
 {
     public class DataSender
     {
+        private readonly string baseUrl = "http://192.168.1.138:5000";
+
         public async Task SendMirroringDataAsync(string jsonPayload)
         {
             var handler = new HttpClientHandler();
 
             using (var client = new HttpClient(handler))
             {
-                client.BaseAddress = new Uri("http://localhost:5000");
+                client.BaseAddress = new Uri(baseUrl);
 
                 var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
@@ -33,7 +35,7 @@ namespace ServerWatchAgent
 
             using (var client = new HttpClient(handler))
             {
-                client.BaseAddress = new Uri("http://localhost:5000");
+                client.BaseAddress = new Uri(baseUrl);
 
                 var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
@@ -53,7 +55,7 @@ namespace ServerWatchAgent
 
             using (var client = new HttpClient(handler))
             {
-                client.BaseAddress = new Uri("http://localhost:5000");
+                client.BaseAddress = new Uri(baseUrl);
 
                 var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
@@ -73,9 +75,9 @@ namespace ServerWatchAgent
 
             using (var client = new HttpClient(handler))
             {
-                client.BaseAddress = new Uri("http://localhost:5000");
+                client.BaseAddress = new Uri(baseUrl);
 
-                HttpResponseMessage response = await client.PostAsync($"/api/register/getServerStatus?guid={guid}", null);
+                HttpResponseMessage response = await client.GetAsync($"/api/register/getServerStatus?guid={guid}");
 
                 if (!response.IsSuccessStatusCode)
                 {

@@ -54,7 +54,7 @@ namespace ServerWatchWS.Model
 
         [Column(TypeName = "smalldatetime")]
         [JsonPropertyName("time_behind")]
-        public DateTime TimeBehind { get; set; }
+        public DateTime? TimeBehind { get; set; }
 
         [Column(TypeName = "smalldatetime")]
         [JsonPropertyName("local_time")]

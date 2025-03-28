@@ -45,7 +45,7 @@ namespace ServerWatchWS.Controllers
             return Ok("Server registered successfully.");
         }
 
-        [HttpPost("getServerStatus")]
+        [HttpGet("getServerStatus")]
         public async Task<IActionResult> GetAgentStatus(string guid)
         {
             if (string.IsNullOrWhiteSpace(guid))
@@ -53,14 +53,22 @@ namespace ServerWatchWS.Controllers
                 return BadRequest("GUID is required.");
             }
 
-            var agent = await _context.Servers.FirstOrDefaultAsync(x => x.GUID == guid);
-
-            if (agent == null)
+            try
             {
-                return Ok(new { approved = false, message = "Server not found." });
-            }
+                var agent = await _context.Servers.FirstOrDefaultAsync(x => x.GUID == guid);
 
-            return Ok(new { approved = agent.IsApproved });
+                if (agent == null)
+                {
+                    return Ok(new { approved = false, message = "Agent with the specified guid was not found. " +
+                                                                "Please register it first." });
+                }
+
+                return Ok(new { approved = agent.IsApproved });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "Internal server error", details = ex.Message });
+            }
         }
     }
 }

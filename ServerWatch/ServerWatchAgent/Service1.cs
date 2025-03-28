@@ -63,16 +63,16 @@ namespace ServerWatchAgent
             validationTimer.Start();
         }
 
-        private void ValidateAndStartTimers(object sender, ElapsedEventArgs e)
+        private async void ValidateAndStartTimers(object sender, ElapsedEventArgs e)
         {
             try
             {
                 var authManager = new AuthManager();
-                var approved = CheckApprovalStatus(authManager.Guid).Result;
+                var approved = await CheckApprovalStatus(authManager.Guid);
 
                 if (!approved)
                 {
-                    RegisterWithWebService(authManager.Guid, authManager.PublicKey).Wait();
+                    await RegisterWithWebService(authManager.Guid, authManager.PublicKey);
 
                     throw new Exception("ServerWatchAgent is not approved by server.");
                 }

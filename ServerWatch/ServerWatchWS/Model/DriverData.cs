@@ -39,16 +39,16 @@ namespace ServerWatchWS.Model
         public string SizeGB { get; set; }
 
         [JsonPropertyName("TemperatureC")]
-        public int TemperatureC { get; set; }
+        public int? TemperatureC { get; set; }
 
         [JsonPropertyName("TemperatureMaxC")]
-        public int TemperatureMaxC { get; set; }
+        public int? TemperatureMaxC { get; set; }
 
         [JsonPropertyName("PowerOnHours")]
-        public int PowerOnHours { get; set; }
+        public int? PowerOnHours { get; set; }
 
         [JsonPropertyName("WearLevel")]
-        public int WearLevel { get; set; }
+        public int? WearLevel { get; set; }
 
         [JsonPropertyName("ReadLatencyMax")]
         public ulong ReadLatencyMax { get; set; }
