@@ -54,20 +54,12 @@ namespace ServerWatchAgent
                     string newExeLocalPath = await DownloadUpdateAsync(updateInfo.DownloadUrl);
 
                     StartUpdaterProcess("ServerWatchAgent", newExeLocalPath, oldExePath);
-
-                    //string text = $"Service updated successfully. {currentVersion} - {availableVersion}\r\n";
-                    //System.IO.File.AppendAllText(@"C:\ServiceLogs\MyServiceLog.txt", text);
                 }
             }
             catch (Exception ex)
             {
                 throw new Exception("Error while checking for updates.", ex);
             }
-            //finally
-            //{
-            //    string text = $"Service checked for update.+++\r\n";
-            //    System.IO.File.AppendAllText(@"C:\ServiceLogs\MyServiceLog.txt", text);
-            //}
         }
 
         private void StartUpdaterProcess(string serviceName, string newExePath, string oldExePath)

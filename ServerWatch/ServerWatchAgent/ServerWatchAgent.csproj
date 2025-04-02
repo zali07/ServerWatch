@@ -39,7 +39,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -71,9 +71,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuthManager.cs" />
     <Compile Include="DataSender.cs" />
     <Compile Include="Driver\DriverDataCollector.cs" />
+    <Compile Include="KeyContainerManager.cs" />
     <Compile Include="Mirroring\DataLayer.cs" />
     <Compile Include="Mirroring\MirroringData.cs" />
     <Compile Include="Mirroring\MirroringDataCollector.cs" />

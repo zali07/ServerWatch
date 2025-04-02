@@ -37,9 +37,17 @@ namespace ServerWatchAgent
             {
                 client.BaseAddress = new Uri(baseUrl);
 
-                var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+                var signature = KeyContainerManager.SignData(jsonPayload);
 
-                HttpResponseMessage response = await client.PostAsync("/api/driver/postDriverData", content);
+                var request = new HttpRequestMessage(HttpMethod.Post, "/api/driver/postDriverData")
+                {
+                    Content = new StringContent(jsonPayload, Encoding.UTF8, "application/json"),
+                };
+
+                request.Headers.Add("X-CosysKey", signature);
+                request.Headers.Add("ServerGuid", KeyContainerManager.Guid);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {

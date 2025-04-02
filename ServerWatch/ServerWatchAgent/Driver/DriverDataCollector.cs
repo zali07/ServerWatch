@@ -59,14 +59,17 @@ namespace ServerWatchAgent.Driver
             {
                 foreach (JObject drive in array)
                 {
-                    drive["ServerName"] = Environment.MachineName;
+                    drive["ServerGUID"] = KeyContainerManager.Guid;
+                    drive["TS"] = DateTime.Now;
                 }
 
                 return JsonConvert.SerializeObject(array, Formatting.Indented);
             }
             else if (driversData is JObject obj)
             {
-                obj["ServerName"] = Environment.MachineName;
+                obj["ServerGUID"] = KeyContainerManager.Guid;
+                obj["TS"] = DateTime.Now;
+
                 return JsonConvert.SerializeObject(obj, Formatting.Indented);
             }
             else

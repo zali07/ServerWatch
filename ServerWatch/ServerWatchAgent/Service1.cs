@@ -45,7 +45,7 @@ namespace ServerWatchAgent
             checkUpdateTimer = new Timer();
             checkUpdateTimer.Interval = 15000; // 15 sec interval
             checkUpdateTimer.Elapsed += CheckForUpdates;
-            //checkUpdateTimer.Start();
+            checkUpdateTimer.Start();
 
             mirroringTimer = new Timer();
             mirroringTimer.Interval = 30000; // 30 sec interval
@@ -67,12 +67,11 @@ namespace ServerWatchAgent
         {
             try
             {
-                var authManager = new AuthManager();
-                var approved = await CheckApprovalStatus(authManager.Guid);
+                var approved = await CheckApprovalStatus(KeyContainerManager.Guid);
 
                 if (!approved)
                 {
-                    await RegisterWithWebService(authManager.Guid, authManager.PublicKey);
+                    await RegisterWithWebService(KeyContainerManager.Guid, KeyContainerManager.GetPublicKey());
 
                     throw new Exception("ServerWatchAgent is not approved by server.");
                 }
@@ -88,7 +87,6 @@ namespace ServerWatchAgent
 
         private void StartTimers()
         {        
-            checkUpdateTimer.Start();
             mirroringTimer.Start();
             driverTimer.Start();
         }
