@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace ServerWatchWS.Model
@@ -8,8 +9,8 @@ namespace ServerWatchWS.Model
         [Key]
         public int Id { get; set; }
 
-        [JsonPropertyName("ServerName")]
-        public string ServerName { get; set; }
+        [JsonPropertyName("ServerGUID")]
+        public string ServerGUID { get; set; }
 
         [JsonPropertyName("GUID")]
         public string GUID { get; set; }
@@ -39,21 +40,25 @@ namespace ServerWatchWS.Model
         public string SizeGB { get; set; }
 
         [JsonPropertyName("TemperatureC")]
-        public int TemperatureC { get; set; }
+        public int? TemperatureC { get; set; }
 
         [JsonPropertyName("TemperatureMaxC")]
-        public int TemperatureMaxC { get; set; }
+        public int? TemperatureMaxC { get; set; }
 
         [JsonPropertyName("PowerOnHours")]
-        public int PowerOnHours { get; set; }
+        public int? PowerOnHours { get; set; }
 
         [JsonPropertyName("WearLevel")]
-        public int WearLevel { get; set; }
+        public int? WearLevel { get; set; }
 
         [JsonPropertyName("ReadLatencyMax")]
         public ulong ReadLatencyMax { get; set; }
         
         [JsonPropertyName("WriteLatencyMax")]
         public ulong WriteLatencyMax { get; set; }
+
+        [Column(TypeName = "smalldatetime")]
+        [JsonPropertyName("TS")]
+        public DateTime TS { get; set; }
     }
 }

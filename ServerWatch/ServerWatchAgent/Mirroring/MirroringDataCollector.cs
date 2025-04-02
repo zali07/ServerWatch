@@ -49,7 +49,7 @@ namespace ServerWatchAgent.Mirroring
                                     TransactionsPerSec = Convert.ToInt32(statusRow["transactions_per_sec"]),
                                     AverageDelay = Convert.ToInt32(statusRow["average_delay"]),
                                     TimeRecorded = Convert.ToDateTime(statusRow["time_recorded"]),
-                                    TimeBehind = Convert.ToDateTime(statusRow["time_behind"]),
+                                    TimeBehind = statusRow.Field<DateTime?>("time_behind") ?? null,
                                     LocalTime = Convert.ToDateTime(statusRow["local_time"])
                                 };
 

@@ -17,47 +17,64 @@ namespace ServerWatchAgent.Driver
                 throw new FileNotFoundException("PowerShell script not found at: " + scriptPath);
             }
 
+            string sharedTempFolder = @"C:\Windows\Temp";
+
+            if (!Directory.Exists(sharedTempFolder))
+            {
+                Directory.CreateDirectory(sharedTempFolder);
+            }
+
+            string sharedTempFile = Path.Combine(sharedTempFolder, "driveDataOutput.json");
+
             var startInfo = new ProcessStartInfo
             {
                 FileName = "powershell.exe",
-                Arguments = $"-ExecutionPolicy Bypass -File \"{scriptPath}\"",
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                UseShellExecute = false,
+                Arguments = $"-ExecutionPolicy Bypass -File \"{scriptPath}\" -OutputFilePath \"{sharedTempFile}\"",
+                UseShellExecute = true,
+                Verb = "runas",
                 CreateNoWindow = true
             };
 
             using (var process = Process.Start(startInfo))
             {
-                string output = process.StandardOutput.ReadToEnd();
-                string error = process.StandardError.ReadToEnd();
                 process.WaitForExit();
+            }
 
-                if (!string.IsNullOrWhiteSpace(error))
+            string output = File.ReadAllText(sharedTempFile);
+
+            //File.Delete(sharedTempFile);
+
+            JToken driversData;
+
+            try
                 {
-                    throw new Exception("PowerShell error: " + error);
+                driversData = JToken.Parse(output);
                 }
+            catch
+            {
+                throw new Exception($"Unexpected JSON format from PowerShell script.\nOutput: {output}\n");
+            }
 
-                var token = JToken.Parse(output);
-
-                if (token is JArray array)
+            if (driversData is JArray array)
                 {
                     foreach (JObject drive in array)
                     {
-                        drive["ServerName"] = Environment.MachineName;
+                    drive["ServerGUID"] = KeyContainerManager.Guid;
+                    drive["TS"] = DateTime.Now;
                     }
 
                     return JsonConvert.SerializeObject(array, Formatting.Indented);
                 }
-                else if (token is JObject obj)
+            else if (driversData is JObject obj)
                 {
-                    obj["ServerName"] = Environment.MachineName;
+                obj["ServerGUID"] = KeyContainerManager.Guid;
+                obj["TS"] = DateTime.Now;
+
                     return JsonConvert.SerializeObject(obj, Formatting.Indented);
                 }
                 else
                 {
-                    throw new Exception("Unexpected JSON format from PowerShell script.");
-                }
+                throw new Exception($"Unexpected JSON format from PowerShell script.\nOutput: {output}\n");
             }
         }
     }

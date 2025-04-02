@@ -1,9 +1,11 @@
 ﻿using CosysLib.ExceptionManagement;
+using Newtonsoft.Json;
 using ServerWatchAgent.Driver;
 using ServerWatchAgent.Mirroring;
 using System;
 using System.Collections.Specialized;
 using System.ServiceProcess;
+using System.Threading.Tasks;
 using System.Timers;
 
 namespace ServerWatchAgent
@@ -13,6 +15,7 @@ namespace ServerWatchAgent
         private Timer checkUpdateTimer;
         private Timer mirroringTimer;
         private Timer driverTimer;
+        private Timer validationTimer;
 
         private readonly DataSender dataSender;
         private readonly Updater updater;
@@ -44,15 +47,64 @@ namespace ServerWatchAgent
             checkUpdateTimer.Elapsed += CheckForUpdates;
             checkUpdateTimer.Start();
 
-            //mirroringTimer = new Timer();
-            //mirroringTimer.Interval = 30000; // 30 sec interval
-            //mirroringTimer.Elapsed += GatherAndSendMirroringDataAsync;
+            mirroringTimer = new Timer();
+            mirroringTimer.Interval = 30000; // 30 sec interval
+            mirroringTimer.Elapsed += GatherAndSendMirroringDataAsync;
             //mirroringTimer.Start();
 
             driverTimer = new Timer();
             driverTimer.Interval = 20000; // 20 sec interval
             driverTimer.Elapsed += GatherAndSendDriverDataAsync;
+            //driverTimer.Start();
+
+            validationTimer = new Timer();
+            validationTimer.Interval = 60000; // 1 min interval
+            validationTimer.Elapsed += ValidateAndStartTimers;
+            validationTimer.Start();
+        }
+
+        private async void ValidateAndStartTimers(object sender, ElapsedEventArgs e)
+        {
+            try
+            {
+                var approved = await CheckApprovalStatus(KeyContainerManager.Guid);
+
+                if (!approved)
+                {
+                    await RegisterWithWebService(KeyContainerManager.Guid, KeyContainerManager.GetPublicKey());
+
+                    throw new Exception("ServerWatchAgent is not approved by server.");
+                }
+
+                validationTimer.Stop();
+
+                StartTimers();
+            }
+            catch (Exception ex) {
+                ExceptionManager.Publish(ex, this.CollectRequestInfo(("OperationtType", "RegisterServerWatchAgent")));
+            }
+        }
+
+        private void StartTimers()
+        {        
+            mirroringTimer.Start();
             driverTimer.Start();
+        }
+
+        public async Task RegisterWithWebService(string guid, string publicKey)
+        {
+            var payload = new
+            {
+                guid,
+                publicKey
+            };
+
+            await dataSender.RegisterWithWebServiceAsync(JsonConvert.SerializeObject(payload));
+        }
+
+        public async Task<bool> CheckApprovalStatus(string guid)
+        {
+            return await dataSender.CheckApprovalStatusAsync(guid);
         }
 
         private async void GatherAndSendDriverDataAsync(object sender, ElapsedEventArgs e)
@@ -65,7 +117,7 @@ namespace ServerWatchAgent
             }
             catch (Exception ex)
             {
-                ExceptionManager.Publish(ex, this.CollectRequestInfo(("OperationtType", "Mirroring")));
+                ExceptionManager.Publish(ex, this.CollectRequestInfo(("OperationtType", "Drivers")));
             }
         }
 
@@ -126,6 +178,20 @@ namespace ServerWatchAgent
                 mirroringTimer.Stop();
                 mirroringTimer.Dispose();
                 mirroringTimer = null;
+            }
+            
+            if (driverTimer != null)
+            {
+                driverTimer.Stop();
+                driverTimer.Dispose();
+                driverTimer = null;
+            }
+
+            if (validationTimer != null)
+            {
+                validationTimer.Stop();
+                validationTimer.Dispose();
+                validationTimer = null;
             }
         }
     }

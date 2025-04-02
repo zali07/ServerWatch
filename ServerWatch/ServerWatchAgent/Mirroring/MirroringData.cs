@@ -48,7 +48,7 @@ namespace ServerWatchAgent.Mirroring
         public DateTime TimeRecorded { get; set; }
 
         [JsonProperty("time_behind")]
-        public DateTime TimeBehind { get; set; }
+        public DateTime? TimeBehind { get; set; }
 
         [JsonProperty("local_time")]
         public DateTime LocalTime { get; set; }

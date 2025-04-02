@@ -7,7 +7,7 @@ namespace ServerWatchWS.Controllers
     [Route("api/[controller]")]
     public class UpdateController : Controller
     {
-        private readonly string downloadUrl = "http://localhost:5000/downloads/ServerWatchAgent.exe";
+        private readonly string downloadUrl = "http://192.168.1.138:5000/downloads/ServerWatchAgent.exe";
 
         [HttpGet("getAgentUpdateInfo")]
         public async Task<IActionResult> GetUpdateInfo()
