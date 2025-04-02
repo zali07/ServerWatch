@@ -1,9 +1,8 @@
 ﻿using CosysLib.ExceptionManagement;
+using ServerWatchAgent.Driver;
 using ServerWatchAgent.Mirroring;
 using System;
 using System.Collections.Specialized;
-using System.Diagnostics;
-using System.Reflection;
 using System.ServiceProcess;
 using System.Timers;
 
@@ -13,6 +12,8 @@ namespace ServerWatchAgent
     {
         private Timer checkUpdateTimer;
         private Timer mirroringTimer;
+        private Timer driverTimer;
+
         private readonly DataSender dataSender;
         private readonly Updater updater;
 
@@ -43,11 +44,29 @@ namespace ServerWatchAgent
             checkUpdateTimer.Elapsed += CheckForUpdates;
             checkUpdateTimer.Start();
 
-            mirroringTimer = new Timer();
-            //mirroringTimer.Interval = 3600000; // 1h interval
-            mirroringTimer.Interval = 30000; // 30 sec interval
-            mirroringTimer.Elapsed += GatherAndSendMirroringDataAsync;
-            mirroringTimer.Start();
+            //mirroringTimer = new Timer();
+            //mirroringTimer.Interval = 30000; // 30 sec interval
+            //mirroringTimer.Elapsed += GatherAndSendMirroringDataAsync;
+            //mirroringTimer.Start();
+
+            driverTimer = new Timer();
+            driverTimer.Interval = 20000; // 20 sec interval
+            driverTimer.Elapsed += GatherAndSendDriverDataAsync;
+            driverTimer.Start();
+        }
+
+        private async void GatherAndSendDriverDataAsync(object sender, ElapsedEventArgs e)
+        {
+            try
+            {
+                var jsonData = DriverDataCollector.CheckDriversOnServer();
+
+                await dataSender.SendDriverDataAsync(jsonData);
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.Publish(ex, this.CollectRequestInfo(("OperationtType", "Mirroring")));
+            }
         }
 
         private async void GatherAndSendMirroringDataAsync(object sender, ElapsedEventArgs e)

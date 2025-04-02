@@ -3,8 +3,8 @@ using System.Diagnostics;
 
 namespace ServerWatchWS.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class UpdateController : Controller
     {
         private readonly string downloadUrl = "http://localhost:5000/downloads/ServerWatchAgent.exe";
