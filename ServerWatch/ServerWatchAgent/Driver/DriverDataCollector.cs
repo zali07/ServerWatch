@@ -37,7 +37,7 @@ namespace ServerWatchAgent.Driver
 
             using (var process = Process.Start(startInfo))
             {
-                process.WaitForExit();               
+                process.WaitForExit();
             }
 
             string output = File.ReadAllText(sharedTempFile);
@@ -47,33 +47,33 @@ namespace ServerWatchAgent.Driver
             JToken driversData;
 
             try
-            {
+                {
                 driversData = JToken.Parse(output);
-            }
+                }
             catch
             {
                 throw new Exception($"Unexpected JSON format from PowerShell script.\nOutput: {output}\n");
             }
 
             if (driversData is JArray array)
-            {
-                foreach (JObject drive in array)
                 {
+                    foreach (JObject drive in array)
+                    {
                     drive["ServerGUID"] = KeyContainerManager.Guid;
                     drive["TS"] = DateTime.Now;
-                }
+                    }
 
-                return JsonConvert.SerializeObject(array, Formatting.Indented);
-            }
+                    return JsonConvert.SerializeObject(array, Formatting.Indented);
+                }
             else if (driversData is JObject obj)
-            {
+                {
                 obj["ServerGUID"] = KeyContainerManager.Guid;
                 obj["TS"] = DateTime.Now;
 
-                return JsonConvert.SerializeObject(obj, Formatting.Indented);
-            }
-            else
-            {
+                    return JsonConvert.SerializeObject(obj, Formatting.Indented);
+                }
+                else
+                {
                 throw new Exception($"Unexpected JSON format from PowerShell script.\nOutput: {output}\n");
             }
         }

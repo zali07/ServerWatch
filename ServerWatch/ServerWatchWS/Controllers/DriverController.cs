@@ -69,6 +69,7 @@ namespace ServerWatchWS.Controllers
             }
 
             _context.DriverEntries.AddRange(entries);
+
             await _context.SaveChangesAsync();
 
             return Ok();

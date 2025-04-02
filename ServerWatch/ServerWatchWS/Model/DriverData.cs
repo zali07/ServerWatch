@@ -18,6 +18,9 @@ namespace ServerWatchWS.Model
         [JsonPropertyName("DeviceId")]
         public uint DeviceId { get; set; }
         
+        [JsonPropertyName("UniqueId")]
+        public string UniqueId { get; set; }
+        
         [JsonPropertyName("FriendlyName")]
         public string FriendlyName { get; set; }
         
