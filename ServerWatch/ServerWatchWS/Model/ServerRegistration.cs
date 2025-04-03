@@ -2,7 +2,7 @@
 {
     public class ServerRegistration
     {
-        public string GUID { get; set; }
-        public string PublicKey { get; set; }
+        public required string GUID { get; set; }
+        public required string PublicKey { get; set; }
     }
 }

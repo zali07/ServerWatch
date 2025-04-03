@@ -35,23 +35,23 @@ namespace ServerWatchAgent.Mirroring
                             {
                                 var mirroringData = new MirroringData
                                 {
-                                    ServerName = dl.GetServer(),
                                     DatabaseName = statusRow["database_name"]?.ToString(),
-                                    Role = Convert.ToInt32(statusRow["role"]),
-                                    MirroringState = Convert.ToInt32(statusRow["mirroring_state"]),
-                                    WitnessStatus = Convert.ToInt32(statusRow["witness_status"]),
-                                    LogGenerationRate = Convert.ToInt32(statusRow["log_generation_rate"]),
-                                    UnsentLog = Convert.ToInt32(statusRow["unsent_log"]),
-                                    SendRate = Convert.ToInt32(statusRow["send_rate"]),
-                                    UnrestoredLog = Convert.ToInt32(statusRow["unrestored_log"]),
-                                    RecoveryRate = Convert.ToInt32(statusRow["recovery_rate"]),
-                                    TransactionDelay = Convert.ToInt32(statusRow["transaction_delay"]),
-                                    TransactionsPerSec = Convert.ToInt32(statusRow["transactions_per_sec"]),
-                                    AverageDelay = Convert.ToInt32(statusRow["average_delay"]),
-                                    TimeRecorded = Convert.ToDateTime(statusRow["time_recorded"]),
-                                    TimeBehind = statusRow.Field<DateTime?>("time_behind") ?? null,
-                                    LocalTime = Convert.ToDateTime(statusRow["local_time"])
+                                    Role = SafeInt(statusRow["role"]),
+                                    MirroringState = SafeInt(statusRow["mirroring_state"]),
+                                    WitnessStatus = SafeInt(statusRow["witness_status"]),
+                                    LogGenerationRate = SafeInt(statusRow["log_generation_rate"]),
+                                    UnsentLog = SafeInt(statusRow["unsent_log"]),
+                                    SendRate = SafeInt(statusRow["send_rate"]),
+                                    UnrestoredLog = SafeInt(statusRow["unrestored_log"]),
+                                    RecoveryRate = SafeInt(statusRow["recovery_rate"]),
+                                    TransactionDelay = SafeInt(statusRow["transaction_delay"]),
+                                    TransactionsPerSec = SafeInt(statusRow["transactions_per_sec"]),
+                                    AverageDelay = SafeInt(statusRow["average_delay"]),
+                                    TimeRecorded = SafeDateTime(statusRow["time_recorded"]),
+                                    TimeBehind = SafeDateTime(statusRow["time_behind"]),
+                                    LocalTime = SafeDateTime(statusRow["local_time"]),
                                 };
+
 
                                 allDbStatusData.Add(mirroringData);
                             }
@@ -65,6 +65,19 @@ namespace ServerWatchAgent.Mirroring
 
                 return JsonConvert.SerializeObject(allDbStatusData, Formatting.Indented);
             }
+        }
+        public static int? SafeInt(object value)
+        {
+            if (value == null || value is DBNull) return null;
+            if (int.TryParse(value.ToString(), out int result)) return result;
+            try { return Convert.ToInt32(value); } catch { return null; }
+        }
+
+        public static DateTime? SafeDateTime(object value)
+        {
+            if (value == null || value is DBNull) return null;
+            if (DateTime.TryParse(value.ToString(), out DateTime result)) return result;
+            try { return Convert.ToDateTime(value); } catch { return null; }
         }
     }
 }

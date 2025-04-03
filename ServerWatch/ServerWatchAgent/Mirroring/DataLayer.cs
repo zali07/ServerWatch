@@ -10,7 +10,7 @@ namespace ServerWatchAgent.Mirroring
         public string database;
 
         private SqlConnection defaultConnection = null;
-        private string defaultConnectionString = null;
+        private readonly string defaultConnectionString = null;
 
         public DataLayer()
         {
@@ -38,11 +38,6 @@ namespace ServerWatchAgent.Mirroring
             }
 
             return defaultConnection;
-        }
-
-        public string GetServer()
-        {
-            return defaultConnection.DataSource;
         }
 
         /// <summary>

@@ -10,23 +10,14 @@ namespace ServerWatchAgent
         /// </summary>
         static void Main(string[] args)
         {
-            if (Environment.UserInteractive)
-            {
-                // Running as console application for debugging
-                Service1 service = new Service1();
-                service.DebugRun(args);
-            }
-            else
-            {
-                ServiceBase[] ServicesToRun;
+            ServiceBase[] ServicesToRun;
 
-                ServicesToRun = new ServiceBase[]
-                {
-                new Service1()
-                };
+            ServicesToRun = new ServiceBase[]
+            {
+                new MonitoringService()
+            };
 
-                ServiceBase.Run(ServicesToRun);
-            }
+            ServiceBase.Run(ServicesToRun);
         }
     }
 }

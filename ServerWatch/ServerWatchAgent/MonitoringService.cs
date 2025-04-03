@@ -10,7 +10,7 @@ using System.Timers;
 
 namespace ServerWatchAgent
 {
-    public partial class Service1 : ServiceBase
+    public partial class MonitoringService : ServiceBase
     {
         private Timer checkUpdateTimer;
         private Timer mirroringTimer;
@@ -20,28 +20,15 @@ namespace ServerWatchAgent
         private readonly DataSender dataSender;
         private readonly Updater updater;
 
-        public Service1()
+        public MonitoringService()
         {
             InitializeComponent();
             dataSender = new DataSender();
             updater = new Updater();
         }
 
-        public void DebugRun(string[] args)
-        {
-            OnStart(args);
-
-            Console.WriteLine("Service running... Press any key to stop.");
-            Console.ReadKey();
-
-            OnStop();
-        }
-
         protected override void OnStart(string[] args)
         {
-#if DEBUG
-            System.Diagnostics.Debugger.Launch();
-#endif
             checkUpdateTimer = new Timer();
             checkUpdateTimer.Interval = 15000; // 15 sec interval
             checkUpdateTimer.Elapsed += CheckForUpdates;
@@ -50,12 +37,10 @@ namespace ServerWatchAgent
             mirroringTimer = new Timer();
             mirroringTimer.Interval = 30000; // 30 sec interval
             mirroringTimer.Elapsed += GatherAndSendMirroringDataAsync;
-            //mirroringTimer.Start();
 
             driverTimer = new Timer();
             driverTimer.Interval = 20000; // 20 sec interval
             driverTimer.Elapsed += GatherAndSendDriverDataAsync;
-            //driverTimer.Start();
 
             validationTimer = new Timer();
             validationTimer.Interval = 60000; // 1 min interval
@@ -63,88 +48,67 @@ namespace ServerWatchAgent
             validationTimer.Start();
         }
 
-        private async void ValidateAndStartTimers(object sender, ElapsedEventArgs e)
+        private async void TryExecuteAsync(string operationType, Func<Task> action)
         {
             try
             {
-                var approved = await CheckApprovalStatus(KeyContainerManager.Guid);
+                await action();
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.Publish(ex, this.CollectRequestInfo(("OperationtType", operationType)));
+            }
+        }
+
+        private void ValidateAndStartTimers(object sender, ElapsedEventArgs e)
+        {
+            TryExecuteAsync("StartupValidation", async () =>
+            {
+                var approved = await dataSender.CheckApprovalStatusAsync();
 
                 if (!approved)
                 {
-                    await RegisterWithWebService(KeyContainerManager.Guid, KeyContainerManager.GetPublicKey());
+                    await dataSender.RegisterWithWebServiceAsync(
+                        JsonConvert.SerializeObject(KeyContainerManager.GetPublicKey()));
 
                     throw new Exception("ServerWatchAgent is not approved by server.");
                 }
 
                 validationTimer.Stop();
-
                 StartTimers();
-            }
-            catch (Exception ex) {
-                ExceptionManager.Publish(ex, this.CollectRequestInfo(("OperationtType", "RegisterServerWatchAgent")));
-            }
+            });
+        }
+
+        private void GatherAndSendDriverDataAsync(object sender, ElapsedEventArgs e)
+        {
+            TryExecuteAsync("DriverStatusReporting", async () =>
+            {
+                var jsonData = DriverDataCollector.CheckDriversOnServer();
+                await dataSender.SendDriverDataAsync(jsonData);
+            });
+        }
+
+        private void GatherAndSendMirroringDataAsync(object sender, ElapsedEventArgs e)
+        {
+            TryExecuteAsync("MirroringStatusReporting", async () =>
+            {
+                var jsonData = MirroringDataCollector.CheckMirroringOnServer();
+                await dataSender.SendMirroringDataAsync(jsonData);
+            });
+        }
+
+        private void CheckForUpdates(object sender, ElapsedEventArgs e)
+        {
+            TryExecuteAsync("FetchUpdateInfo", async () =>
+            {
+                await updater.GetUpdateInfoAsync();
+            });
         }
 
         private void StartTimers()
-        {        
+        {
             mirroringTimer.Start();
             driverTimer.Start();
-        }
-
-        public async Task RegisterWithWebService(string guid, string publicKey)
-        {
-            var payload = new
-            {
-                guid,
-                publicKey
-            };
-
-            await dataSender.RegisterWithWebServiceAsync(JsonConvert.SerializeObject(payload));
-        }
-
-        public async Task<bool> CheckApprovalStatus(string guid)
-        {
-            return await dataSender.CheckApprovalStatusAsync(guid);
-        }
-
-        private async void GatherAndSendDriverDataAsync(object sender, ElapsedEventArgs e)
-        {
-            try
-            {
-                var jsonData = DriverDataCollector.CheckDriversOnServer();
-
-                await dataSender.SendDriverDataAsync(jsonData);
-            }
-            catch (Exception ex)
-            {
-                ExceptionManager.Publish(ex, this.CollectRequestInfo(("OperationtType", "Drivers")));
-            }
-        }
-
-        private async void GatherAndSendMirroringDataAsync(object sender, ElapsedEventArgs e)
-        {
-            try
-            {
-                var jsonData = MirroringDataCollector.CheckMirroringOnServer();
-                
-                await dataSender.SendMirroringDataAsync(jsonData);
-            }
-            catch (Exception ex)
-            {
-                ExceptionManager.Publish(ex, this.CollectRequestInfo(("OperationtType", "Mirroring")));
-            }
-        }
-
-        private async void CheckForUpdates(object sender, ElapsedEventArgs e)
-        {
-            try
-            {
-                await updater.GetUpdateInfoAsync();
-            }
-            catch (Exception ex)
-            {
-                ExceptionManager.Publish(ex, this.CollectRequestInfo(("OperationtType", "Update")));
-            }
         }
 
         private NameValueCollection CollectRequestInfo(params ValueTuple<string, string>[] operationInfo)

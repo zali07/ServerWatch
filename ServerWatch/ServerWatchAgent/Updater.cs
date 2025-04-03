@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
@@ -16,9 +17,9 @@ namespace ServerWatchAgent
 
             using (var client = new HttpClient(handler))
             {
-                client.BaseAddress = new Uri("http://192.168.1.138:5000");
+                client.BaseAddress = new Uri(ConfigurationManager.AppSettings["BaseApiUrl"]);
 
-                HttpResponseMessage response = await client.GetAsync("/api/update/getAgentUpdateInfo");
+                HttpResponseMessage response = await client.GetAsync("/api/agent/getAgentUpdateInfo");
 
                 if (!response.IsSuccessStatusCode)
                 {

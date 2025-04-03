@@ -1,6 +1,6 @@
 ﻿namespace ServerWatchAgent
 {
-    partial class Service1
+    partial class MonitoringService
     {
         /// <summary> 
         /// Required designer variable.
