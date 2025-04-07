@@ -28,3 +28,4 @@
 /.vs
 /ServerWatch/ServerWatchSetup
 /ServerWatch/ServerWatchWS/Properties/PublishProfiles
+/ServerWatch/ServerWatchWS/GlobalSuppressions.cs

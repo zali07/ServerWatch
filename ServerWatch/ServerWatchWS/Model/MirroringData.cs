@@ -9,11 +9,10 @@ namespace ServerWatchWS.Model
         [Key]
         public int Id { get; set; }
 
-        [JsonPropertyName("server_name")]
-        public string ServerName { get; set; }
+        public string? ServerGUID { get; set; }
 
         [JsonPropertyName("database_name")]
-        public string DatabaseName { get; set; }
+        public string? DatabaseName { get; set; }
 
         [JsonPropertyName("role")]
         public int Role { get; set; }
@@ -50,7 +49,7 @@ namespace ServerWatchWS.Model
 
         [Column(TypeName = "smalldatetime")]
         [JsonPropertyName("time_recorded")]
-        public DateTime TimeRecorded { get; set; }
+        public DateTime? TimeRecorded { get; set; }
 
         [Column(TypeName = "smalldatetime")]
         [JsonPropertyName("time_behind")]
@@ -58,6 +57,9 @@ namespace ServerWatchWS.Model
 
         [Column(TypeName = "smalldatetime")]
         [JsonPropertyName("local_time")]
-        public DateTime LocalTime { get; set; }
+        public DateTime? LocalTime { get; set; }
+
+        [Column(TypeName = "smalldatetime")]
+        public DateTime? TS { get; set; }
     }
 }

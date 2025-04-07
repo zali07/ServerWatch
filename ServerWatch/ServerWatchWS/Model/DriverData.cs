@@ -9,41 +9,34 @@ namespace ServerWatchWS.Model
         [Key]
         public int Id { get; set; }
 
-        [JsonPropertyName("ServerGUID")]
-        public string ServerGUID { get; set; }
-
-        [JsonPropertyName("GUID")]
-        public string GUID { get; set; }
+        public string? ServerGUID { get; set; }
 
         [JsonPropertyName("DeviceId")]
         public uint DeviceId { get; set; }
         
-        [JsonPropertyName("UniqueId")]
-        public string UniqueId { get; set; }
-        
         [JsonPropertyName("FriendlyName")]
-        public string FriendlyName { get; set; }
+        public string? FriendlyName { get; set; }
         
         [JsonPropertyName("SerialNumber")]
-        public string SerialNumber { get; set; }
+        public string? SerialNumber { get; set; }
         
         [JsonPropertyName("Model")]
-        public string Model { get; set; }
+        public string? Model { get; set; }
 
         [JsonPropertyName("MediaType")]
-        public string MediaType { get; set; }
+        public string? MediaType { get; set; }
 
         [JsonPropertyName("HealthStatus")]
-        public string HealthStatus { get; set; }
+        public string? HealthStatus { get; set; }
 
         [JsonPropertyName("SizeGB")]
-        public string SizeGB { get; set; }
+        public string? SizeGB { get; set; }
 
-        [JsonPropertyName("TemperatureC")]
-        public int? TemperatureC { get; set; }
+        [JsonPropertyName("Temperature")]
+        public int? Temperature { get; set; }
 
-        [JsonPropertyName("TemperatureMaxC")]
-        public int? TemperatureMaxC { get; set; }
+        [JsonPropertyName("TemperatureMax")]
+        public int? TemperatureMax { get; set; }
 
         [JsonPropertyName("PowerOnHours")]
         public int? PowerOnHours { get; set; }
@@ -52,13 +45,12 @@ namespace ServerWatchWS.Model
         public int? WearLevel { get; set; }
 
         [JsonPropertyName("ReadLatencyMax")]
-        public ulong ReadLatencyMax { get; set; }
+        public ulong? ReadLatencyMax { get; set; }
         
         [JsonPropertyName("WriteLatencyMax")]
-        public ulong WriteLatencyMax { get; set; }
+        public ulong? WriteLatencyMax { get; set; }
 
         [Column(TypeName = "smalldatetime")]
-        [JsonPropertyName("TS")]
-        public DateTime TS { get; set; }
+        public DateTime? TS { get; set; }
     }
 }
