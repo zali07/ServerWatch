@@ -18,7 +18,7 @@ namespace ServerWatchAgent.Mirroring
                     throw new Exception("No databases found on server that are being mirrored.");
                 }
 
-                var allDbStatusData = new List<MirroringData>();
+                var allDbStatusData = new List<Dictionary<string, object>>();
 
                 foreach (DataRow dbRow in databases.Tables[0].Rows)
                 {
@@ -33,27 +33,26 @@ namespace ServerWatchAgent.Mirroring
                         {
                             foreach (DataRow statusRow in dbStatus.Tables[0].Rows)
                             {
-                                var mirroringData = new MirroringData
+                                var statusDict = new Dictionary<string, object>
                                 {
-                                    DatabaseName = statusRow["database_name"]?.ToString(),
-                                    Role = SafeInt(statusRow["role"]),
-                                    MirroringState = SafeInt(statusRow["mirroring_state"]),
-                                    WitnessStatus = SafeInt(statusRow["witness_status"]),
-                                    LogGenerationRate = SafeInt(statusRow["log_generation_rate"]),
-                                    UnsentLog = SafeInt(statusRow["unsent_log"]),
-                                    SendRate = SafeInt(statusRow["send_rate"]),
-                                    UnrestoredLog = SafeInt(statusRow["unrestored_log"]),
-                                    RecoveryRate = SafeInt(statusRow["recovery_rate"]),
-                                    TransactionDelay = SafeInt(statusRow["transaction_delay"]),
-                                    TransactionsPerSec = SafeInt(statusRow["transactions_per_sec"]),
-                                    AverageDelay = SafeInt(statusRow["average_delay"]),
-                                    TimeRecorded = SafeDateTime(statusRow["time_recorded"]),
-                                    TimeBehind = SafeDateTime(statusRow["time_behind"]),
-                                    LocalTime = SafeDateTime(statusRow["local_time"]),
+                                    ["DatabaseName"] = statusRow["database_name"],
+                                    ["Role"] = statusRow["role"],
+                                    ["MirroringState"] = statusRow["mirroring_state"],
+                                    ["WitnessStatus"] = statusRow["witness_status"],
+                                    ["LogGenerationRate"] = statusRow["log_generation_rate"],
+                                    ["UnsentLog"] = statusRow["unsent_log"],
+                                    ["SendRate"] = statusRow["send_rate"],
+                                    ["UnrestoredLog"] = statusRow["unrestored_log"],
+                                    ["RecoveryRate"] = statusRow["recovery_rate"],
+                                    ["TransactionDelay"] = statusRow["transaction_delay"],
+                                    ["TransactionsPerSec"] = statusRow["transactions_per_sec"],
+                                    ["AverageDelay"] = statusRow["average_delay"],
+                                    ["TimeRecorded"] = statusRow["time_recorded"],
+                                    ["TimeBehind"] = statusRow["time_behind"],
+                                    ["LocalTime"] = statusRow["local_time"],
                                 };
 
-
-                                allDbStatusData.Add(mirroringData);
+                                allDbStatusData.Add(statusDict);
                             }
                         }
                     }
@@ -66,6 +65,7 @@ namespace ServerWatchAgent.Mirroring
                 return JsonConvert.SerializeObject(allDbStatusData, Formatting.Indented);
             }
         }
+
         public static int? SafeInt(object value)
         {
             if (value == null || value is DBNull) return null;

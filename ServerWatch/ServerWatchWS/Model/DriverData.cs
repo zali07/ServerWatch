@@ -32,11 +32,11 @@ namespace ServerWatchWS.Model
         [JsonPropertyName("SizeGB")]
         public string? SizeGB { get; set; }
 
-        [JsonPropertyName("TemperatureC")]
-        public int? TemperatureC { get; set; }
+        [JsonPropertyName("Temperature")]
+        public int? Temperature { get; set; }
 
-        [JsonPropertyName("TemperatureMaxC")]
-        public int? TemperatureMaxC { get; set; }
+        [JsonPropertyName("TemperatureMax")]
+        public int? TemperatureMax { get; set; }
 
         [JsonPropertyName("PowerOnHours")]
         public int? PowerOnHours { get; set; }

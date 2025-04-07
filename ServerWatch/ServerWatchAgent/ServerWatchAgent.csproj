@@ -77,7 +77,6 @@
     <Compile Include="Driver\DriverDataCollector.cs" />
     <Compile Include="KeyContainerManager.cs" />
     <Compile Include="Mirroring\DataLayer.cs" />
-    <Compile Include="Mirroring\MirroringData.cs" />
     <Compile Include="Mirroring\MirroringDataCollector.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
