@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:ServerWatchTower"
              xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-             xmlns:silver="clr-namespace:Cosys.SilverLib.Shell;assembly=Cosys.SilverLib.Shell"
-             StartupUri="MainWindow.xaml">
+             xmlns:silver="clr-namespace:Cosys.SilverLib.Shell;assembly=Cosys.SilverLib.Shell">
+    
     <silver:SilverApplication.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
