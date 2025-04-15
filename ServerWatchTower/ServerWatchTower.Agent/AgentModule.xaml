@@ -1,0 +1,59 @@
+﻿<ModuleBase x:Class="ServerWatchTower.Agent.AgentModule"
+            xmlns="clr-namespace:Cosys.SilverLib.Core;assembly=Cosys.SilverLib.Core"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            SystemName="Agent"
+            Icon="/Cosys.SilverLib.View;Component/Images/24/registry.png"
+            SmallIcon="/Cosys.SilverLib.View;Component/Images/16/registry.png">
+
+    <ModuleBase.DbDirectAssemblies>
+        <ModuleAssembly Name="ServerWatchTower.Agent.Data" PublicKeyToken="5d2be421dac4144e" />
+    </ModuleBase.DbDirectAssemblies>
+
+    <ModuleBase.ModuleAssemblies>
+        <ModuleAssembly Name="ServerWatchTower.Agent.Model" PublicKeyToken="5d2be421dac4144e" />
+        <ModuleAssembly Name="ServerWatchTower.Agent.View" PublicKeyToken="5d2be421dac4144e" />
+        <ModuleAssembly Name="ServerWatchTower.Agent.ViewModel" PublicKeyToken="5d2be421dac4144e" />
+    </ModuleBase.ModuleAssemblies>
+
+    <ModuleBase.Switchboard>
+        <SwitchboardItem Name="Test"
+                         Target="View" Contract="ServerWatchTower.Agent.StockView"/>
+        <!--<SwitchboardItem Code="DigiDoc" Name="{x:Static Member=local:UIRes.SwDigiDoc}"
+                         RequiredRight="SilverGest.EFactAccess">
+            <SwitchboardItem Name="{x:Static Member=local:UIRes.SwPrepareDigiDoc}"
+                             RequiredRight="SilverGest.EFactPregatire"
+                             Target="View" IsSingleInstance="true"
+                             Contract="ServerWatchTower.Agent.DigiDocMessagePrepView"/>
+            <SwitchboardItem Name="{x:Static Member=local:UIRes.SwIssuedDigiDoc}"
+                             RequiredRight="SilverGest.EFactViewEmis"
+                             Target="View" IsSingleInstance="true"
+                             Contract="ServerWatchTower.Agent.DigiDocMessageListView" Argument="Outgoing"/>
+            <SwitchboardItem Name="{x:Static Member=local:UIRes.SwReceivedDigiDoc}"
+                             RequiredRight="SilverGest.EFactViewPrimit"
+                             Target="View" IsSingleInstance="true"
+                             Contract="ServerWatchTower.Agent.DigiDocMessageListView" Argument="Incoming"/>
+            <SwitchboardItem Code="DigiDocChecks" Name="{x:Static Member=local:UIRes.SwDigiDocChecks}">
+                <SwitchboardItem Code="InvoiceCheck" Name="{x:Static Member=local:UIRes.SwIssuedDigiDocCheck}"
+                                 RequiredRight="SilverGest.EFactViewEmis"
+                                 Target="View" IsSingleInstance="true"
+                                 Contract="ServerWatchTower.Agent.DigiDocInvoiceCheckView"/>
+                <SwitchboardItem Code="ReceptionCheck" Name="{x:Static Member=local:UIRes.SwReceivedDigiDocCheck}"
+                                 RequiredRight="SilverGest.EFactViewPrimit"
+                                 Target="View" IsSingleInstance="true"
+                                 Contract="ServerWatchTower.Agent.DigiDocReceptionCheckView"/>
+            </SwitchboardItem>
+			<SwitchboardItem Code="DigiDocReception" Name="{x:Static Member=local:UIRes.SwDigiDocReception}">
+				<SwitchboardItem Code="Reception" Name="{x:Static Member=local:UIRes.SwPartnerMapping}"
+								 Target="View" IsSingleInstance="true"
+								 Contract="ServerWatchTower.Agent.PartnerMappingCatalogView"/>
+			</SwitchboardItem>
+        </SwitchboardItem>-->
+        <!--<SwitchboardItem Name="{x:Static Member=local:UIRes.SwCatalogs}">
+            <SwitchboardItem Name="{x:Static Member=local:UIRes.SwPartners}" Target="View" Contract="Cosys.SilverERP.Core.PartnerCatalogView"/>
+		<SwitchboardItem Name="{x:Static Member=local:UIRes.SwProducts}" Target="View" Contract="Cosys.SilverERP.Core.ProductCatalogView"/>
+		<SwitchboardItem Name="{x:Static Member=local:UIRes.SwSectorProducts}" Code="SectorProducts" Target="View" Contract="ServerWatchTower.Agent.SectorProductCatalogView"/>
+        <SwitchboardItem Name="{x:Static Member=local:UIRes.SwUnits}" Target="View" Contract="Cosys.SilverERP.Core.UnitCatalogView"/>
+        </SwitchboardItem>-->
+    </ModuleBase.Switchboard>
+
+</ModuleBase>

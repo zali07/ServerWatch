@@ -1,0 +1,14 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".generated.cs" #>
+<#@ include file="$(SolutionDir)Templates\ModuleConfigClass.tt" #>
+<#+
+
+string ModuleName = "Agent";
+
+string ClassName = "AgentConfiguration";
+
+List<ConfigProperty> Fields = new List<ConfigProperty>()
+{
+};
+
+#>
