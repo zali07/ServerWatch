@@ -38,7 +38,35 @@
             this.cultureProvider = cultureProvider;
         }
 
+        /// <inheritdoc/>
+        public Task DeleteServerAsync(string serverGUID)
+        {
+            return this.RunOnAuthorizedDataLayerAsync(dl => dl.DeleteServer(serverGUID));
+        }
 
+        /// <inheritdoc/>
+        public Task<Server> GetServerAsync(string serverGUID)
+        {
+            return this.RunOnDataLayerAsync(dl => dl.GetServer(serverGUID));
+        }
+
+        /// <inheritdoc/>
+        public Task<(List<Server> Servers, string controlTipText)> GetServersAsync(ServerCatalogFilterArgs filter)
+        {
+            return this.RunOnDataLayerAsync(dl => dl.GetServers(filter));
+        }
+
+        /// <inheritdoc/>
+        public Task<ServerE> LoadServerEAsync(string serverGUID)
+        {
+            return this.RunOnDataLayerAsync(dl => dl.GetServerE(serverGUID));
+        }
+
+        /// <inheritdoc/>
+        public Task SaveServerAsync(ServerE partner)
+        {
+            return this.RunOnAuthorizedDataLayerAsync(dl => dl.SaveServer(partner));
+        }
 
         #region Background task starting methods
 

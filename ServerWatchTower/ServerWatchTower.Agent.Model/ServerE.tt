@@ -1,0 +1,36 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".generated.cs" #>
+<#@ include file="$(SolutionDir)Templates\EditableDataClass.tt" #>
+<#+
+
+string ModuleName = "Agent";
+
+string ClassName = "ServerE";
+
+string ClassComment = @"An editable <see cref=""Server""/> instance with all the defined properties.";
+
+List<FieldInfo> Fields = new List<FieldInfo>()
+{	
+	new FieldInfo("string", "cui", @"The unique identifier of the <see cref=""Server""/>. (CUI) It's coming from the digiDoc (XML)", Editability.NewOnly),
+	new FieldInfo("string", "name", @"The corresponding name of the partner.", Editability.NewOnly),
+	new FieldInfo("string", "code", @"The corresponding code for the mapped partner. (CodFirma)"),
+	new FieldInfo("string", "partnerName", @"The corresponding name for the mapped partner. (NumePartener)"),
+	new FieldInfo("string", "partnerType", @"The corresponding type of the mapped partner. (TipPartener)"),
+	new FieldInfo("string", "codeGest", @"(CodGestDefault)"),
+	new FieldInfo("string", "codeCen", @"(CodCenDefault)"),
+	new FieldInfo("int", "flag", @"The flags of the partner."),
+	new FieldInfo("DateTime", "ts", @"The time stamp when the record was created."),
+	new FieldInfo("string", "user", @"(Utilizator)"),
+};
+
+List<FlagInfo> Flags = new List<FlagInfo>()
+{
+	new FlagInfo("flag", "AutoReception", @"automatic reception (if there are large ones and it is possible)", 1),
+	new FlagInfo("flag", "AutoDelivery", @"automatic takeover of delivery places", 2),
+	new FlagInfo("flag", "AutoArticle", @"automatic retrieval of articles", 4),
+	new FlagInfo("flag", "HasOwnCodArts", @"codArtClient with own CodArts", 8),
+};
+
+string KeyFieldName = "cui";
+
+#>

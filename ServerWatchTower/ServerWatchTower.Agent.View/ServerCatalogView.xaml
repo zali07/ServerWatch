@@ -1,0 +1,149 @@
+﻿<swtower:SilverViewBase x:Class="ServerWatchTower.Agent.View.ServerCatalogView"
+                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                       xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+                       xmlns:swtower="http://software.cosys.ro/SilverERP/V1/View/xaml"
+                       xmlns:local="clr-namespace:ServerWatchTower.Agent.View"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                       Title="Servers"
+                       Caption="Servers"
+                       RowCount="{Binding Content.Count}"
+                       mc:Ignorable="d" d:DesignHeight="200" d:DesignWidth="600">
+
+    <swtower:SilverViewBase.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Cosys.SilverLib.View;Component/ConvertersResourceDictionary.xaml"/>
+                <ResourceDictionary Source="/Cosys.SilverLib.View;component/Themes/OfficeBlack/SilverResourceDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </swtower:SilverViewBase.Resources>
+    
+    <swtower:SilverViewBase.CommandBindings>
+        <swtower:CommandToViewModelBinding Command="{x:Static Member=swtower:SilverCommands.SelectAndCloseView}" TargetCommand="SelectItemCommand" />
+        <swtower:CommandToViewModelBinding Command="{x:Static Member=swtower:SilverCommands.OpenItem}" TargetCommand="OpenItemCommand" />
+        <swtower:CommandToViewModelBinding Command="{x:Static Member=swtower:SilverCommands.RefreshData}" TargetCommand="RefreshCommand" />
+    </swtower:SilverViewBase.CommandBindings>
+
+    <swtower:SilverViewBase.RibbonGroups>
+        <telerik:RadRibbonGroup Header="{x:Static Member=swtower:UIStr.HeadCatalog}">
+            <telerik:RadRibbonGroup.Variants>
+                <telerik:GroupVariant />
+                <telerik:GroupVariant Variant="Medium" />
+                <telerik:GroupVariant Variant="Small" />
+            </telerik:RadRibbonGroup.Variants>
+            <telerik:RadCollapsiblePanel>
+                <telerik:RadRibbonButton Text="Edit mapping"
+                                         LargeImage="/Cosys.SilverLib.View;Component/Images/32/edit.png"
+                                         SmallImage="/Cosys.SilverLib.View;Component/Images/16/edit.png"
+                                         Size="Large" IsAutoSize="True" CollapseToMedium="WhenGroupIsMedium" CollapseToSmall="WhenGroupIsSmall"
+                                         Command="{x:Static Member=swtower:SilverCommands.OpenItem}" CommandTarget="{Binding}"
+                                         Visibility="{Binding DataContext.IsItemEditable, Mode=OneWay, Converter={StaticResource SilverVisibilityConverter}, ConverterParameter=True}"
+                                         ToolTipService.ShowOnDisabled="True" />
+                <telerik:RadRibbonButton Text="View partner"
+                                         LargeImage="/Cosys.SilverLib.View;Component/Images/32/view.png"
+                                         SmallImage="/Cosys.SilverLib.View;Component/Images/16/view.png"
+                                         Size="Large" IsAutoSize="True" CollapseToMedium="WhenGroupIsMedium" CollapseToSmall="WhenGroupIsSmall"
+                                         Command="{x:Static Member=swtower:SilverCommands.OpenItem}" CommandTarget="{Binding}"
+                                         Visibility="{Binding DataContext.IsItemEditable, Mode=OneWay, Converter={StaticResource SilverVisibilityConverter}, ConverterParameter=False}"
+                                         ToolTipService.ShowOnDisabled="True" />
+            </telerik:RadCollapsiblePanel>
+            <telerik:Separator />
+            <telerik:RadCollapsiblePanel>
+                <telerik:RadRibbonButton Text="{x:Static Member=swtower:UIStr.CmdRefreshCatalog}"
+                                         LargeImage="/Cosys.SilverLib.View;Component/Images/32/refresh.png"
+                                         SmallImage="/Cosys.SilverLib.View;Component/Images/16/refresh.png"
+                                         Size="Large" IsAutoSize="True" CollapseToMedium="WhenGroupIsMedium" CollapseToSmall="WhenGroupIsSmall"
+                                         Command="{x:Static Member=swtower:SilverCommands.RefreshData}" CommandTarget="{Binding}"
+                                         ToolTipService.ShowOnDisabled="True"
+                                         telerik:ScreenTip.Title="{x:Static Member=swtower:UIStr.InfoRefreshCatalog}"
+                                         telerik:ScreenTip.Description="{x:Static Member=swtower:UIStr.MsgRefreshCatalog}" />
+                <telerik:RadRibbonButton Text="Select partner"
+                                         LargeImage="/Cosys.SilverLib.View;Component/Images/32/select.png"
+                                         SmallImage="/Cosys.SilverLib.View;Component/Images/16/select.png"
+                                         Size="Large" IsAutoSize="True" CollapseToMedium="WhenGroupIsMedium" CollapseToSmall="WhenGroupIsSmall"
+                                         Visibility="{Binding DataContext.IsInSelectionMode, Mode=OneWay, Converter={StaticResource SilverVisibilityConverter}, ConverterParameter=True}"
+                                         Command="{x:Static Member=swtower:SilverCommands.SelectAndCloseView}" CommandTarget="{Binding}"
+                                         ToolTipService.ShowOnDisabled="True" />
+                <telerik:RadRibbonButton Text="{x:Static Member=swtower:UIStr.CmdCloseCatalog}"
+                                         LargeImage="/Cosys.SilverLib.View;Component/Images/32/close.png"
+                                         SmallImage="/Cosys.SilverLib.View;Component/Images/16/close.png"
+                                         Size="Large" IsAutoSize="True" CollapseToMedium="WhenGroupIsMedium" CollapseToSmall="WhenGroupIsSmall"
+                                         Command="{x:Static Member=swtower:SilverCommands.CloseView}"
+                                         ToolTipService.ShowOnDisabled="True"
+                                         telerik:ScreenTip.Title="{x:Static Member=swtower:UIStr.InfoCloseCatalog}"
+                                         telerik:ScreenTip.Description="{x:Static Member=swtower:UIStr.MsgCloseCatalog}" />
+            </telerik:RadCollapsiblePanel>
+        </telerik:RadRibbonGroup>
+    </swtower:SilverViewBase.RibbonGroups>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <Grid x:FieldModifier="private" Name="ParamPanel" Margin="0,1,0,0" Background="{StaticResource FilterPanelBackgroundBrush}"></Grid>
+
+        <telerik:RadGridView Name="gridView" Grid.Row="1" TabIndex="10"
+                             HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                             IsReadOnly="True" AutoGenerateColumns="False" ShowGroupPanel="False"
+                             CanUserFreezeColumns="False" CanUserReorderColumns="False"
+                             EnableRowVirtualization="True" EnableColumnVirtualization="False"
+                             ItemsSource="{Binding Content}"
+                             swtower:CommandLink.RowDoubleClickedCommand="{Binding DefaultItemCommand}"
+                             PreviewTextInput="GridView_PreviewTextInput">
+            <telerik:RadGridView.Resources>
+                <Style x:Key="FlagColumnStyle" TargetType="telerik:GridViewCell">
+                    <Setter Property="ToolTip" Value="{Binding Path=DataContext.Catalog.StateIndicators, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=telerik:RadGridView}, Mode=OneTime}"/>
+                </Style>
+            </telerik:RadGridView.Resources>
+            <telerik:RadGridView.ColumnGroups>
+                <telerik:GridViewColumnGroup Name="Server" Header="Server data" />
+            </telerik:RadGridView.ColumnGroups>
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn Header="a" UniqueName="Cui"
+                                            DataMemberBinding="{Binding Cui}" IsGroupable="False" ShowDistinctFilters="False" ColumnGroupName="Efact" />
+                <telerik:GridViewDataColumn Header="a" UniqueName="Name"
+                                            DataMemberBinding="{Binding Name}" IsGroupable="False" ShowDistinctFilters="False" ColumnGroupName="Efact" />
+                <telerik:GridViewDataColumn Header="a" UniqueName="PartnerName"
+                                            DataMemberBinding="{Binding PartnerName}" IsGroupable="False" ShowDistinctFilters="False" ColumnGroupName="Mapping" />
+                <telerik:GridViewDataColumn Header="a" UniqueName="PartnerType"
+                                            DataMemberBinding="{Binding PartnerType}" IsGroupable="False" ShowDistinctFilters="False" ColumnGroupName="Mapping" />
+                <telerik:GridViewDataColumn Header="a" UniqueName="CodeGest"
+                                            DataMemberBinding="{Binding CodeGest}" IsGroupable="False" ShowDistinctFilters="False" ColumnGroupName="Mapping" />
+                <telerik:GridViewDataColumn Header="a" UniqueName="CodeCen"
+                                            DataMemberBinding="{Binding CodeCen}" IsGroupable="True" ShowDistinctFilters="False" ColumnGroupName="Mapping" />
+                <telerik:GridViewDataColumn Header="a" UniqueName="State" CellStyle="{StaticResource FlagColumnStyle}"
+                                            DataMemberBinding="{Binding State}" IsGroupable="False" ShowDistinctFilters="False" ColumnGroupName="Mapping" />
+                <telerik:GridViewDataColumn Header="a" UniqueName="TS"
+                                            DataMemberBinding="{Binding Ts}" IsGroupable="False" ShowDistinctFilters="False" ColumnGroupName="Mapping" />
+                <telerik:GridViewDataColumn Header="a" UniqueName="User"
+                                            DataMemberBinding="{Binding User}" IsGroupable="False" ShowDistinctFilters="False" ColumnGroupName="Mapping" />
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+
+        <Grid Grid.Row="2" Name="QuickFilterPanel" Background="{StaticResource FilterPanelBackgroundBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <telerik:Label Content="{x:Static Member=swtower:UIStr.LblQuickFilter}" HorizontalAlignment="Left" Margin="5,0,5,0" VerticalAlignment="Center" Padding="0" Target="{Binding ElementName=quickFilterBox}" />
+                <TextBox x:FieldModifier="private" Name="quickFilterBox" Width="150" TabIndex="20"
+                         Text="{Binding QuickFilter, UpdateSourceTrigger=PropertyChanged}"
+                         PreviewKeyDown="QuickFilterBox_PreviewKeyDown" Height="22" VerticalAlignment="Top" />
+            </StackPanel>
+            <!--<StackPanel Margin="5" Orientation="Horizontal" Grid.Column="1">
+                <CheckBox VerticalAlignment="Center" Margin="5,0,5,0" TabIndex="30"
+                          Content="{x:Static Member=local:UIRes.ChkExcludeMappedPartners}"
+                          swtower:StatusInfo.Description="{x:Static Member=local:UIRes.StiIncludeUnusedPartners}"
+                          IsChecked="{Binding ExcludeMappedItems, Mode=TwoWay}" />
+            </StackPanel>-->
+        </Grid>
+
+    </Grid>
+
+</swtower:SilverViewBase>

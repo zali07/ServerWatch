@@ -57,12 +57,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AgentDataLayer.cs" />
     <Compile Include="AgentDirectDataService.cs" />
+    <Compile Include="Properties\Resource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ServerWatchTower.Agent.Model\ServerWatchTower.Agent.Model.csproj">
-      <Project>{0ba0f1d2-d11f-4dc8-922d-f413977d6702}</Project>
-      <Name>ServerWatchTower.Agent.Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Cosys.SilverLib.Data\Cosys.SilverLib.Data.csproj">
       <Project>{705D286C-9198-47EF-B95F-4430CAB1CBE0}</Project>
       <Name>Cosys.SilverLib.Data</Name>
@@ -70,6 +71,10 @@
     <ProjectReference Include="..\Cosys.SilverLib.Model\Cosys.SilverLib.Model.csproj">
       <Project>{915dca9b-fe94-4123-a984-59ff65ae231d}</Project>
       <Name>Cosys.SilverLib.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServerWatchTower.Agent.Model\ServerWatchTower.Agent.Model.csproj">
+      <Project>{0ba0f1d2-d11f-4dc8-922d-f413977d6702}</Project>
+      <Name>ServerWatchTower.Agent.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -79,6 +84,10 @@
   <ItemGroup>
     <EmbeddedResource Include="DbRes.resx">
       <DependentUpon>DbRes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
