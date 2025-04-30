@@ -53,7 +53,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ServerEditViewArgs.cs" />
     <Compile Include="ServerCatalogViewArgs.cs" />
+    <Compile Include="ServerEditViewModel.cs" />
+    <Compile Include="ServerEditViewModel.generated.cs">
+      <DependentUpon>ServerEditViewModel.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="ServerCatalogViewModel.cs" />
     <Compile Include="ServerCatalogViewModel.generated.cs">
       <AutoGen>True</AutoGen>
@@ -67,6 +74,10 @@
     <None Include="SWTower.snk" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ServerEditViewModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ServerEditViewModel.generated.cs</LastGenOutput>
+    </Content>
     <Content Include="ServerCatalogViewModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ServerCatalogViewModel.generated.cs</LastGenOutput>

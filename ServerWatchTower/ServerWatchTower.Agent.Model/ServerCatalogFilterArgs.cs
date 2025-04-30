@@ -20,13 +20,13 @@
         /// Indicates whether the <see cref="CatalogFilterArgs{TData}.QuickFilter"/> should be looked for anywhere within the name of the
         /// partner, and not just from its start.
         /// </summary>
-        private bool? quickSearchWithinName;
+        private bool? quickSearchWithinPartnerName;
 
         /// <summary>
         /// Indicates whether the <see cref="CatalogFilterArgs{TData}.QuickFilter"/> should be looked for
         /// in the tax code of the partner too.
         /// </summary>
-        private bool? quickSearchInTaxCode;
+        private bool? quickSearchWithinServer;
 
         #endregion
 
@@ -52,8 +52,8 @@
         {
             if (baseFilter != null)
             {
-                this.quickSearchWithinName = baseFilter.quickSearchWithinName;
-                this.quickSearchInTaxCode = baseFilter.quickSearchInTaxCode;
+                this.quickSearchWithinPartnerName = baseFilter.quickSearchWithinPartnerName;
+                this.quickSearchWithinServer = baseFilter.quickSearchWithinServer;
             }
         }
 
@@ -64,14 +64,14 @@
         /// should be looked for anywhere within the name of the partner, and not just from its start.
         /// </summary>
         [DataMember]
-        public bool? QuickSearchWithinName
+        public bool? QuickSearchWithinPartnerName
         {
-            get => this.quickSearchWithinName;
+            get => this.quickSearchWithinPartnerName;
 
             set
             {
                 this.AssertNotLocked();
-                this.quickSearchWithinName = value;
+                this.quickSearchWithinPartnerName = value;
             }
         }
 
@@ -80,14 +80,14 @@
         /// in the tax code of the partner too.
         /// </summary>
         [DataMember]
-        public bool? QuickSearchInTaxCode
+        public bool? QuickSearchWithinServer
         {
-            get => this.quickSearchInTaxCode;
+            get => this.quickSearchWithinServer;
 
             set
             {
                 this.AssertNotLocked();
-                this.quickSearchInTaxCode = value;
+                this.quickSearchWithinServer = value;
             }
         }
 
@@ -130,21 +130,21 @@
                 return true;
             }
 
-            if (this.quickSearchInTaxCode.GetValueOrDefault(true))
+            if (this.quickSearchWithinServer.GetValueOrDefault(true))
             {
-                if (server.Cui.Contains(this.QuickFilter, StringComparison.CurrentCultureIgnoreCase))
+                if (server.ServerName.Contains(this.QuickFilter, StringComparison.CurrentCultureIgnoreCase))
                 {
                     return true;
                 }
             }
 
-            if (this.quickSearchWithinName.GetValueOrDefault(true))
+            if (this.quickSearchWithinPartnerName.GetValueOrDefault(true))
             {
-                return server.Name.HasWordStartingWith(this.QuickFilter, StringComparison.CurrentCultureIgnoreCase);
+                return server.Partner.HasWordStartingWith(this.QuickFilter, StringComparison.CurrentCultureIgnoreCase);
             }
             else
             {
-                return server.Name.StartsWith(this.QuickFilter, StringComparison.CurrentCultureIgnoreCase);
+                return server.Partner.StartsWith(this.QuickFilter, StringComparison.CurrentCultureIgnoreCase);
             }
         }
 
@@ -157,8 +157,8 @@
         public override int GetHashCode()
         {
             return this.GetBaseHashCode()
-                ^ (this.quickSearchWithinName.HasValue ? (this.quickSearchWithinName.GetValueOrDefault() ? 2 : 0) : 8)
-                ^ (this.quickSearchInTaxCode.HasValue ? (this.quickSearchInTaxCode.GetValueOrDefault() ? 4 : 0) : 16);
+                ^ (this.quickSearchWithinPartnerName.HasValue ? (this.quickSearchWithinPartnerName.GetValueOrDefault() ? 2 : 0) : 8)
+                ^ (this.quickSearchWithinServer.HasValue ? (this.quickSearchWithinServer.GetValueOrDefault() ? 4 : 0) : 16);
         }
 
         /// <summary>
@@ -188,8 +188,8 @@
             }
 
             return this.BaseEquals(filterArgs)
-                && this.quickSearchWithinName == filterArgs.quickSearchWithinName
-                && this.quickSearchInTaxCode == filterArgs.quickSearchInTaxCode;
+                && this.quickSearchWithinPartnerName == filterArgs.quickSearchWithinPartnerName
+                && this.quickSearchWithinServer == filterArgs.quickSearchWithinServer;
         }
     }
 }

@@ -21,70 +21,52 @@ namespace ServerWatchTower.Agent.Model
         #region Private fields
 
         /// <summary>
-        /// The unique identifier of the <see cref="Server"/>. (CUI) It's coming from the digiDoc (XML)
+        /// The unique identifier of the <see cref="Server"/>.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string cui;
+        private int id;
 
         /// <summary>
-        /// The corresponding name of the partner.
+        /// The corresponding GUID of the server.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string name;
+        private string gUID;
 
         /// <summary>
-        /// The corresponding code for the mapped partner. (CodFirma)
+        /// The corresponding publicKey for the server used for authentication.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string code;
+        private string publicKey;
 
         /// <summary>
-        /// The corresponding name for the mapped partner. (NumePartener)
+        /// The corresponding partner for the server.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string partnerName;
+        private string partner;
 
         /// <summary>
-        /// The corresponding type of the mapped partner. (TipPartener)
+        /// The corresponding server name of the server.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string partnerType;
+        private string serverName;
 
         /// <summary>
-        /// (CodGestDefault)
+        /// The corresponding windows version of the server.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string codeGest;
+        private string windows;
 
         /// <summary>
-        /// (CodCenDefault)
+        /// If the server was approved for telemetric data gathering by an administrator.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string codeCen;
+        private bool isApproved;
 
         /// <summary>
-        /// The flags of the partner.
+        /// The flags of the server.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private int flag;
-
-        /// <summary>
-        /// The time stamp when the record was created or last modified.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private DateTime ts;
-
-        /// <summary>
-        /// (Utilizator)
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string user;
-
-        /// <summary>
-        /// The state of the mapped partner.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string state;
 
         /// <summary>
         /// Indicates whether the object is frozen.
@@ -95,77 +77,77 @@ namespace ServerWatchTower.Agent.Model
         #endregion
 
         /// <summary>
-        /// Gets or sets the unique identifier of the <see cref="Server"/>. (CUI) It's coming from the digiDoc (XML)
+        /// Gets or sets the unique identifier of the <see cref="Server"/>.
+        /// </summary>
+        [DataMember]
+        public int Id
+        {
+            get => this.id;
+            set => this.AssertNotFrozen().id = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the corresponding GUID of the server.
         /// </summary>
         [DataMember(IsRequired = true)]
-        public string Cui
+        public string GUID
         {
-            get => this.cui;
-            set => this.AssertNotFrozen().cui = value;
+            get => this.gUID;
+            set => this.AssertNotFrozen().gUID = value;
         }
 
         /// <summary>
-        /// Gets or sets the corresponding name of the partner.
+        /// Gets or sets the corresponding publicKey for the server used for authentication.
         /// </summary>
         [DataMember]
-        public string Name
+        public string PublicKey
         {
-            get => this.name;
-            set => this.AssertNotFrozen().name = value;
+            get => this.publicKey;
+            set => this.AssertNotFrozen().publicKey = value;
         }
 
         /// <summary>
-        /// Gets or sets the corresponding code for the mapped partner. (CodFirma)
+        /// Gets or sets the corresponding partner for the server.
         /// </summary>
         [DataMember]
-        public string Code
+        public string Partner
         {
-            get => this.code;
-            set => this.AssertNotFrozen().code = value;
+            get => this.partner;
+            set => this.AssertNotFrozen().partner = value;
         }
 
         /// <summary>
-        /// Gets or sets the corresponding name for the mapped partner. (NumePartener)
+        /// Gets or sets the corresponding server name of the server.
         /// </summary>
         [DataMember]
-        public string PartnerName
+        public string ServerName
         {
-            get => this.partnerName;
-            set => this.AssertNotFrozen().partnerName = value;
+            get => this.serverName;
+            set => this.AssertNotFrozen().serverName = value;
         }
 
         /// <summary>
-        /// Gets or sets the corresponding type of the mapped partner. (TipPartener)
+        /// Gets or sets the corresponding windows version of the server.
         /// </summary>
         [DataMember]
-        public string PartnerType
+        public string Windows
         {
-            get => this.partnerType;
-            set => this.AssertNotFrozen().partnerType = value;
+            get => this.windows;
+            set => this.AssertNotFrozen().windows = value;
         }
 
         /// <summary>
-        /// Gets or sets (CodGestDefault)
+        /// Gets or sets if the server was approved for telemetric data gathering by an administrator.
         /// </summary>
         [DataMember]
-        public string CodeGest
+        public bool IsApproved
         {
-            get => this.codeGest;
-            set => this.AssertNotFrozen().codeGest = value;
+            get => this.isApproved;
+            set => this.AssertNotFrozen().isApproved = value;
         }
 
         /// <summary>
-        /// Gets or sets (CodCenDefault)
-        /// </summary>
-        [DataMember]
-        public string CodeCen
-        {
-            get => this.codeCen;
-            set => this.AssertNotFrozen().codeCen = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the flags of the partner.
+        /// Gets or sets the flags of the server.
         /// </summary>
         [DataMember]
         public int Flag
@@ -175,62 +157,11 @@ namespace ServerWatchTower.Agent.Model
         }
 
         /// <summary>
-        /// Gets or sets the time stamp when the record was created or last modified.
-        /// </summary>
-        [DataMember]
-        public DateTime Ts
-        {
-            get => this.ts;
-            set => this.AssertNotFrozen().ts = value;
-        }
-
-        /// <summary>
-        /// Gets or sets (Utilizator)
-        /// </summary>
-        [DataMember]
-        public string User
-        {
-            get => this.user;
-            set => this.AssertNotFrozen().user = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the state of the mapped partner.
-        /// </summary>
-        [DataMember]
-        public string State
-        {
-            get => this.state;
-            set => this.AssertNotFrozen().state = value;
-        }
-
-        /// <summary>
-        /// Gets a value indicating automatic reception (if there are large ones and it is possible),
+        /// Gets a value indicating if the server was approved for telemetric data gathering by an administrator,
         /// this being one of the bits of the <see cref="Flag"/> property.
         /// </summary>
         [IgnoreDataMember]
-        public bool AutoReception => (this.flag & 1) != 0;
-
-        /// <summary>
-        /// Gets a value indicating automatic takeover of delivery places,
-        /// this being one of the bits of the <see cref="Flag"/> property.
-        /// </summary>
-        [IgnoreDataMember]
-        public bool AutoDelivery => (this.flag & 2) != 0;
-
-        /// <summary>
-        /// Gets a value indicating automatic retrieval of articles,
-        /// this being one of the bits of the <see cref="Flag"/> property.
-        /// </summary>
-        [IgnoreDataMember]
-        public bool AutoArticle => (this.flag & 4) != 0;
-
-        /// <summary>
-        /// Gets a value indicating codArtClient with own CodArts,
-        /// this being one of the bits of the <see cref="Flag"/> property.
-        /// </summary>
-        [IgnoreDataMember]
-        public bool HasOwnCodArts => (this.flag & 8) != 0;
+        public bool isApproved1 => (this.flag & 1) != 0;
 
         /// <summary>
         /// Gets a value indicating whether the object is frozen.
@@ -290,17 +221,14 @@ namespace ServerWatchTower.Agent.Model
 				return true;
 			}
 
-			return this.cui == other.cui
-				&& this.name == other.name
-				&& this.code == other.code
-				&& this.partnerName == other.partnerName
-				&& this.partnerType == other.partnerType
-				&& this.codeGest == other.codeGest
-				&& this.codeCen == other.codeCen
-				&& this.flag == other.flag
-				&& this.ts == other.ts
-				&& this.user == other.user
-				&& this.state == other.state;
+			return this.id == other.id
+				&& this.gUID == other.gUID
+				&& this.publicKey == other.publicKey
+				&& this.partner == other.partner
+				&& this.serverName == other.serverName
+				&& this.windows == other.windows
+				&& this.isApproved == other.isApproved
+				&& this.flag == other.flag;
         }
 
         /// <summary>
@@ -369,59 +297,44 @@ namespace ServerWatchTower.Agent.Model
             
 #pragma warning disable CS0472 // The result of the expression is always the same since a value of this type is never equal to 'null'
 
-            if (this.cui != null)
+            if (this.id != null)
             {
-                hashCode ^= this.cui.GetHashCode();
+                hashCode ^= this.id.GetHashCode();
             }
 
-            if (this.name != null)
+            if (this.gUID != null)
             {
-                hashCode ^= this.name.GetHashCode();
+                hashCode ^= this.gUID.GetHashCode();
             }
 
-            if (this.code != null)
+            if (this.publicKey != null)
             {
-                hashCode ^= this.code.GetHashCode();
+                hashCode ^= this.publicKey.GetHashCode();
             }
 
-            if (this.partnerName != null)
+            if (this.partner != null)
             {
-                hashCode ^= this.partnerName.GetHashCode();
+                hashCode ^= this.partner.GetHashCode();
             }
 
-            if (this.partnerType != null)
+            if (this.serverName != null)
             {
-                hashCode ^= this.partnerType.GetHashCode();
+                hashCode ^= this.serverName.GetHashCode();
             }
 
-            if (this.codeGest != null)
+            if (this.windows != null)
             {
-                hashCode ^= this.codeGest.GetHashCode();
+                hashCode ^= this.windows.GetHashCode();
             }
 
-            if (this.codeCen != null)
+            if (this.isApproved != null)
             {
-                hashCode ^= this.codeCen.GetHashCode();
+                hashCode ^= this.isApproved.GetHashCode();
             }
 
             if (this.flag != null)
             {
                 hashCode ^= this.flag.GetHashCode();
-            }
-
-            if (this.ts != null)
-            {
-                hashCode ^= this.ts.GetHashCode();
-            }
-
-            if (this.user != null)
-            {
-                hashCode ^= this.user.GetHashCode();
-            }
-
-            if (this.state != null)
-            {
-                hashCode ^= this.state.GetHashCode();
             }
 
 #pragma warning restore CS0472
@@ -435,7 +348,7 @@ namespace ServerWatchTower.Agent.Model
         /// <returns>The key of the data instance.</returns>
         string IKeyedData<string>.GetKey()
         {
-            return this.cui;
+            return this.gUID;
         }
 
         /// <summary>
@@ -444,7 +357,7 @@ namespace ServerWatchTower.Agent.Model
         /// <returns>The enumeration of the property names which make up the key.</returns>
         IEnumerable<string> IKeyedData<string>.GetKeyProperties()
         {
-            return new SingleItemEnumerator<string>("Cui");
+            return new SingleItemEnumerator<string>("GUID");
         }
 
         /// <summary>

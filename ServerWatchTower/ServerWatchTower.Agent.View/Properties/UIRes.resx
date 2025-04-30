@@ -117,6 +117,33 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ChkIsApproved" xml:space="preserve">
+    <value>Is Approved</value>
+  </data>
+  <data name="HdrGuid" xml:space="preserve">
+    <value>GUID</value>
+  </data>
+  <data name="HdrPartnerName" xml:space="preserve">
+    <value>Partner</value>
+  </data>
+  <data name="HdrServerName" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="HdrWindowsVersion" xml:space="preserve">
+    <value>Windows</value>
+  </data>
+  <data name="LblGuid" xml:space="preserve">
+    <value>GUID</value>
+  </data>
+  <data name="LblPartnerName" xml:space="preserve">
+    <value>Partner</value>
+  </data>
+  <data name="LblServerName" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="TabGenericData" xml:space="preserve">
+    <value>Generic Data</value>
+  </data>
   <data name="TitleServers" xml:space="preserve">
     <value>Servers</value>
   </data>

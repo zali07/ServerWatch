@@ -1,0 +1,1 @@
+﻿CREATE ROLE [SWRole] AUTHORIZATION [dbo];

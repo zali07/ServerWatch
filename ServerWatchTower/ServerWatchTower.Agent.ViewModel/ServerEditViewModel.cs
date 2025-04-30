@@ -10,9 +10,9 @@
     using Cosys.SilverLib.Model;
 
     /// <summary>
-    /// The view model class of the Server Catalog.
+    /// The view model class of the Server Edit.
     /// </summary>
-    public partial class ServerCatalogViewModel
+    public partial class ServerEditViewModel
     {
         #region Internal fields
 
@@ -71,33 +71,17 @@
         }
 
         /// <summary>
-        /// Checks the arguments passed to the view and the access rights of the user, before the actual initialization of the view model.
+        /// Checks the arguments passed to the view, before the actual initialization of the view model.
         /// </summary>
         partial void PreInitialize()
         {
             if (this.OpenArgs != null)
             {
-                this.baseFilter = (this.OpenArgs.BaseFilter ?? DefaultFilterArgs).StripAndLock();
-
-                if (this.OpenArgs.SelectionMode)
+                if (string.IsNullOrEmpty(this.OpenArgs.SelectedServerGUID))
                 {
-                    //// // Note: The SelectablesOnly feature is not used at this time.
-                    //// if (this.OpenArgs.SelectionFilter != null || this.OpenArgs.SelectionFilterFunction != null)
-                    //// {
-                    ////     // no refresh will be initiated at this point because IsInSelectionMode is still false
-                    ////     this.SelectablesOnly = true;
-                    ////     this.IsSelectablesOnlyFilterAvailable = true;
-                    //// }
-
-                    this.IsInSelectionMode = true;
+                    throw new ArgumentNullException(nameof(this.OpenArgs.SelectedServerGUID));
                 }
             }
-            else
-            {
-                this.baseFilter = DefaultFilterArgs;
-            }
-
-            //this.IsItemEditable = this.Rights.CanEditServer;
         }
 
         /// <inheritdoc/>
@@ -285,7 +269,7 @@
 
             var server = (Server)this.Content.CurrentItem;
 
-            string viewContract = "ServerWatchTower.Agent.ServerEditView";
+            string viewContract = "Cosys.SilverERP.Registry.ServerEditView";
 
             var view = this.Application.FindView(viewContract, server.GUID);
 

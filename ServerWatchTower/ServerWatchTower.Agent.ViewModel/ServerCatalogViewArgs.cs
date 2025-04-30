@@ -27,6 +27,6 @@
         /// Gets or sets the optional <see cref="PartnerMapping"/>.<see cref="PartnerMapping.Code"/> which
         /// should initially be selected in the catalog.
         /// </summary>
-        public string SelectedPartnerCode { get; set; }
+        public string SelectedServerGUID { get; set; }
     }
 }

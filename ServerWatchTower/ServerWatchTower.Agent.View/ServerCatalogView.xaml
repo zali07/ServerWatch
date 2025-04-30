@@ -2,7 +2,7 @@
                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
                        xmlns:swtower="http://software.cosys.ro/SilverERP/V1/View/xaml"
-                       xmlns:local="clr-namespace:ServerWatchTower.Agent.View"
+                       xmlns:res="clr-namespace:ServerWatchTower.Agent.View.Properties"
                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -41,7 +41,7 @@
                                          Command="{x:Static Member=swtower:SilverCommands.OpenItem}" CommandTarget="{Binding}"
                                          Visibility="{Binding DataContext.IsItemEditable, Mode=OneWay, Converter={StaticResource SilverVisibilityConverter}, ConverterParameter=True}"
                                          ToolTipService.ShowOnDisabled="True" />
-                <telerik:RadRibbonButton Text="View partner"
+                <telerik:RadRibbonButton Text="View server"
                                          LargeImage="/Cosys.SilverLib.View;Component/Images/32/view.png"
                                          SmallImage="/Cosys.SilverLib.View;Component/Images/16/view.png"
                                          Size="Large" IsAutoSize="True" CollapseToMedium="WhenGroupIsMedium" CollapseToSmall="WhenGroupIsSmall"
@@ -104,24 +104,16 @@
                 <telerik:GridViewColumnGroup Name="Server" Header="Server data" />
             </telerik:RadGridView.ColumnGroups>
             <telerik:RadGridView.Columns>
-                <telerik:GridViewDataColumn Header="a" UniqueName="Cui"
-                                            DataMemberBinding="{Binding Cui}" IsGroupable="False" ShowDistinctFilters="False" ColumnGroupName="Efact" />
-                <telerik:GridViewDataColumn Header="a" UniqueName="Name"
-                                            DataMemberBinding="{Binding Name}" IsGroupable="False" ShowDistinctFilters="False" ColumnGroupName="Efact" />
-                <telerik:GridViewDataColumn Header="a" UniqueName="PartnerName"
-                                            DataMemberBinding="{Binding PartnerName}" IsGroupable="False" ShowDistinctFilters="False" ColumnGroupName="Mapping" />
-                <telerik:GridViewDataColumn Header="a" UniqueName="PartnerType"
-                                            DataMemberBinding="{Binding PartnerType}" IsGroupable="False" ShowDistinctFilters="False" ColumnGroupName="Mapping" />
-                <telerik:GridViewDataColumn Header="a" UniqueName="CodeGest"
-                                            DataMemberBinding="{Binding CodeGest}" IsGroupable="False" ShowDistinctFilters="False" ColumnGroupName="Mapping" />
-                <telerik:GridViewDataColumn Header="a" UniqueName="CodeCen"
-                                            DataMemberBinding="{Binding CodeCen}" IsGroupable="True" ShowDistinctFilters="False" ColumnGroupName="Mapping" />
-                <telerik:GridViewDataColumn Header="a" UniqueName="State" CellStyle="{StaticResource FlagColumnStyle}"
-                                            DataMemberBinding="{Binding State}" IsGroupable="False" ShowDistinctFilters="False" ColumnGroupName="Mapping" />
-                <telerik:GridViewDataColumn Header="a" UniqueName="TS"
-                                            DataMemberBinding="{Binding Ts}" IsGroupable="False" ShowDistinctFilters="False" ColumnGroupName="Mapping" />
-                <telerik:GridViewDataColumn Header="a" UniqueName="User"
-                                            DataMemberBinding="{Binding User}" IsGroupable="False" ShowDistinctFilters="False" ColumnGroupName="Mapping" />
+                <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrGuid}" UniqueName="GUID"
+                                            DataMemberBinding="{Binding GUID}" IsGroupable="False" ShowDistinctFilters="False" />
+                <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrPartnerName}" UniqueName="Partner"
+                                            DataMemberBinding="{Binding Partner}" IsGroupable="False" ShowDistinctFilters="False" />
+                <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrServerName}" UniqueName="Server"
+                                            DataMemberBinding="{Binding Server}" IsGroupable="False" ShowDistinctFilters="False" />
+                <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrWindowsVersion}" UniqueName="Windows"
+                                            DataMemberBinding="{Binding Windows}" IsGroupable="False" ShowDistinctFilters="False" />
+                <telerik:GridViewDataColumn Header="{x:Static Member=swtower:UIStr.HdrFlags}" UniqueName="Flag" CellStyle="{StaticResource FlagColumnStyle}"
+                                            DataMemberBinding="{Binding Flag}" IsGroupable="False" ShowDistinctFilters="False" />
             </telerik:RadGridView.Columns>
         </telerik:RadGridView>
 

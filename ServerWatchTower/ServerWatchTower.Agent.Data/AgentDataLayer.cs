@@ -10,6 +10,7 @@
     using System.Data.SqlClient;
     using System.Threading;
     using System.Xml;
+    using System.Security.Cryptography.X509Certificates;
 
     /// <summary>
     /// The specialized <see cref="DataLayer"/> for the Agent module of ServerWatchTower.
@@ -199,17 +200,13 @@
 
                     return new Server()
                     {
-                        Cui = r.GetTrimmedString(r.GetOrdinal("CUI")),
-                        Name = r.GetNString(r.GetOrdinal("NumeFirmaFact")),
-                        Code = r.GetNTrimmedString(r.GetOrdinal("CodFirma")),
-                        PartnerType = r.GetNTrimmedString(r.GetOrdinal("TipPartener")),
-                        PartnerName = r.GetNString(r.GetOrdinal("NumeFirmaNom")),
-                        CodeGest = r.GetNTrimmedString(r.GetOrdinal("CodGestDefault")),
-                        CodeCen = r.GetNTrimmedString(r.GetOrdinal("CodCenDefault")),
+                        Id = r.GetInt32(r.GetOrdinal("Id")),
+                        GUID = r.GetNString(r.GetOrdinal("GUID")),
+                        PublicKey= r.GetNTrimmedString(r.GetOrdinal("PublicKey")),
+                        Partner = r.GetNTrimmedString(r.GetOrdinal("Partner")),
+                        ServerName = r.GetNString(r.GetOrdinal("Server")),
+                        Windows = r.GetNTrimmedString(r.GetOrdinal("Windows")),
                         Flag = r.GetInt32(r.GetOrdinal("Flag")),
-                        Ts = r.GetDateTime(r.GetOrdinal("TS")),
-                        User = r.GetNTrimmedString(r.GetOrdinal("Utilizator")),
-                        State = r.GetNTrimmedString(r.GetOrdinal("StareMapare")),
                     };
                 }
             }
@@ -224,26 +221,22 @@
             var result = new List<Server>();
             string controlTipText = string.Empty;
 
-            using (var cmd = this.CreateCommand("[dbo].[gsEFactRecMapareParteneriListare]"))
+            using (var cmd = this.CreateCommand("[dbo].[spListServers]"))
             {
-                cmd.Parameters.Add("@FiltruRapid", SqlDbType.NVarChar, 64).Value = DbNull(filter.QuickFilter, false);
+                cmd.Parameters.Add("@Filter", SqlDbType.NVarChar, 100).Value = DbNull(filter.QuickFilter, false);
 
-                var stateTip = cmd.Parameters.Add("@Stare_ControlTipText", SqlDbType.NVarChar, 255);
+                var stateTip = cmd.Parameters.Add("@States", SqlDbType.NVarChar, 255);
                 stateTip.Direction = ParameterDirection.Output;
 
                 using (var r = cmd.ExecuteReader(CommandBehavior.SingleResult))
                 {
-                    int cuiField = r.GetOrdinal("CUI");
-                    int nameField = r.GetOrdinal("NumeFirmaFact");
-                    int codeField = r.GetOrdinal("CodFirma");
-                    int partnerTypeField = r.GetOrdinal("TipPartener");
-                    int partnerNameField = r.GetOrdinal("NumeFirmaNom");
-                    int codGestField = r.GetOrdinal("CodGestDefault");
-                    int codCenField = r.GetOrdinal("CodCenDefault");
+                    int idField = r.GetOrdinal("Id");
+                    int guidField = r.GetOrdinal("GUID");
+                    int publicKeyField = r.GetOrdinal("PublicKey");
+                    int partnerField = r.GetOrdinal("Partner");
+                    int serverNameField = r.GetOrdinal("Server");
+                    int windowsField = r.GetOrdinal("Windows");
                     int flagField = r.GetOrdinal("Flag");
-                    int tsField = r.GetOrdinal("TS");
-                    int userField = r.GetOrdinal("Utilizator");
-                    int state = r.GetOrdinal("StareMapare");
 
                     var nameTable = new NameTable();
 
@@ -251,17 +244,13 @@
                     {
                         result.Add(new Server()
                         {
-                            Cui = r.GetTrimmedString(cuiField),
-                            Name = r.GetNString(nameField, String.Empty),
-                            Code = r.GetNTrimmedString(codeField, String.Empty),
-                            PartnerType = r.GetNTrimmedString(partnerTypeField, nameTable),
-                            PartnerName = r.GetNString(partnerNameField, String.Empty),
-                            CodeGest = r.GetNTrimmedString(codGestField, nameTable),
-                            CodeCen = r.GetNTrimmedString(codCenField, nameTable),
+                            Id = r.GetInt32(idField),
+                            GUID = r.GetNString(guidField),
+                            PublicKey = r.GetNTrimmedString(publicKeyField),
+                            Partner = r.GetNTrimmedString(partnerField),
+                            ServerName = r.GetNString(serverNameField),
+                            Windows = r.GetNTrimmedString(windowsField),
                             Flag = r.GetInt32(flagField),
-                            Ts = r.GetDateTime(tsField),
-                            User = r.GetNTrimmedString(userField, nameTable),
-                            State = r.GetNTrimmedString(state, nameTable),
                         });
                     }
                 }
@@ -303,16 +292,13 @@
 
                     server = new ServerE()
                     {
-                        Cui = r.GetTrimmedString(r.GetOrdinal("CUI")),
-                        Name = r.GetNString(r.GetOrdinal("NumeFirmaFact")),
-                        Code = r.GetNTrimmedString(r.GetOrdinal("CodFirma")),
-                        PartnerType = r.GetNTrimmedString(r.GetOrdinal("TipPartener")),
-                        PartnerName = r.GetNString(r.GetOrdinal("NumeFirma")),
-                        CodeGest = r.GetNTrimmedString(r.GetOrdinal("CodGestDefault")),
-                        CodeCen = r.GetNTrimmedString(r.GetOrdinal("CodCenDefault")),
+                        Id = r.GetInt32(r.GetOrdinal("Id")),
+                        GUID = r.GetNString(r.GetOrdinal("GUID")),
+                        PublicKey = r.GetNTrimmedString(r.GetOrdinal("PublicKey")),
+                        Partner = r.GetNTrimmedString(r.GetOrdinal("Partner")),
+                        ServerName = r.GetNString(r.GetOrdinal("ServerName")),
+                        Windows = r.GetNTrimmedString(r.GetOrdinal("Windows")),
                         Flag = r.GetInt32(r.GetOrdinal("Flag")),
-                        Ts = r.GetDateTime(r.GetOrdinal("TS")),
-                        User = r.GetNTrimmedString(r.GetOrdinal("Utilizator")),
                     };
                 }
             }
@@ -333,16 +319,16 @@
                 throw new ArgumentNullException(nameof(server));
             }
 
-            using (var cmd = this.CreateCommand("[dbo].[dsAgPartnerMappingSave]"))
-            {
-                cmd.Parameters.Add("@CodFirma", SqlDbType.NVarChar, 15).Value = server.Code;
-                cmd.Parameters.Add("@TipPartener", SqlDbType.NVarChar, 25).Value = DbNull(server.PartnerType);
-                cmd.Parameters.Add("@CodGestDefault", SqlDbType.NVarChar, 10).Value = DbNull(server.CodeGest, false);
-                cmd.Parameters.Add("@CodCenDefault", SqlDbType.NVarChar, 15).Value = DbNull(server.CodeCen, false);
-                cmd.Parameters.Add("@Flag", SqlDbType.Int).Value = server.Flag;
+            //using (var cmd = this.CreateCommand("[dbo].[dsAgPartnerMappingSave]"))
+            //{
+            //    cmd.Parameters.Add("@CodFirma", SqlDbType.NVarChar, 15).Value = server.Code;
+            //    cmd.Parameters.Add("@TipPartener", SqlDbType.NVarChar, 25).Value = DbNull(server.PartnerType);
+            //    cmd.Parameters.Add("@CodGestDefault", SqlDbType.NVarChar, 10).Value = DbNull(server.CodeGest, false);
+            //    cmd.Parameters.Add("@CodCenDefault", SqlDbType.NVarChar, 15).Value = DbNull(server.CodeCen, false);
+            //    cmd.Parameters.Add("@Flag", SqlDbType.Int).Value = server.Flag;
 
-                this.ExecuteNonQuery(cmd);
-            }
+            //    this.ExecuteNonQuery(cmd);
+            //}
         }
     }
 }

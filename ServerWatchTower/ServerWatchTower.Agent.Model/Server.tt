@@ -11,28 +11,22 @@ string ClassComment = "Data class containing the main data of a server.";
 
 List<FieldInfo> Fields = new List<FieldInfo>()
 {
-	new FieldInfo("string", "cui", @"The unique identifier of the <see cref=""Server""/>. (CUI) It's coming from the digiDoc (XML)"),
-	new FieldInfo("string", "name", @"The corresponding name of the partner."),
-	new FieldInfo("string", "code", @"The corresponding code for the mapped partner. (CodFirma)"),
-	new FieldInfo("string", "partnerName", @"The corresponding name for the mapped partner. (NumePartener)"),
-	new FieldInfo("string", "partnerType", @"The corresponding type of the mapped partner. (TipPartener)"),
-	new FieldInfo("string", "codeGest", @"(CodGestDefault)"),
-	new FieldInfo("string", "codeCen", @"(CodCenDefault)"),
-	new FieldInfo("int", "flag", @"The flags of the partner."),
-	new FieldInfo("DateTime", "ts", @"The time stamp when the record was created or last modified."),
-	new FieldInfo("string", "user", @"(Utilizator)"),
-	new FieldInfo("string", "state", @"The state of the mapped partner."),
+	new FieldInfo("int", "id", @"The unique identifier of the <see cref=""Server""/>."),
+	new FieldInfo("string", "gUID", @"The corresponding GUID of the server."),
+	new FieldInfo("string", "publicKey", @"The corresponding publicKey for the server used for authentication."),
+	new FieldInfo("string", "partner", @"The corresponding partner for the server."),
+	new FieldInfo("string", "serverName", @"The corresponding server name of the server."),
+	new FieldInfo("string", "windows", @"The corresponding windows version of the server."),
+	new FieldInfo("bool", "isApproved", @"If the server was approved for telemetric data gathering by an administrator."),
+	new FieldInfo("int", "flag", @"The flags of the server."),
 };
 
 List<FlagInfo> Flags = new List<FlagInfo>()
 {
-	new FlagInfo("flag", "AutoReception", @"automatic reception (if there are large ones and it is possible)", 1),
-	new FlagInfo("flag", "AutoDelivery", @"automatic takeover of delivery places", 2),
-	new FlagInfo("flag", "AutoArticle", @"automatic retrieval of articles", 4),
-	new FlagInfo("flag", "HasOwnCodArts", @"codArtClient with own CodArts", 8),
+	new FlagInfo("flag", "isApproved1", @"if the server was approved for telemetric data gathering by an administrator", 1),
 };
 
-string KeyFieldName = "cui";
+string KeyFieldName = "gUID";
 
 bool IsVersioned = false;
 
