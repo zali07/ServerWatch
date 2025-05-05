@@ -29,33 +29,18 @@
         {
             switch (e.PropertyName)
             {
-                //case "PartnerTypeBox":
-                //    this.PartnerTypeBox.Focus();
+                case "PartnerBox":
+                    this.PartnerBox.Focus();
+                    break;
+                case "ServerBox":
+                    this.ServerBox.Focus();
+                    break;
+                //case "WindowsBox":
+                //    this.WindowsBox.Focus();
                 //    break;
-                //case "PartnerCodeBox":
-                //    this.PartnerCodeBox.Focus();
-                //    break;
-                //case "CodeGestBox":
-                //    this.CodeGestBox.Focus();
-                //    break;
-                //case "CodeCentBox":
-                //    this.CodeCentBox.Focus();
-                //    break;
-                //case "ChkAutoReception":
-                //    this.ChkAutoReception.Focus();
-                //    break;
-                //case "ChkAutoDeliveryTakeover":
-                //    this.ChkAutoDeliveryTakeover.Focus();
-                //    break;
-                //case "ChkAutoProductTakeover":
-                //    this.ChkAutoProductTakeover.Focus();
-                //    break;
-                //case "SectorComboBox":
-                //    this.SectorComboBox.Focus();
-                //    break;
-                //case "IncludeMappedProductCheckBox":
-                //    this.IncludeMappedProductCheckBox.Focus();
-                //    break;
+                case "ChkIsApproved":
+                    this.ChkIsApproved.Focus();
+                    break;
             }
         }
 

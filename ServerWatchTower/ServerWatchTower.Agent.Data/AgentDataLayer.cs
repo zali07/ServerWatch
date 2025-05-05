@@ -25,6 +25,11 @@
         /// </summary>
         private static DataRecordEnumerator<int> _listOfIntSqlType;
 
+        /// <summary>
+        /// The field behind the <see cref="ServerSqlType"/> property.
+        /// </summary>
+        private static DataRecordEnumerator<ServerE> _serverSqlType;
+
         #endregion
 
         #region The constructors of the class
@@ -129,6 +134,46 @@
             }
         }
 
+        /// <summary>
+        /// Gets a <see cref="DataRecordEnumerator{TItem}"/> instance initialized for the <c>"dbo.dtServerType"</c> Sql table type.
+        /// </summary>
+        private static DataRecordEnumerator<ServerE> ServerSqlType
+        {
+            get
+            {
+                if (_serverSqlType == null)
+                {
+                    var s = new DataRecordEnumerator<ServerE>(
+                        "dbo.dtPartnerMappingDeliveryLocationType",
+                        new[]
+                        {
+                            new SqlMetaData("Id", SqlDbType.Int),
+                            new SqlMetaData("GUID", SqlDbType.Int),
+                            new SqlMetaData("PublicKey", SqlDbType.NVarChar, -1),
+                            new SqlMetaData("Partner", SqlDbType.NVarChar, -1),
+                            new SqlMetaData("Server", SqlDbType.NVarChar, -1),
+                            new SqlMetaData("Windows", SqlDbType.NVarChar, -1),
+                            new SqlMetaData("Flag", SqlDbType.Int),
+                        },
+                        (record, item, index) =>
+                        {
+                            record.SetValue(0, item.Id);
+                            record.SetValue(1, DbNull(item.GUID, false));
+                            record.SetValue(2, DbNull(item.PublicKey, false));
+                            record.SetValue(3, DbNull(item.Partner, false));
+                            record.SetValue(4, DbNull(item.ServerName, false));
+                            record.SetValue(5, DbNull(item.Windows, false));
+                            record.SetValue(6, item.Flag);
+                        }
+                    );
+
+                    Interlocked.CompareExchange(ref _serverSqlType, s, null);
+                }
+
+                return _serverSqlType;
+            }
+        }
+
         #endregion
 
         /// <summary>
@@ -186,10 +231,9 @@
                 throw new ArgumentNullException(nameof(serverGuid));
             }
 
-            using (var cmd = this.CreateCommand("[dbo].[gsEFactRecMapareParteneriListare]"))
+            using (var cmd = this.CreateCommand("[dbo].[spGetServer]"))
             {
-                cmd.Parameters.Add("@FiltruRapid", SqlDbType.NVarChar, 64).Value = serverGuid;
-
+                cmd.Parameters.Add("@GUID", SqlDbType.NVarChar, 32).Value = serverGuid;
 
                 using (var r = cmd.ExecuteReader(CommandBehavior.SingleResult | CommandBehavior.SingleRow))
                 {
@@ -310,25 +354,27 @@
         /// Saves the data of the partner and retrieves its unique code, useful in case
         /// of the new registrations for which the code is being generated automatically.
         /// </summary>
-        /// <param name="server">The data of the partner to be saved in an editable <see cref="PartnerE"/> instance.</param>
+        /// <param name="server">The data of the partner to be saved in an editable <see cref="ServerE"/> instance.</param>
         /// <returns>The unique code of the saved partner.</returns>
-        public void SaveServer(ServerE server)
+        public string SaveServer(ServerE server)
         {
             if (server == null)
             {
                 throw new ArgumentNullException(nameof(server));
             }
 
-            //using (var cmd = this.CreateCommand("[dbo].[dsAgPartnerMappingSave]"))
-            //{
-            //    cmd.Parameters.Add("@CodFirma", SqlDbType.NVarChar, 15).Value = server.Code;
-            //    cmd.Parameters.Add("@TipPartener", SqlDbType.NVarChar, 25).Value = DbNull(server.PartnerType);
-            //    cmd.Parameters.Add("@CodGestDefault", SqlDbType.NVarChar, 10).Value = DbNull(server.CodeGest, false);
-            //    cmd.Parameters.Add("@CodCenDefault", SqlDbType.NVarChar, 15).Value = DbNull(server.CodeCen, false);
-            //    cmd.Parameters.Add("@Flag", SqlDbType.Int).Value = server.Flag;
+            using (var cmd = this.CreateCommand("[dbo].[spSaveServer]"))
+            {
+                var serverGUIDParam = cmd.Parameters.Add("@GUID", SqlDbType.Int);
+                serverGUIDParam.Direction = ParameterDirection.Output;
 
-            //    this.ExecuteNonQuery(cmd);
-            //}
+                var serverList = new List<ServerE> { server };
+                cmd.Parameters.Add(ServerSqlType.CreateParameter("@server", serverList));
+
+                this.ExecuteNonQuery(cmd);
+
+                return (serverGUIDParam.Value != DBNull.Value) ? Convert.ToString(serverGUIDParam.Value) : string.Empty;
+            }
         }
     }
 }

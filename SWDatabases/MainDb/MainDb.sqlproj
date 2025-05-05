@@ -68,6 +68,7 @@
     <Build Include="Stored Procedures\dsAgGetDatabaseProperties.sql" />
     <Build Include="Tables\Config.sql" />
     <Build Include="Tables\GeneralData.sql" />
+    <Build Include="Stored Procedures\spGetServer.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Config.data.sql" />

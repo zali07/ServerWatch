@@ -30,27 +30,32 @@ namespace ServerWatchTower.Agent.Model
         #endregion
 
 
-        ///// <summary>
-        ///// Sanitizes the data of the partner before it would be saved by removing the trailing spaces from
-        ///// some of the fields and by setting a default main contact person when it has not been set.
-        ///// </summary>
-        //public void Sanitize()
-        //{
-        //    if (this.IsEditing && !this.IsDirty)
-        //    {
-        //        return;
-        //    }
+        /// <summary>
+        /// Sanitizes the data of the partner before it would be saved by removing the trailing spaces from
+        /// some of the fields and by setting a default main contact person when it has not been set.
+        /// </summary>
+        public void Sanitize()
+        {
+            if (this.IsEditing && !this.IsDirty)
+            {
+                return;
+            }
 
-        //    if (this.IsNew && !string.IsNullOrEmpty(this.Code))
-        //    {
-        //        this.Code = this.Code.Trim();
-        //    }
+            if (!string.IsNullOrEmpty(this.Partner))
+            {
+                this.Partner = this.Partner.Trim();
+            }
 
-        //    if (!string.IsNullOrEmpty(this.Name))
-        //    {
-        //        this.Name = this.Name.Trim();
-        //    }
-        //}
+            if (!string.IsNullOrEmpty(this.ServerName))
+            {
+                this.ServerName = this.ServerName.Trim();
+            }
+            
+            if (!string.IsNullOrEmpty(this.Windows))
+            {
+                this.Windows = this.Windows.Trim();
+            }
+        }
 
         /// <summary>
         /// Registers the context to be used by the object during editing for validation and initialization.

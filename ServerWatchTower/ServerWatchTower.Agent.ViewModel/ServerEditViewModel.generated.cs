@@ -35,16 +35,16 @@ namespace ServerWatchTower.Agent.ViewModel
         private BitVector32 bitValues;
 
         /// <summary>
-        /// The background loader which will load the partners corresponding to the filtering criteria from the database into the <see cref="Content"/> collection.
+        /// The field which stores the data of the <see cref="Item"/> property. Should not be accessed directly.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private BackgroundLoader<ServerCatalogFilterArgs, SynchronizationResult> contentLoader;
+        private ServerE itemField;
 
         /// <summary>
-        /// The field which stores the data of the <see cref="QuickFilter"/> property. Should not be accessed directly.
+        /// The field which stores the data of the <see cref="ViewPanelIndex"/> property. Should not be accessed directly.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string quickFilterField = "";
+        private int viewPanelIndexField;
 
         #endregion
 
@@ -71,20 +71,20 @@ namespace ServerWatchTower.Agent.ViewModel
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="ServerWatchTower.Agent.Model.ServerCatalog"/> catalog to be used by the view model, imported from MEF.
+        /// Gets or sets the <see cref="IAgentDataService"/> implementation to be used by the view model.
         /// </summary>
         [Import]
-        public ServerWatchTower.Agent.Model.ServerCatalog Catalog
+        public IAgentDataService AgentDataService
         {
             get;
             set;
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="IAgentDataService"/> implementation to be used by the view model.
+        /// Gets or sets the <see cref="ServerWatchTower.Agent.Model.ServerCatalog"/> catalog to be used by the view model, imported from MEF.
         /// </summary>
         [Import]
-        public IAgentDataService AgentDataService
+        public ServerWatchTower.Agent.Model.ServerCatalog Catalog
         {
             get;
             set;
@@ -103,68 +103,43 @@ namespace ServerWatchTower.Agent.ViewModel
             private set;
         }
 
-        /// <summary>
-        /// Gets the command which starts editing the currently selected item from the catalog.
-        /// </summary>
-        public DelegateCommand OpenItemCommand
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Gets the command of selecting the current item and returning it to the caller ComboBox.
-        /// </summary>
-        public DelegateCommand SelectItemCommand
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Gets the default command on the current item, which is usually bound to the item double-click event.
-        /// </summary>
-        public DelegateCommand DefaultItemCommand
-        {
-            get;
-            private set;
-        }
-
         #endregion
 
         /// <summary>
-        /// Gets or sets the background loader which will load the partners corresponding to the filtering criteria from the database into the <see cref="Content"/> collection.
+        /// Gets the data item which will be displayed and optionally edited on the view.
         /// </summary>
-        public IBackgroundLoader ContentLoader
+        public ServerE Item
         {
-            get => this.contentLoader;
-        }
+            get => this.itemField;
 
-        /// <summary>
-        /// Gets or sets the quick filtering condition of the <see cref="Content"/> collection view, which will only include the items which contain the text of this property.
-        /// </summary>
-        public string QuickFilter
-        {
-            get => this.quickFilterField;
-            set
+            private set
             {
-                this.OnQuickFilterChanging(ref value);
-
-                if (this.quickFilterField != value)
+                if (ReferenceEquals(this.itemField, value))
                 {
-                    this.quickFilterField = value;
-
-                    this.OnQuickFilterChanged(value);
-
-                    this.Notify(ChangeOfProperty.QuickFilter);
+                    return;
                 }
+
+                if (this.itemField != null)
+                {
+                    this.UnregisterItem(this.itemField);
+                }
+
+                this.itemField = value;
+
+                if (this.itemField != null)
+                {
+                    this.RegisterItem(this.itemField);
+                }
+
+                this.Notify(ChangeOfProperty.Item);
             }
         }
 
         /// <summary>
-        /// Gets a value indicating whether the catalog has been opened in selection mode.
+        /// Gets a value indicating whether the <see cref="Item"/> is read only, which happens when the user does not have the rights to update it, or it is being saved in the background.
         /// </summary>
-        public bool IsInSelectionMode
+        /// <seealso cref="IsEditable"/>
+        public bool IsReadOnly
         {
             get => this.bitValues[1];
 
@@ -177,68 +152,43 @@ namespace ServerWatchTower.Agent.ViewModel
 
                 this.bitValues[1] = value;
 
-                this.Notify(ChangeOfProperty.IsInSelectionMode);
+                this.Notify(ChangeOfProperty.IsReadOnly);
+                this.Notify(ChangeOfProperty.IsEditable);
+
+                this.OnIsReadOnlyChanged(value);
             }
         }
 
         /// <summary>
-        /// Gets a value indicating whether the currently selected item of the catalog can be edited.
+        /// Gets a value indicating whether the <see cref="Item"/> can be edited.
         /// </summary>
-        public bool IsItemEditable
+        /// <remarks>
+        /// <para>The value of this property is the negation of the <see cref="IsReadOnly"/> property.</para>
+        /// </remarks>
+        /// <seealso cref="IsReadOnly"/>
+        public bool IsEditable
         {
-            get => this.bitValues[2];
-
-            private set
-            {
-                if (this.bitValues[2] == value)
-                {
-                    return;
-                }
-
-                this.bitValues[2] = value;
-
-                this.Notify(ChangeOfProperty.IsItemEditable);
-            }
+            get => !this.IsReadOnly;
         }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="SelectablesOnly"/> filtering property is available and can be set for the current instance of the catalog.
+        /// Gets or sets the index of the panel (tab page) being selected on the view.
         /// </summary>
-        public bool IsSelectablesOnlyFilterAvailable
+        public int ViewPanelIndex
         {
-            get => this.bitValues[4];
-
-            private set
-            {
-                if (this.bitValues[4] == value)
-                {
-                    return;
-                }
-
-                this.bitValues[4] = value;
-
-                this.Notify(ChangeOfProperty.IsSelectablesOnlyFilterAvailable);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether only the items available for selection should be displayed in the catalog.
-        /// </summary>
-        public bool SelectablesOnly
-        {
-            get => this.bitValues[8];
+            get => this.viewPanelIndexField;
             set
             {
-                if (this.bitValues[8] == value)
+                this.OnViewPanelIndexChanging(ref value);
+
+                if (this.viewPanelIndexField != value)
                 {
-                    return;
+                    this.viewPanelIndexField = value;
+
+                    this.OnViewPanelIndexChanged(value);
+
+                    this.NotifyChangeOf(nameof(this.ViewPanelIndex));
                 }
-
-                this.bitValues[8] = value;
-
-                this.Notify(ChangeOfProperty.SelectablesOnly);
-
-                this.OnSelectablesOnlyChanged(value);
             }
         }
 
@@ -249,6 +199,15 @@ namespace ServerWatchTower.Agent.ViewModel
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the closing of the View is permitted, without checking whether there are changes made to the data.
+        /// </summary>
+        private bool AllowClosing
+        {
+            get => this.bitValues[2];
+            set => this.bitValues[2] = value;
         }
 
         /// <summary>
@@ -277,7 +236,7 @@ namespace ServerWatchTower.Agent.ViewModel
 
             this.BuildCommands();
 
-            this.contentLoader = new BackgroundLoader<ServerCatalogFilterArgs, SynchronizationResult>(this.ContentLoader_LoadAsync, this.ContentLoader_ProcessResult, 400);
+            this.View.Closing += this.OnViewClosing;
 
             this.Initialize();
         }
@@ -288,9 +247,6 @@ namespace ServerWatchTower.Agent.ViewModel
         private void BuildCommands()
         {
             this.RefreshCommand = new DelegateCommand(this.ExecuteRefresh, this.CanExecuteRefresh);
-            this.OpenItemCommand = new DelegateCommand(this.ExecuteOpenItem, this.CanExecuteOpenItem);
-            this.SelectItemCommand = new DelegateCommand(this.ExecuteSelectItem, this.CanExecuteSelectItem);
-            this.DefaultItemCommand = new DelegateCommand(this.ExecuteDefaultItem, this.CanExecuteDefaultItem);
         }
 
         /// <summary>
@@ -299,9 +255,6 @@ namespace ServerWatchTower.Agent.ViewModel
         private void RefreshCommandState()
         {
             this.RefreshCommand.RaiseCanExecuteChanged();
-            this.OpenItemCommand.RaiseCanExecuteChanged();
-            this.SelectItemCommand.RaiseCanExecuteChanged();
-            this.DefaultItemCommand.RaiseCanExecuteChanged();
         }
 
         /// <summary>
@@ -318,7 +271,21 @@ namespace ServerWatchTower.Agent.ViewModel
         /// </summary>
         private void DisposeComponents()
         {
-            this.contentLoader?.Dispose();
+        }
+
+        /// <summary>
+        /// Checks whether the view can be closed, which depends on whether there are unsaved changes made by the user.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The arguments of the event.</param>
+        private void OnViewClosing(object sender, CancelEventArgs e)
+        {
+            if (this.AllowClosing)
+            {
+                return;
+            }
+
+            this.CanCloseAndLooseChanges(e);
         }
 
         /// <content>
@@ -340,17 +307,32 @@ namespace ServerWatchTower.Agent.ViewModel
         /// <content>
         /// This method will be ignored unless it gets implemented in another place.
         /// </content>
-        partial void OnQuickFilterChanging(ref string value);
+        partial void RegisterItem(ServerE item);
 
         /// <content>
         /// This method will be ignored unless it gets implemented in another place.
         /// </content>
-        partial void OnQuickFilterChanged(string value);
+        partial void UnregisterItem(ServerE item);
 
         /// <content>
         /// This method will be ignored unless it gets implemented in another place.
         /// </content>
-        partial void OnSelectablesOnlyChanged(bool value);
+        partial void OnIsReadOnlyChanged(bool value);
+
+        /// <content>
+        /// This method will be ignored unless it gets implemented in another place.
+        /// </content>
+        partial void OnViewPanelIndexChanging(ref int value);
+
+        /// <content>
+        /// This method will be ignored unless it gets implemented in another place.
+        /// </content>
+        partial void OnViewPanelIndexChanged(int value);
+
+        /// <content>
+        /// This method will be ignored unless it gets implemented in another place.
+        /// </content>
+        partial void CanCloseAndLooseChanges(CancelEventArgs e);
 
         /* Method stub: PreInitialize
 
@@ -408,34 +390,41 @@ namespace ServerWatchTower.Agent.ViewModel
 
         */
 
-        /* Background loader stubs: ContentLoader
+        /* Method stub: RegisterItem
 
         /// <summary>
-        /// The data loading method of the <see cref="contentLoader"/>, which starts the background loading task.
+        /// Registers the appropriate event handlers and creates the collection views when a new object has been set for the <see cref="Item"/> property.
         /// </summary>
-        /// <param name="args">The arguments which specify which data has to be loaded from the database.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> through which the loading operation might get canceled by the <see cref="BackgroundLoader{TArg, TData}"/>.</param>
-        /// <returns>The data loading task, which has been started in the background by this method.</returns>
-        private Task<SynchronizationResult> ContentLoader_LoadAsync(ServerCatalogFilterArgs args, CancellationToken cancellationToken)
+        /// <param name="item">The new object being set for the <see cref="Item"/> property.</param>
+        partial void RegisterItem(ServerE item)
         {
-            //// TODO: start and return the data loading task
+            //// TODO: create the view collections, attach the event handlers etc.
         }
 
-        /// <summary>
-        /// The result processing method of the <see cref="contentLoader"/>, which updates the view model with the newly loaded data.
-        /// </summary>
-        /// <param name="loadingTask">The <see cref="Task{TResult}"/> which has loaded the data from the database and is now completed.</param>
-        /// <param name="args">The arguments with which the loading has been initiated.</param>
-        /// <seealso cref="ContentLoader_LoadAsync"/>
-        private void ContentLoader_ProcessResult(Task<SynchronizationResult> loadingTask, ServerCatalogFilterArgs args)
-        {
-            if (loadingTask.IsFaulted)
-            {
-                this.Application.HandleError(loadingTask);
-                return;
-            }
+        */
 
-            //// TODO: process the loaded data
+        /* Method stub: UnregisterItem
+
+        /// <summary>
+        /// Unregisters the event handlers and disposes the collection views used with the object previously set for the <see cref="Item"/> property.
+        /// </summary>
+        /// <param name="item">The object previously set for the <see cref="Item"/> property, which will no longer be used.</param>
+        partial void UnregisterItem(ServerE item)
+        {
+            //// TODO: dispose the view collections, detach the event handlers etc.
+        }
+
+        */
+
+        /* Method stub: CanCloseAndLooseChanges
+
+        /// <summary>
+        /// Checks whether the View can be closed and the changes made by the user lost by warning the user about this.
+        /// </summary>
+        /// <param name="e">The arguments through which the closing of the view can be canceled.</param>
+        partial void CanCloseAndLooseChanges(CancelEventArgs e)
+        {
+            //// TODO: cancel closing when the user does not want to loose the changes
         }
 
         */
@@ -455,69 +444,6 @@ namespace ServerWatchTower.Agent.ViewModel
         /// Executes the <see cref="RefreshCommand"/> by ...
         /// </summary>
         private void ExecuteRefresh()
-        {
-            //// TODO: implement this
-        }
-
-        */
-
-        /* Command stubs: OpenItemCommand
-
-        /// <summary>
-        /// Checks whether the <see cref="OpenItemCommand"/> can currently be executed.
-        /// </summary>
-        /// <returns>True when the command can be executed; false otherwise.</returns>
-        private bool CanExecuteOpenItem()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Executes the <see cref="OpenItemCommand"/> by ...
-        /// </summary>
-        private void ExecuteOpenItem()
-        {
-            //// TODO: implement this
-        }
-
-        */
-
-        /* Command stubs: SelectItemCommand
-
-        /// <summary>
-        /// Checks whether the <see cref="SelectItemCommand"/> can currently be executed.
-        /// </summary>
-        /// <returns>True when the command can be executed; false otherwise.</returns>
-        private bool CanExecuteSelectItem()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Executes the <see cref="SelectItemCommand"/> by ...
-        /// </summary>
-        private void ExecuteSelectItem()
-        {
-            //// TODO: implement this
-        }
-
-        */
-
-        /* Command stubs: DefaultItemCommand
-
-        /// <summary>
-        /// Checks whether the <see cref="DefaultItemCommand"/> can currently be executed.
-        /// </summary>
-        /// <returns>True when the command can be executed; false otherwise.</returns>
-        private bool CanExecuteDefaultItem()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Executes the <see cref="DefaultItemCommand"/> by ...
-        /// </summary>
-        private void ExecuteDefaultItem()
         {
             //// TODO: implement this
         }

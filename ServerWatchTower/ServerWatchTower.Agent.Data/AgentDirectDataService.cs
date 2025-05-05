@@ -63,9 +63,9 @@
         }
 
         /// <inheritdoc/>
-        public Task SaveServerAsync(ServerE partner)
+        public Task<string> SaveServerAsync(ServerE server)
         {
-            return this.RunOnAuthorizedDataLayerAsync(dl => dl.SaveServer(partner));
+            return this.RunOnAuthorizedDataLayerAsync(dl => dl.SaveServer(server));
         }
 
         #region Background task starting methods

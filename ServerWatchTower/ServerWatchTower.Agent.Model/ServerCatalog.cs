@@ -125,14 +125,14 @@ namespace ServerWatchTower.Agent.Model
         /// <param name="server">The editable <see cref="ServerE"/> instance containing the data to be saved.</param>
         /// <returns>A <see cref="Task{TResult}"/> with its <see cref="Task{TResult}.Result"/> being the
         /// code of the partner saved into the database.</returns>
-        public async Task SaveItemAsync(ServerE server)
+        public async Task<string> SaveItemAsync(ServerE server)
         {
             if (server == null)
             {
                 throw new ArgumentNullException(nameof(server));
             }
 
-            await this.AgentDataService.SaveServerAsync(server);
+            return await this.AgentDataService.SaveServerAsync(server);
         }
     }
 }

@@ -57,12 +57,6 @@ namespace ServerWatchTower.Agent.Model
         private string windows;
 
         /// <summary>
-        /// If the server was approved for telemetric data gathering by an administrator.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private bool isApproved;
-
-        /// <summary>
         /// The flags of the server.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -137,16 +131,6 @@ namespace ServerWatchTower.Agent.Model
         }
 
         /// <summary>
-        /// Gets or sets if the server was approved for telemetric data gathering by an administrator.
-        /// </summary>
-        [DataMember]
-        public bool IsApproved
-        {
-            get => this.isApproved;
-            set => this.AssertNotFrozen().isApproved = value;
-        }
-
-        /// <summary>
         /// Gets or sets the flags of the server.
         /// </summary>
         [DataMember]
@@ -161,7 +145,7 @@ namespace ServerWatchTower.Agent.Model
         /// this being one of the bits of the <see cref="Flag"/> property.
         /// </summary>
         [IgnoreDataMember]
-        public bool isApproved1 => (this.flag & 1) != 0;
+        public bool isApproved => (this.flag & 1) != 0;
 
         /// <summary>
         /// Gets a value indicating whether the object is frozen.
@@ -227,7 +211,6 @@ namespace ServerWatchTower.Agent.Model
 				&& this.partner == other.partner
 				&& this.serverName == other.serverName
 				&& this.windows == other.windows
-				&& this.isApproved == other.isApproved
 				&& this.flag == other.flag;
         }
 
@@ -325,11 +308,6 @@ namespace ServerWatchTower.Agent.Model
             if (this.windows != null)
             {
                 hashCode ^= this.windows.GetHashCode();
-            }
-
-            if (this.isApproved != null)
-            {
-                hashCode ^= this.isApproved.GetHashCode();
             }
 
             if (this.flag != null)

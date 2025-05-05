@@ -238,41 +238,6 @@ namespace ServerWatchTower.Agent.Model
         }
 
         /// <summary>
-        /// Gets or sets if the server was approved for telemetric data gathering by an administrator.
-        /// </summary>
-        /// <exception cref="ArgumentException">The specified value is not valid for this property.</exception>
-        [DataMember]
-        public bool IsApproved
-        {
-            get => this.data.isApproved;
-            set
-            {
-                if (!this.IsEditing)
-                {
-                    this.data.isApproved = value;
-                    return;
-                }
-
-                if (this.data.isApproved != value)
-                {
-                    this.IsApprovedBeforeUpdate(ref value);
-                    this.ValidateProperty(nameof(this.IsApproved), ref value);
-
-                    if (this.data.isApproved != value)
-                    {
-						var oldValue = this.data.isApproved;
-
-                        this.data.isApproved = value;
-
-                        this.IsApprovedAfterUpdate(oldValue, value);
-                        this.NotifyChangeOf(nameof(this.IsApproved));
-                        this.IsDirty = true;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the flags of the server.
         /// </summary>
         /// <exception cref="ArgumentException">The specified value is not valid for this property.</exception>
@@ -312,7 +277,7 @@ namespace ServerWatchTower.Agent.Model
         /// this being one of the bits of the <see cref="Flag"/> property.
         /// </summary>
         [IgnoreDataMember]
-        public bool isApproved1
+        public bool isApproved
         {
             get => (this.data.flag & 1) != 0;
             set
@@ -331,12 +296,12 @@ namespace ServerWatchTower.Agent.Model
                     return;
                 }
 
-                if (this.isApproved1 != value)
+                if (this.isApproved != value)
                 {
-                    this.isApproved1BeforeUpdate(ref value);
-                    this.ValidateProperty(nameof(this.isApproved1), ref value);
+                    this.isApprovedBeforeUpdate(ref value);
+                    this.ValidateProperty(nameof(this.isApproved), ref value);
 
-					bool oldValue = this.isApproved1;
+					bool oldValue = this.isApproved;
 
                     if (oldValue != value)
                     {
@@ -349,8 +314,8 @@ namespace ServerWatchTower.Agent.Model
                             this.data.flag &= ~1;
                         }
 
-                        this.isApproved1AfterUpdate(oldValue, value);
-                        this.NotifyChangeOf(nameof(this.isApproved1));
+                        this.isApprovedAfterUpdate(oldValue, value);
+                        this.NotifyChangeOf(nameof(this.isApproved));
                         this.Notify(ChangeOfProperty.Flag);
                         this.IsDirty = true;
                     }
@@ -421,16 +386,6 @@ namespace ServerWatchTower.Agent.Model
         /// <content>
         /// This method will be ignored unless it gets implemented in another place.
         /// </content>
-        partial void IsApprovedBeforeUpdate(ref bool value);
-
-        /// <content>
-        /// This method will be ignored unless it gets implemented in another place.
-        /// </content>
-        partial void IsApprovedAfterUpdate(bool oldValue, bool newValue);
-
-        /// <content>
-        /// This method will be ignored unless it gets implemented in another place.
-        /// </content>
         partial void FlagBeforeUpdate(ref int value);
 
         /// <content>
@@ -441,12 +396,12 @@ namespace ServerWatchTower.Agent.Model
         /// <content>
         /// This method will be ignored unless it gets implemented in another place.
         /// </content>
-        partial void isApproved1BeforeUpdate(ref bool value);
+        partial void isApprovedBeforeUpdate(ref bool value);
 
         /// <content>
         /// This method will be ignored unless it gets implemented in another place.
         /// </content>
-        partial void isApproved1AfterUpdate(bool oldValue, bool newValue);
+        partial void isApprovedAfterUpdate(bool oldValue, bool newValue);
 
         #region Data class
 
@@ -486,11 +441,6 @@ namespace ServerWatchTower.Agent.Model
             public string windows;
 
             /// <summary>
-            /// If the server was approved for telemetric data gathering by an administrator.
-            /// </summary>
-            public bool isApproved;
-
-            /// <summary>
             /// The flags of the server.
             /// </summary>
             public int flag;
@@ -514,7 +464,6 @@ namespace ServerWatchTower.Agent.Model
                 this.partner = data.partner;
                 this.serverName = data.serverName;
                 this.windows = data.windows;
-                this.isApproved = data.isApproved;
                 this.flag = data.flag;
             }
         }

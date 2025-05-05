@@ -45,6 +45,6 @@
         /// Saves the data of the server asynchronously.
         /// </summary>
         /// <param name="server">The data of the server to be saved in an editable <see cref="ServerE"/> instance.</param>
-        Task SaveServerAsync(ServerE server);
+        Task<string> SaveServerAsync(ServerE server);
     }
 }
