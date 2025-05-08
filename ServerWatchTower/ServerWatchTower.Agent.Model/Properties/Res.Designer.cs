@@ -22,14 +22,14 @@ namespace ServerWatchTower.Agent.Model.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resource {
+    internal class Res {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resource() {
+        internal Res() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace ServerWatchTower.Agent.Model.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ServerWatchTower.Agent.Model.Properties.Resource", typeof(Resource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ServerWatchTower.Agent.Model.Properties.Res", typeof(Res).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -66,6 +66,24 @@ namespace ServerWatchTower.Agent.Model.Properties {
         internal static string ExcServerContextNotSet {
             get {
                 return ResourceManager.GetString("ExcServerContextNotSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Acknowledged by you on {0:f}..
+        /// </summary>
+        internal static string LblAcknowledgedByUser {
+            get {
+                return ResourceManager.GetString("LblAcknowledgedByUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expired on {0:D}..
+        /// </summary>
+        internal static string LblAlertExpired {
+            get {
+                return ResourceManager.GetString("LblAlertExpired", resourceCulture);
             }
         }
         

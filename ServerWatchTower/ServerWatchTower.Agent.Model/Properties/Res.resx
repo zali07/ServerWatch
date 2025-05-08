@@ -120,6 +120,12 @@
   <data name="ExcServerContextNotSet" xml:space="preserve">
     <value>Set the context of the server with RegisterContext before putting the object into editing mode.</value>
   </data>
+  <data name="LblAcknowledgedByUser" xml:space="preserve">
+    <value>Acknowledged by you on {0:f}.</value>
+  </data>
+  <data name="LblAlertExpired" xml:space="preserve">
+    <value>Expired on {0:D}.</value>
+  </data>
   <data name="ValServerNameRequired" xml:space="preserve">
     <value>The name of the server must be specified.</value>
   </data>

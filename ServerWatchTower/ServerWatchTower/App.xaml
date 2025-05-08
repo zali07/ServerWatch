@@ -1,8 +1,8 @@
-﻿<swtower:SilverApplication x:Class="ServerWatchTower.App"
-                          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                          xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-                          xmlns:swtower="clr-namespace:Cosys.SilverLib.Shell;assembly=Cosys.SilverLib.Shell"
-                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<swtower:SilverApplication  x:Class="ServerWatchTower.App"
+                            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                            xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+                            xmlns:swtower="clr-namespace:Cosys.SilverLib.Shell;assembly=Cosys.SilverLib.Shell"
+                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <swtower:SilverApplication.Resources>
         <ResourceDictionary>

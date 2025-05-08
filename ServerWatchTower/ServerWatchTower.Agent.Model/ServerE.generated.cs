@@ -28,41 +28,6 @@ namespace ServerWatchTower.Agent.Model
         #endregion
 
         /// <summary>
-        /// Gets or sets the unique identifier of the <see cref="Server"/>.
-        /// </summary>
-        /// <exception cref="ArgumentException">The specified value is not valid for this property.</exception>
-        [DataMember]
-        public int Id
-        {
-            get => this.data.id;
-            set
-            {
-                if (!this.IsEditing)
-                {
-                    this.data.id = value;
-                    return;
-                }
-
-                if (this.data.id != value)
-                {
-                    this.IdBeforeUpdate(ref value);
-                    this.ValidateProperty(nameof(this.Id), ref value);
-
-                    if (this.data.id != value)
-                    {
-						var oldValue = this.data.id;
-
-                        this.data.id = value;
-
-                        this.IdAfterUpdate(oldValue, value);
-                        this.Notify(ChangeOfProperty.Id);
-                        this.IsDirty = true;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the corresponding GUID of the server.
         /// </summary>
         /// <exception cref="ArgumentException">The specified value is not valid for this property.</exception>
@@ -277,7 +242,7 @@ namespace ServerWatchTower.Agent.Model
         /// this being one of the bits of the <see cref="Flag"/> property.
         /// </summary>
         [IgnoreDataMember]
-        public bool isApproved
+        public bool IsApproved
         {
             get => (this.data.flag & 1) != 0;
             set
@@ -296,12 +261,12 @@ namespace ServerWatchTower.Agent.Model
                     return;
                 }
 
-                if (this.isApproved != value)
+                if (this.IsApproved != value)
                 {
-                    this.isApprovedBeforeUpdate(ref value);
-                    this.ValidateProperty(nameof(this.isApproved), ref value);
+                    this.IsApprovedBeforeUpdate(ref value);
+                    this.ValidateProperty(nameof(this.IsApproved), ref value);
 
-					bool oldValue = this.isApproved;
+					bool oldValue = this.IsApproved;
 
                     if (oldValue != value)
                     {
@@ -314,8 +279,8 @@ namespace ServerWatchTower.Agent.Model
                             this.data.flag &= ~1;
                         }
 
-                        this.isApprovedAfterUpdate(oldValue, value);
-                        this.NotifyChangeOf(nameof(this.isApproved));
+                        this.IsApprovedAfterUpdate(oldValue, value);
+                        this.NotifyChangeOf(nameof(this.IsApproved));
                         this.Notify(ChangeOfProperty.Flag);
                         this.IsDirty = true;
                     }
@@ -323,15 +288,209 @@ namespace ServerWatchTower.Agent.Model
             }
         }		
 
-        /// <content>
-        /// This method will be ignored unless it gets implemented in another place.
-        /// </content>
-        partial void IdBeforeUpdate(ref int value);
+        /// <summary>
+        /// Gets or sets a value indicating if the server was removed from data gathering or is out of service,
+        /// this being one of the bits of the <see cref="Flag"/> property.
+        /// </summary>
+        [IgnoreDataMember]
+        public bool IsDeleted
+        {
+            get => (this.data.flag & 2) != 0;
+            set
+            {
+                if (!this.IsEditing)
+                {
+                    if (value)
+                    {
+                        this.data.flag |= 2;
+                    }
+                    else
+                    {
+                        this.data.flag &= ~2;
+                    }
 
-        /// <content>
-        /// This method will be ignored unless it gets implemented in another place.
-        /// </content>
-        partial void IdAfterUpdate(int oldValue, int newValue);
+                    return;
+                }
+
+                if (this.IsDeleted != value)
+                {
+                    this.IsDeletedBeforeUpdate(ref value);
+                    this.ValidateProperty(nameof(this.IsDeleted), ref value);
+
+					bool oldValue = this.IsDeleted;
+
+                    if (oldValue != value)
+                    {
+                        if (value)
+                        {
+                            this.data.flag |= 2;
+                        }
+                        else
+                        {
+                            this.data.flag &= ~2;
+                        }
+
+                        this.IsDeletedAfterUpdate(oldValue, value);
+                        this.Notify(ChangeOfProperty.IsDeleted);
+                        this.Notify(ChangeOfProperty.Flag);
+                        this.IsDirty = true;
+                    }
+                }
+            }
+        }		
+
+        /// <summary>
+        /// Gets or sets a value indicating if the server has enabled mirroring data gathering,
+        /// this being one of the bits of the <see cref="Flag"/> property.
+        /// </summary>
+        [IgnoreDataMember]
+        public bool HasMirroringDataGather
+        {
+            get => (this.data.flag & 4) != 0;
+            set
+            {
+                if (!this.IsEditing)
+                {
+                    if (value)
+                    {
+                        this.data.flag |= 4;
+                    }
+                    else
+                    {
+                        this.data.flag &= ~4;
+                    }
+
+                    return;
+                }
+
+                if (this.HasMirroringDataGather != value)
+                {
+                    this.HasMirroringDataGatherBeforeUpdate(ref value);
+                    this.ValidateProperty(nameof(this.HasMirroringDataGather), ref value);
+
+					bool oldValue = this.HasMirroringDataGather;
+
+                    if (oldValue != value)
+                    {
+                        if (value)
+                        {
+                            this.data.flag |= 4;
+                        }
+                        else
+                        {
+                            this.data.flag &= ~4;
+                        }
+
+                        this.HasMirroringDataGatherAfterUpdate(oldValue, value);
+                        this.NotifyChangeOf(nameof(this.HasMirroringDataGather));
+                        this.Notify(ChangeOfProperty.Flag);
+                        this.IsDirty = true;
+                    }
+                }
+            }
+        }		
+
+        /// <summary>
+        /// Gets or sets a value indicating if the server has enabled drive data gathering,
+        /// this being one of the bits of the <see cref="Flag"/> property.
+        /// </summary>
+        [IgnoreDataMember]
+        public bool HasDriveDataGather
+        {
+            get => (this.data.flag & 8) != 0;
+            set
+            {
+                if (!this.IsEditing)
+                {
+                    if (value)
+                    {
+                        this.data.flag |= 8;
+                    }
+                    else
+                    {
+                        this.data.flag &= ~8;
+                    }
+
+                    return;
+                }
+
+                if (this.HasDriveDataGather != value)
+                {
+                    this.HasDriveDataGatherBeforeUpdate(ref value);
+                    this.ValidateProperty(nameof(this.HasDriveDataGather), ref value);
+
+					bool oldValue = this.HasDriveDataGather;
+
+                    if (oldValue != value)
+                    {
+                        if (value)
+                        {
+                            this.data.flag |= 8;
+                        }
+                        else
+                        {
+                            this.data.flag &= ~8;
+                        }
+
+                        this.HasDriveDataGatherAfterUpdate(oldValue, value);
+                        this.NotifyChangeOf(nameof(this.HasDriveDataGather));
+                        this.Notify(ChangeOfProperty.Flag);
+                        this.IsDirty = true;
+                    }
+                }
+            }
+        }		
+
+        /// <summary>
+        /// Gets or sets a value indicating if the server has enabled backup data gathering,
+        /// this being one of the bits of the <see cref="Flag"/> property.
+        /// </summary>
+        [IgnoreDataMember]
+        public bool HasBackupDataGather
+        {
+            get => (this.data.flag & 16) != 0;
+            set
+            {
+                if (!this.IsEditing)
+                {
+                    if (value)
+                    {
+                        this.data.flag |= 16;
+                    }
+                    else
+                    {
+                        this.data.flag &= ~16;
+                    }
+
+                    return;
+                }
+
+                if (this.HasBackupDataGather != value)
+                {
+                    this.HasBackupDataGatherBeforeUpdate(ref value);
+                    this.ValidateProperty(nameof(this.HasBackupDataGather), ref value);
+
+					bool oldValue = this.HasBackupDataGather;
+
+                    if (oldValue != value)
+                    {
+                        if (value)
+                        {
+                            this.data.flag |= 16;
+                        }
+                        else
+                        {
+                            this.data.flag &= ~16;
+                        }
+
+                        this.HasBackupDataGatherAfterUpdate(oldValue, value);
+                        this.NotifyChangeOf(nameof(this.HasBackupDataGather));
+                        this.Notify(ChangeOfProperty.Flag);
+                        this.IsDirty = true;
+                    }
+                }
+            }
+        }		
 
         /// <content>
         /// This method will be ignored unless it gets implemented in another place.
@@ -396,12 +555,52 @@ namespace ServerWatchTower.Agent.Model
         /// <content>
         /// This method will be ignored unless it gets implemented in another place.
         /// </content>
-        partial void isApprovedBeforeUpdate(ref bool value);
+        partial void IsApprovedBeforeUpdate(ref bool value);
 
         /// <content>
         /// This method will be ignored unless it gets implemented in another place.
         /// </content>
-        partial void isApprovedAfterUpdate(bool oldValue, bool newValue);
+        partial void IsApprovedAfterUpdate(bool oldValue, bool newValue);
+
+        /// <content>
+        /// This method will be ignored unless it gets implemented in another place.
+        /// </content>
+        partial void IsDeletedBeforeUpdate(ref bool value);
+
+        /// <content>
+        /// This method will be ignored unless it gets implemented in another place.
+        /// </content>
+        partial void IsDeletedAfterUpdate(bool oldValue, bool newValue);
+
+        /// <content>
+        /// This method will be ignored unless it gets implemented in another place.
+        /// </content>
+        partial void HasMirroringDataGatherBeforeUpdate(ref bool value);
+
+        /// <content>
+        /// This method will be ignored unless it gets implemented in another place.
+        /// </content>
+        partial void HasMirroringDataGatherAfterUpdate(bool oldValue, bool newValue);
+
+        /// <content>
+        /// This method will be ignored unless it gets implemented in another place.
+        /// </content>
+        partial void HasDriveDataGatherBeforeUpdate(ref bool value);
+
+        /// <content>
+        /// This method will be ignored unless it gets implemented in another place.
+        /// </content>
+        partial void HasDriveDataGatherAfterUpdate(bool oldValue, bool newValue);
+
+        /// <content>
+        /// This method will be ignored unless it gets implemented in another place.
+        /// </content>
+        partial void HasBackupDataGatherBeforeUpdate(ref bool value);
+
+        /// <content>
+        /// This method will be ignored unless it gets implemented in another place.
+        /// </content>
+        partial void HasBackupDataGatherAfterUpdate(bool oldValue, bool newValue);
 
         #region Data class
 
@@ -410,11 +609,6 @@ namespace ServerWatchTower.Agent.Model
         /// </summary>
         private partial class Data
         {
-            /// <summary>
-            /// The unique identifier of the <see cref="Server"/>.
-            /// </summary>
-            public int id;
-
             /// <summary>
             /// The corresponding GUID of the server.
             /// </summary>
@@ -458,7 +652,6 @@ namespace ServerWatchTower.Agent.Model
             /// <param name="data">The other instance, which should be duplicated.</param>
             public Data(Data data)
             {
-                this.id = data.id;
                 this.gUID = data.gUID;
                 this.publicKey = data.publicKey;
                 this.partner = data.partner;

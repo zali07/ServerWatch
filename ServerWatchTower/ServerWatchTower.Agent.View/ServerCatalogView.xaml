@@ -1,15 +1,15 @@
 ﻿<swtower:SilverViewBase x:Class="ServerWatchTower.Agent.View.ServerCatalogView"
-                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                       xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-                       xmlns:swtower="http://software.cosys.ro/SilverERP/V1/View/xaml"
-                       xmlns:res="clr-namespace:ServerWatchTower.Agent.View.Properties"
-                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                       Title="Servers"
-                       Caption="Servers"
-                       RowCount="{Binding Content.Count}"
-                       mc:Ignorable="d" d:DesignHeight="200" d:DesignWidth="600">
+                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+                        xmlns:swtower="http://software.cosys.ro/SilverERP/V1/View/xaml"
+                        xmlns:res="clr-namespace:ServerWatchTower.Agent.View.Properties"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                        Title="Servers"
+                        Caption="Servers"
+                        RowCount="{Binding Content.Count}"
+                        mc:Ignorable="d" d:DesignHeight="200" d:DesignWidth="600">
 
     <swtower:SilverViewBase.Resources>
         <ResourceDictionary>
@@ -109,11 +109,11 @@
                 <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrPartnerName}" UniqueName="Partner"
                                             DataMemberBinding="{Binding Partner}" IsGroupable="False" ShowDistinctFilters="False" />
                 <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrServerName}" UniqueName="Server"
-                                            DataMemberBinding="{Binding Server}" IsGroupable="False" ShowDistinctFilters="False" />
+                                            DataMemberBinding="{Binding ServerName}" IsGroupable="False" ShowDistinctFilters="False" />
                 <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrWindowsVersion}" UniqueName="Windows"
                                             DataMemberBinding="{Binding Windows}" IsGroupable="False" ShowDistinctFilters="False" />
                 <telerik:GridViewDataColumn Header="{x:Static Member=swtower:UIStr.HdrFlags}" UniqueName="Flag" CellStyle="{StaticResource FlagColumnStyle}"
-                                            DataMemberBinding="{Binding Flag}" IsGroupable="False" ShowDistinctFilters="False" />
+                                            DataMemberBinding="{Binding State}" IsGroupable="False" ShowDistinctFilters="False" />
             </telerik:RadGridView.Columns>
         </telerik:RadGridView>
 

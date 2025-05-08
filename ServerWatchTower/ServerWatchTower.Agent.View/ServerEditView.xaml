@@ -1,14 +1,14 @@
 ﻿<swtower:SilverViewBase x:Class="ServerWatchTower.Agent.View.ServerEditView"
-                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                       xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-                       xmlns:swtower="http://software.cosys.ro/SilverERP/V1/View/xaml"
-                       xmlns:res="clr-namespace:ServerWatchTower.Agent.View.Properties"
-                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                       Title="Server"
-                       Caption="Server"
-                       mc:Ignorable="d" d:DesignHeight="200" d:DesignWidth="600">
+                        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+                        xmlns:swtower="http://software.cosys.ro/SilverERP/V1/View/xaml"
+                        xmlns:res="clr-namespace:ServerWatchTower.Agent.View.Properties"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                        Title="Server"
+                        Caption="Server"
+                        mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="600">
 
     <swtower:SilverViewBase.Resources>
         <ResourceDictionary>
@@ -20,8 +20,7 @@
     </swtower:SilverViewBase.Resources>
     
     <swtower:SilverViewBase.CommandBindings>
-        <swtower:CommandToViewModelBinding Command="{x:Static Member=swtower:SilverCommands.SelectAndCloseView}" TargetCommand="SelectItemCommand" />
-        <swtower:CommandToViewModelBinding Command="{x:Static Member=swtower:SilverCommands.OpenItem}" TargetCommand="OpenItemCommand" />
+        <swtower:CommandToViewModelBinding Command="{x:Static Member=swtower:SilverCommands.SaveAndCloseView}" TargetCommand="SaveAndCloseCommand" />
         <swtower:CommandToViewModelBinding Command="{x:Static Member=swtower:SilverCommands.RefreshData}" TargetCommand="RefreshCommand" />
     </swtower:SilverViewBase.CommandBindings>
 
@@ -65,8 +64,8 @@
 
         <Label Content="{x:Static Member=res:UIRes.LblGuid}" Target="{Binding ElementName=GuidBox}" />
         <TextBox    Name="GuidBox" Grid.Column="1" TabIndex="10"
-                    HorizontalAlignment="Left" VerticalAlignment="Center" Width="180" Margin="0,2"
-                    IsReadOnly="True"  IsReadOnlyCaretVisible="True"
+                    HorizontalAlignment="Left" VerticalAlignment="Center" Width="250" Margin="0,2"
+                    IsReadOnly="True" IsReadOnlyCaretVisible="True"
                     Text="{Binding ValidatesOnExceptions=True, Path=Item.GUID}" CharacterCasing="Upper"/>
 
         <telerik:RadTabControl Name="TabControl" x:FieldModifier="private" Grid.Row="2" Grid.ColumnSpan="2" TabIndex="30"
@@ -100,7 +99,12 @@
                         <Label Grid.Row="1" Content="{x:Static Member=res:UIRes.LblServerName}" Target="{Binding ElementName=ServerBox}" />
                         <TextBox    Name="ServerBox" Grid.Row="1" Grid.Column="1" TabIndex="50" MaxLength="64"
                                     HorizontalAlignment="Left" VerticalAlignment="Center" Width="255" Margin="0,2"
-                                    Text="{Binding Path=Item.Server}"/>
+                                    Text="{Binding Path=Item.ServerName}"/>
+
+                        <Label Grid.Row="2" Content="{x:Static Member=res:UIRes.LblWindowsVersion}" Target="{Binding ElementName=WindowsBox}" />
+                        <TextBox    Name="WindowsBox" Grid.Row="2" Grid.Column="1" TabIndex="60" MaxLength="64"
+                                    HorizontalAlignment="Left" VerticalAlignment="Center" Width="255" Margin="0,2"
+                                    Text="{Binding Path=Item.Windows}"/>
 
                         <!--<Label Grid.Row="2" Content="{x:Static Member=res:UIRes.LblDefaultGest}" Target="{Binding ElementName=CodeGestBox}"/>
                         <telerik:RadComboBox Name="CodeGestBox" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Margin="0,2" TabIndex="60"
@@ -112,21 +116,35 @@
                                              telerik:TextSearch.TextPath="Code" SelectedValuePath="Code">
                         </telerik:RadComboBox>-->
 
-                        <!--<Label Grid.Row="3" Content="{x:Static Member=res:UIRes.LblDefaultCent}" Target="{Binding ElementName=CodeCentBox}"/>
-                        <telerik:RadComboBox Name="CodeCentBox" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Margin="0,2" TabIndex="70"
-                                             HorizontalAlignment="Left" VerticalAlignment="Center" Width="255"
-                                             CanAutocompleteSelectItems="True" IsEditable="True"
-                                             ItemsSource="{Binding CostCenters}" 
-                                             ItemTemplate="{StaticResource CodeCentComboBoxItemTemplate}"
-                                             telerik:TextSearch.TextPath="Code" SelectedValuePath="Code"
-                                             SelectedValue="{Binding Path=Item.CodeCen, ValidatesOnExceptions=True}">
-                        </telerik:RadComboBox>-->
-
-                        <StackPanel Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="0,5,0,0">
-                            <CheckBox TabIndex="80" x:Name="ChkIsApproved"
-                                      HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5"
-                                      IsChecked="{Binding Path=Item.IsApproved, Mode=TwoWay, ValidatesOnExceptions=True}"
-                                      Content="{x:Static Member=res:UIRes.ChkIsApproved}"/>
+                        <StackPanel Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="0,5,0,0" Orientation="Horizontal">
+                            <GroupBox Header="{x:Static Member=res:UIRes.LblTelemetricData}" Margin="0,5,0,0" Padding="5">
+                                <StackPanel>
+                                    <CheckBox TabIndex="100" x:Name="ChkHasMirroringDataGather"
+                                              HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5"
+                                              IsChecked="{Binding Path=Item.HasMirroringDataGather, Mode=TwoWay, ValidatesOnExceptions=True}"
+                                              Content="{x:Static Member=res:UIRes.ChkHasMirroringDataGather}"/>
+                                    <CheckBox TabIndex="110" x:Name="ChkHasDriveDataGather"
+                                              HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5"
+                                              IsChecked="{Binding Path=Item.HasDriveDataGather, Mode=TwoWay, ValidatesOnExceptions=True}"
+                                              Content="{x:Static Member=res:UIRes.ChkHasDriveDataGather}"/>
+                                    <CheckBox TabIndex="120" x:Name="ChkHasBackupDataGather"
+                                              HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5"
+                                              IsChecked="{Binding Path=Item.HasBackupDataGather, Mode=TwoWay, ValidatesOnExceptions=True}"
+                                              Content="{x:Static Member=res:UIRes.ChkHasBackupDataGather}"/>
+                                </StackPanel>
+                            </GroupBox>
+                            <GroupBox Header="{x:Static Member=res:UIRes.LblStatus}" Margin="10,5,0,0" Padding="5">
+                                <StackPanel>
+                                    <CheckBox TabIndex="80" x:Name="ChkIsApproved"
+                                              HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5"
+                                              IsChecked="{Binding Path=Item.IsApproved, Mode=TwoWay, ValidatesOnExceptions=True}"
+                                              Content="{x:Static Member=res:UIRes.ChkIsApproved}"/>
+                                    <CheckBox TabIndex="90" x:Name="ChkIsDeleted"
+                                              HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5"
+                                              IsChecked="{Binding Path=Item.IsDeleted, Mode=TwoWay, ValidatesOnExceptions=True}"
+                                              Content="{x:Static Member=res:UIRes.ChkIsDeleted}"/>
+                                </StackPanel>
+                            </GroupBox>
                         </StackPanel>
                     </Grid>
                 </ScrollViewer>

@@ -61,11 +61,65 @@ namespace ServerWatchTower.Agent.View.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Is Approved.
+        ///   Looks up a localized string similar to Alerts.
+        /// </summary>
+        public static string CapAlerts {
+            get {
+                return ResourceManager.GetString("CapAlerts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Archives.
+        /// </summary>
+        public static string CapArchives {
+            get {
+                return ResourceManager.GetString("CapArchives", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Backups.
+        /// </summary>
+        public static string ChkHasBackupDataGather {
+            get {
+                return ResourceManager.GetString("ChkHasBackupDataGather", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drives.
+        /// </summary>
+        public static string ChkHasDriveDataGather {
+            get {
+                return ResourceManager.GetString("ChkHasDriveDataGather", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mirroring.
+        /// </summary>
+        public static string ChkHasMirroringDataGather {
+            get {
+                return ResourceManager.GetString("ChkHasMirroringDataGather", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Approved.
         /// </summary>
         public static string ChkIsApproved {
             get {
                 return ResourceManager.GetString("ChkIsApproved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleted.
+        /// </summary>
+        public static string ChkIsDeleted {
+            get {
+                return ResourceManager.GetString("ChkIsDeleted", resourceCulture);
             }
         }
         
@@ -106,6 +160,15 @@ namespace ServerWatchTower.Agent.View.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Archives.
+        /// </summary>
+        public static string LblArchives {
+            get {
+                return ResourceManager.GetString("LblArchives", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GUID.
         /// </summary>
         public static string LblGuid {
@@ -129,6 +192,42 @@ namespace ServerWatchTower.Agent.View.Properties {
         public static string LblServerName {
             get {
                 return ResourceManager.GetString("LblServerName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string LblStatus {
+            get {
+                return ResourceManager.GetString("LblStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Telemetric data.
+        /// </summary>
+        public static string LblTelemetricData {
+            get {
+                return ResourceManager.GetString("LblTelemetricData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Windows.
+        /// </summary>
+        public static string LblWindowsVersion {
+            get {
+                return ResourceManager.GetString("LblWindowsVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You have no alerts..
+        /// </summary>
+        public static string MsgEmptyAlertList {
+            get {
+                return ResourceManager.GetString("MsgEmptyAlertList", resourceCulture);
             }
         }
         

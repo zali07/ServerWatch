@@ -28,7 +28,8 @@ List<PropertyBase> Properties = new List<PropertyBase>()
 	new SimpleActionProperty(Access.Public, "int", "ViewPanelIndex", "Gets or sets the index of the panel (tab page) being selected on the view."),
 
 	new CommandProperty("RefreshCommand", @"Gets the command of refreshing the content of the catalog."),
-	
+	new CommandProperty("SaveAndCloseCommand", "Gets the command of saving the changes made to the item and closing the editing View."),
+
 	new AllowClosingProperty()
 };
 

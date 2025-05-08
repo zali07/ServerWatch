@@ -21,12 +21,6 @@ namespace ServerWatchTower.Agent.Model
         #region Private fields
 
         /// <summary>
-        /// The unique identifier of the <see cref="Server"/>.
-        /// </summary>
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private int id;
-
-        /// <summary>
         /// The corresponding GUID of the server.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -63,22 +57,18 @@ namespace ServerWatchTower.Agent.Model
         private int flag;
 
         /// <summary>
+        /// The state of the server.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string state;
+
+        /// <summary>
         /// Indicates whether the object is frozen.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private bool isFrozen;
 
         #endregion
-
-        /// <summary>
-        /// Gets or sets the unique identifier of the <see cref="Server"/>.
-        /// </summary>
-        [DataMember]
-        public int Id
-        {
-            get => this.id;
-            set => this.AssertNotFrozen().id = value;
-        }
 
         /// <summary>
         /// Gets or sets the corresponding GUID of the server.
@@ -141,11 +131,21 @@ namespace ServerWatchTower.Agent.Model
         }
 
         /// <summary>
+        /// Gets or sets the state of the server.
+        /// </summary>
+        [DataMember]
+        public string State
+        {
+            get => this.state;
+            set => this.AssertNotFrozen().state = value;
+        }
+
+        /// <summary>
         /// Gets a value indicating if the server was approved for telemetric data gathering by an administrator,
         /// this being one of the bits of the <see cref="Flag"/> property.
         /// </summary>
         [IgnoreDataMember]
-        public bool isApproved => (this.flag & 1) != 0;
+        public bool IsApproved => (this.flag & 1) != 0;
 
         /// <summary>
         /// Gets a value indicating whether the object is frozen.
@@ -205,13 +205,13 @@ namespace ServerWatchTower.Agent.Model
 				return true;
 			}
 
-			return this.id == other.id
-				&& this.gUID == other.gUID
+			return this.gUID == other.gUID
 				&& this.publicKey == other.publicKey
 				&& this.partner == other.partner
 				&& this.serverName == other.serverName
 				&& this.windows == other.windows
-				&& this.flag == other.flag;
+				&& this.flag == other.flag
+				&& this.state == other.state;
         }
 
         /// <summary>
@@ -280,11 +280,6 @@ namespace ServerWatchTower.Agent.Model
             
 #pragma warning disable CS0472 // The result of the expression is always the same since a value of this type is never equal to 'null'
 
-            if (this.id != null)
-            {
-                hashCode ^= this.id.GetHashCode();
-            }
-
             if (this.gUID != null)
             {
                 hashCode ^= this.gUID.GetHashCode();
@@ -313,6 +308,11 @@ namespace ServerWatchTower.Agent.Model
             if (this.flag != null)
             {
                 hashCode ^= this.flag.GetHashCode();
+            }
+
+            if (this.state != null)
+            {
+                hashCode ^= this.state.GetHashCode();
             }
 
 #pragma warning restore CS0472

@@ -77,6 +77,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DateTimeSimplifyConverter.cs" />
+    <Compile Include="NoteTypeToIconConverter.cs" />
     <Compile Include="ServerEditView.xaml.cs">
       <DependentUpon>ServerEditView.xaml</DependentUpon>
     </Compile>
@@ -88,6 +90,9 @@
       <DependentUpon>UIRes.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="AlertsView.xaml.cs">
+      <DependentUpon>AlertsView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -110,6 +115,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="AlertsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cosys.SilverLib.Core\Cosys.SilverLib.Core.csproj">
@@ -119,6 +128,10 @@
     <ProjectReference Include="..\Cosys.SilverLib.View\Cosys.SilverLib.View.csproj">
       <Project>{353df4a7-7c6c-445f-b311-44b8ecb53675}</Project>
       <Name>Cosys.SilverLib.View</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServerWatchTower.Agent.Model\ServerWatchTower.Agent.Model.csproj">
+      <Project>{0BA0F1D2-D11F-4DC8-922D-F413977D6702}</Project>
+      <Name>ServerWatchTower.Agent.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

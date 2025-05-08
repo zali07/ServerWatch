@@ -117,8 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CapAlerts" xml:space="preserve">
+    <value>Alerts</value>
+  </data>
+  <data name="CapArchives" xml:space="preserve">
+    <value>Archives</value>
+  </data>
+  <data name="ChkHasBackupDataGather" xml:space="preserve">
+    <value>Backups</value>
+  </data>
+  <data name="ChkHasDriveDataGather" xml:space="preserve">
+    <value>Drives</value>
+  </data>
+  <data name="ChkHasMirroringDataGather" xml:space="preserve">
+    <value>Mirroring</value>
+  </data>
   <data name="ChkIsApproved" xml:space="preserve">
-    <value>Is Approved</value>
+    <value>Approved</value>
+  </data>
+  <data name="ChkIsDeleted" xml:space="preserve">
+    <value>Deleted</value>
   </data>
   <data name="HdrGuid" xml:space="preserve">
     <value>GUID</value>
@@ -132,6 +150,9 @@
   <data name="HdrWindowsVersion" xml:space="preserve">
     <value>Windows</value>
   </data>
+  <data name="LblArchives" xml:space="preserve">
+    <value>Archives</value>
+  </data>
   <data name="LblGuid" xml:space="preserve">
     <value>GUID</value>
   </data>
@@ -140,6 +161,18 @@
   </data>
   <data name="LblServerName" xml:space="preserve">
     <value>Server</value>
+  </data>
+  <data name="LblStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="LblTelemetricData" xml:space="preserve">
+    <value>Telemetric data</value>
+  </data>
+  <data name="LblWindowsVersion" xml:space="preserve">
+    <value>Windows</value>
+  </data>
+  <data name="MsgEmptyAlertList" xml:space="preserve">
+    <value>You have no alerts.</value>
   </data>
   <data name="TabGenericData" xml:space="preserve">
     <value>Generic Data</value>

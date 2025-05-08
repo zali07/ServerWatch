@@ -60,6 +60,8 @@
     <Folder Include="Stored Procedures" />
     <Folder Include="Security" />
     <Folder Include="Scripts" />
+    <Folder Include="Types" />
+    <Folder Include="Synonyms" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Servers.sql" />
@@ -69,8 +71,17 @@
     <Build Include="Tables\Config.sql" />
     <Build Include="Tables\GeneralData.sql" />
     <Build Include="Stored Procedures\spGetServer.sql" />
+    <Build Include="Stored Procedures\spSaveServer.sql" />
+    <Build Include="Types\ServerType.sql" />
+    <Build Include="Synonyms\svUser.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Config.data.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <SqlCmdVariable Include="AuthorizationDb">
+      <DefaultValue>authorization</DefaultValue>
+      <Value>$(SqlCmdVar__1)</Value>
+    </SqlCmdVariable>
   </ItemGroup>
 </Project>

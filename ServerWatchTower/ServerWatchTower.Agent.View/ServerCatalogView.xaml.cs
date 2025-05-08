@@ -7,7 +7,7 @@
     using Telerik.Windows.Controls;
 
     /// <summary>
-    /// The view of the Partner catalog.
+    /// The view of the Server catalog.
     /// </summary>
     [Export("ServerWatchTower.Agent.ServerCatalogView"), PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class ServerCatalogView : SilverViewBase

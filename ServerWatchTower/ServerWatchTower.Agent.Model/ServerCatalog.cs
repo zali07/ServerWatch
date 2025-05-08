@@ -75,9 +75,9 @@ namespace ServerWatchTower.Agent.Model
         /// <returns>A task with its result being the data item loaded from the database.</returns>
         protected override async Task<Server> StartLoadingData(string dataKey)
         {
-            var partner = await this.AgentDataService.GetServerAsync(dataKey);
+            var server = await this.AgentDataService.GetServerAsync(dataKey);
 
-            return partner;
+            return server;
         }
 
         /// <summary>

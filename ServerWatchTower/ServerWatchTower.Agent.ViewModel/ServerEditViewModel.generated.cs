@@ -103,6 +103,15 @@ namespace ServerWatchTower.Agent.ViewModel
             private set;
         }
 
+        /// <summary>
+        /// Gets the command of saving the changes made to the item and closing the editing View.
+        /// </summary>
+        public DelegateCommand SaveAndCloseCommand
+        {
+            get;
+            private set;
+        }
+
         #endregion
 
         /// <summary>
@@ -247,6 +256,7 @@ namespace ServerWatchTower.Agent.ViewModel
         private void BuildCommands()
         {
             this.RefreshCommand = new DelegateCommand(this.ExecuteRefresh, this.CanExecuteRefresh);
+            this.SaveAndCloseCommand = new DelegateCommand(this.ExecuteSaveAndClose, this.CanExecuteSaveAndClose);
         }
 
         /// <summary>
@@ -255,6 +265,7 @@ namespace ServerWatchTower.Agent.ViewModel
         private void RefreshCommandState()
         {
             this.RefreshCommand.RaiseCanExecuteChanged();
+            this.SaveAndCloseCommand.RaiseCanExecuteChanged();
         }
 
         /// <summary>
@@ -444,6 +455,27 @@ namespace ServerWatchTower.Agent.ViewModel
         /// Executes the <see cref="RefreshCommand"/> by ...
         /// </summary>
         private void ExecuteRefresh()
+        {
+            //// TODO: implement this
+        }
+
+        */
+
+        /* Command stubs: SaveAndCloseCommand
+
+        /// <summary>
+        /// Checks whether the <see cref="SaveAndCloseCommand"/> can currently be executed.
+        /// </summary>
+        /// <returns>True when the command can be executed; false otherwise.</returns>
+        private bool CanExecuteSaveAndClose()
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Executes the <see cref="SaveAndCloseCommand"/> by ...
+        /// </summary>
+        private void ExecuteSaveAndClose()
         {
             //// TODO: implement this
         }

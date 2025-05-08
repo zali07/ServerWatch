@@ -44,34 +44,38 @@
         /// <inheritdoc/>
         protected override async Task OnLoadAsync()
         {
+            this.IsReadOnly = true;
 
             if (this.IsDisposed) { return; }
 
             if (this.OpenArgs != null)
             {
-
+                await this.LoadItemAsync(this.OpenArgs.SelectedServerGUID);
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(this.OpenArgs));
             }
 
-            // display the view at this point
-            await this.View.DisplayAsync();
+            this.IsReadOnly = false;
         }
 
         /// <summary>
         /// Loads the <see cref="Item"/> which will be edited on the view from the <see cref="Catalog"/> asynchronously.
         /// </summary>
-        /// <param name="partnerGuid">The <see cref="ServerE.GUID"/> of the server to edit.</param>
+        /// <param name="serverGuid">The <see cref="ServerE.GUID"/> of the server to edit.</param>
         /// <returns>The <see cref="Task"/> which will load the <see cref="Item"/> asynchronously.</returns>
-        private async Task LoadItemAsync(string partnerGuid)
+        private async Task LoadItemAsync(string serverGuid)
         {
             ServerE editableItem;
 
-            if (partnerGuid != null)
+            if (serverGuid != null)
             {
-                editableItem = await this.Catalog.GetEditableItemAsync(partnerGuid);
+                editableItem = await this.Catalog.GetEditableItemAsync(serverGuid);
             }
             else
             {
-                throw new ArgumentNullException(nameof(partnerGuid));
+                throw new ArgumentNullException(nameof(serverGuid));
             }
 
             if (this.IsDisposed) { return; }
@@ -85,7 +89,7 @@
         /// Checks whether the <see cref="SaveAndCloseCommand"/> can currently be executed.
         /// </summary>
         /// <returns>True when the command can be executed; false otherwise.</returns>
-        private bool CanExecuteSaveAndClose() => this.Item != null && this.IsEditable;
+        private bool CanExecuteSaveAndClose() => true;
 
         /// <summary>
         /// Executes the <see cref="SaveAndCloseCommand"/> by ...
@@ -132,7 +136,7 @@
         private async Task<bool> SaveServerAsync(bool reloadItemAfterSave)
         {
             bool retry;
-            string partnerCui = null;
+            string serverGUID = null;
 
             this.Item.Sanitize();
 
@@ -146,11 +150,11 @@
 
                     this.IsReadOnly = true;
 
-                    partnerCui = await this.Catalog.SaveItemAsync(this.Item);
+                    serverGUID = await this.Catalog.SaveItemAsync(this.Item);
 
                     // we have to indicate to the parent form that changes have been made to the server
                     this.View.DialogResult = true;
-                    this.View.ViewResult = partnerCui;
+                    this.View.ViewResult = serverGUID;
                 }
                 catch (IgnorableValidationException exc)
                 {
@@ -168,26 +172,6 @@
                         }
 
                         return false;
-                    }
-                    else
-                    {
-                        // providing the option to skip the ignorable validations
-                        var view = this.Application.CreateView("Cosys.SilverERP.Core.IgnorableValidationErrorView", exc.Message);
-
-                        if (view.ShowDialog() == true)
-                        {
-                            this.Item.SkipIgnorableValidations = true;
-                            retry = true;
-                        }
-                        else
-                        {
-                            if (!string.IsNullOrEmpty(exc.MemberName))
-                            {
-                                this.FocusControlOfProperty(exc.MemberName);
-                            }
-
-                            return false;
-                        }
                     }
                 }
                 catch (ValidationException exc)
@@ -226,9 +210,9 @@
             }
             while (retry);
 
-            if (reloadItemAfterSave && partnerCui != null)
+            if (reloadItemAfterSave && serverGUID != null)
             {
-                await this.LoadItemAsync(partnerCui);
+                await this.LoadItemAsync(serverGUID);
             }
 
             // saving succeeded

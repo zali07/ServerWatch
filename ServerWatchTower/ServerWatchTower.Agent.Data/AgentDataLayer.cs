@@ -10,7 +10,6 @@
     using System.Data.SqlClient;
     using System.Threading;
     using System.Xml;
-    using System.Security.Cryptography.X509Certificates;
 
     /// <summary>
     /// The specialized <see cref="DataLayer"/> for the Agent module of ServerWatchTower.
@@ -144,11 +143,10 @@
                 if (_serverSqlType == null)
                 {
                     var s = new DataRecordEnumerator<ServerE>(
-                        "dbo.dtPartnerMappingDeliveryLocationType",
+                        "dbo.ServerType",
                         new[]
                         {
-                            new SqlMetaData("Id", SqlDbType.Int),
-                            new SqlMetaData("GUID", SqlDbType.Int),
+                            new SqlMetaData("GUID", SqlDbType.NVarChar, 36),
                             new SqlMetaData("PublicKey", SqlDbType.NVarChar, -1),
                             new SqlMetaData("Partner", SqlDbType.NVarChar, -1),
                             new SqlMetaData("Server", SqlDbType.NVarChar, -1),
@@ -157,13 +155,12 @@
                         },
                         (record, item, index) =>
                         {
-                            record.SetValue(0, item.Id);
-                            record.SetValue(1, DbNull(item.GUID, false));
-                            record.SetValue(2, DbNull(item.PublicKey, false));
-                            record.SetValue(3, DbNull(item.Partner, false));
-                            record.SetValue(4, DbNull(item.ServerName, false));
-                            record.SetValue(5, DbNull(item.Windows, false));
-                            record.SetValue(6, item.Flag);
+                            record.SetValue(0, item.GUID);
+                            record.SetValue(1, DbNull(item.PublicKey, false));
+                            record.SetValue(2, DbNull(item.Partner, false));
+                            record.SetValue(3, DbNull(item.ServerName, false));
+                            record.SetValue(4, DbNull(item.Windows, false));
+                            record.SetValue(5, item.Flag);
                         }
                     );
 
@@ -220,10 +217,10 @@
         }
 
         /// <summary>
-        /// Loads the data of a specific <see cref="PartnerMapping"/> from the database.
+        /// Loads the data of a specific <see cref="Server"/> from the database.
         /// </summary>
-        /// <param name="serverGuid">The <see cref="PartnerMapping.Cui"/> of the <see cref="PartnerMapping"/> to be loaded.</param>
-        /// <returns>The appropriate <see cref="Partner"/>, or <c>null</c> when the partner has not been found in the database.</returns>
+        /// <param name="serverGuid">The <see cref="Server.GUID"/> of the <see cref="Server"/> to be loaded.</param>
+        /// <returns>The appropriate <see cref="Server"/>, or <c>null</c> when the server has not been found in the database.</returns>
         public Server GetServer(string serverGuid)
         {
             if (serverGuid == null)
@@ -233,7 +230,7 @@
 
             using (var cmd = this.CreateCommand("[dbo].[spGetServer]"))
             {
-                cmd.Parameters.Add("@GUID", SqlDbType.NVarChar, 32).Value = serverGuid;
+                cmd.Parameters.Add("@GUID", SqlDbType.NVarChar, 36).Value = serverGuid;
 
                 using (var r = cmd.ExecuteReader(CommandBehavior.SingleResult | CommandBehavior.SingleRow))
                 {
@@ -244,13 +241,13 @@
 
                     return new Server()
                     {
-                        Id = r.GetInt32(r.GetOrdinal("Id")),
                         GUID = r.GetNString(r.GetOrdinal("GUID")),
                         PublicKey= r.GetNTrimmedString(r.GetOrdinal("PublicKey")),
                         Partner = r.GetNTrimmedString(r.GetOrdinal("Partner")),
                         ServerName = r.GetNString(r.GetOrdinal("Server")),
                         Windows = r.GetNTrimmedString(r.GetOrdinal("Windows")),
                         Flag = r.GetInt32(r.GetOrdinal("Flag")),
+                        State = r.GetNTrimmedString(r.GetOrdinal("State")),
                     };
                 }
             }
@@ -274,13 +271,13 @@
 
                 using (var r = cmd.ExecuteReader(CommandBehavior.SingleResult))
                 {
-                    int idField = r.GetOrdinal("Id");
                     int guidField = r.GetOrdinal("GUID");
                     int publicKeyField = r.GetOrdinal("PublicKey");
                     int partnerField = r.GetOrdinal("Partner");
                     int serverNameField = r.GetOrdinal("Server");
                     int windowsField = r.GetOrdinal("Windows");
                     int flagField = r.GetOrdinal("Flag");
+                    int stateField = r.GetOrdinal("State");
 
                     var nameTable = new NameTable();
 
@@ -288,13 +285,13 @@
                     {
                         result.Add(new Server()
                         {
-                            Id = r.GetInt32(idField),
-                            GUID = r.GetNString(guidField),
+                            GUID = r.GetNTrimmedString(guidField),
                             PublicKey = r.GetNTrimmedString(publicKeyField),
                             Partner = r.GetNTrimmedString(partnerField),
                             ServerName = r.GetNString(serverNameField),
                             Windows = r.GetNTrimmedString(windowsField),
                             Flag = r.GetInt32(flagField),
+                            State = r.GetNTrimmedString(stateField),
                         });
                     }
                 }
@@ -323,9 +320,9 @@
 
             ServerE server;
 
-            using (var cmd = this.CreateCommand("[dbo].[dsAgPartnerMappingLoad]"))
+            using (var cmd = this.CreateCommand("[dbo].[spGetServer]"))
             {
-                cmd.Parameters.Add("@CUI", SqlDbType.NVarChar, 15).Value = serverGuid;
+                cmd.Parameters.Add("@GUID", SqlDbType.NVarChar, 36).Value = serverGuid;
 
                 using (var r = cmd.ExecuteReader())
                 {
@@ -336,11 +333,10 @@
 
                     server = new ServerE()
                     {
-                        Id = r.GetInt32(r.GetOrdinal("Id")),
                         GUID = r.GetNString(r.GetOrdinal("GUID")),
                         PublicKey = r.GetNTrimmedString(r.GetOrdinal("PublicKey")),
                         Partner = r.GetNTrimmedString(r.GetOrdinal("Partner")),
-                        ServerName = r.GetNString(r.GetOrdinal("ServerName")),
+                        ServerName = r.GetNString(r.GetOrdinal("Server")),
                         Windows = r.GetNTrimmedString(r.GetOrdinal("Windows")),
                         Flag = r.GetInt32(r.GetOrdinal("Flag")),
                     };
@@ -365,7 +361,7 @@
 
             using (var cmd = this.CreateCommand("[dbo].[spSaveServer]"))
             {
-                var serverGUIDParam = cmd.Parameters.Add("@GUID", SqlDbType.Int);
+                var serverGUIDParam = cmd.Parameters.Add("@GUID", SqlDbType.NVarChar, 36);
                 serverGUIDParam.Direction = ParameterDirection.Output;
 
                 var serverList = new List<ServerE> { server };

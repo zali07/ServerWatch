@@ -78,7 +78,7 @@ namespace ServerWatchTower.Agent.Model
         {
             if (!this.isContextSet)
             {
-                throw new InvalidOperationException(Resource.ExcServerContextNotSet);
+                throw new InvalidOperationException(Res.ExcServerContextNotSet);
             }
 
             if (!this.areItemEventsRegistered)
