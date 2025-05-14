@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Media.Imaging;
+using Telerik.Windows.Controls;
 
 namespace ServerWatchTower
 {
@@ -47,6 +48,8 @@ namespace ServerWatchTower
             base.SetUpApplicationTheme();
 
             Telerik.Windows.Controls.RadRibbonWindow.IsWindowsThemeEnabled = false;
+
+            StyleManager.ApplicationTheme = new Office_BlackTheme();
         }
 
         /// <summary>
@@ -58,10 +61,6 @@ namespace ServerWatchTower
         protected override List<Type> GetCoreCompositionTypes(IConnectionProvider connectionProvider)
         {
             var types = base.GetCoreCompositionTypes(connectionProvider);
-
-            //types.Add(typeof(ServerWatchTower.Data.StartPageDataService));
-            //types.Add(typeof(ServerWatchTower.View.StartPageView));
-            //types.Add(typeof(ServerWatchTower.View.StartPageViewModel));
 
             types.Add(typeof(Cosys.SilverLib.View.TelerikReports.TelerikReportHandler));
 

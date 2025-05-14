@@ -19,7 +19,7 @@
             </ResourceDictionary.MergedDictionaries>
             
             <local:DateTimeSimplifyConverter x:Key="DateTimeSimplifyConverter"/>
-            <local:NoteTypeToIconConverter x:Key="NoteTypeToIconConverter"/>
+            <local:AlertTypeToIconConverter x:Key="AlertTypeToIconConverter"/>
         </ResourceDictionary>
     </swtower:SilverViewBase.Resources>
 
@@ -67,16 +67,15 @@
                        Visibility="{Binding ShowHistory, Converter={StaticResource SilverVisibilityConverter}, ConverterParameter=True}"
                        d:Visibility="Hidden"/>
 
-            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right"
-                        Visibility="{Binding ShowNotifications, Converter={StaticResource SilverVisibilityConverter}, ConverterParameter=True}">
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
                 <swtower:CircularProgressBar Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,5,3"
                     x:FieldModifier="private" Name="ProgressBar" Width="18" Height="18"
                     Visibility="{Binding IsLoadingArchive, Converter={StaticResource SilverVisibilityConverter}, ConverterParameter=True}"/>
 
                 <TextBlock Grid.Row="1" FontSize="14" Margin="0,0,10,0" FontFamily="Microsoft Sans Serif" 
-                           HorizontalAlignment="Right" VerticalAlignment="Center">
+                           HorizontalAlignment="Right" VerticalAlignment="Center" Visibility="{Binding ShowAlerts, Converter={StaticResource SilverVisibilityConverter}, ConverterParameter=True}">
                     <Hyperlink Command="{Binding OpenHistoryCommand}" Foreground="#FF5684A9"
-                                TextDecorations="None" Focusable="False">
+                               TextDecorations="None" Focusable="False">
                         <Run Text="{x:Static Member=res:UIRes.LblArchives}"/>
                     </Hyperlink>
                 </TextBlock>
@@ -97,7 +96,7 @@
             </Border>
 
             <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Disabled" Focusable="False">
-                <ItemsControl  ItemsSource="{Binding StartPageNotes}" Focusable="False">
+                <ItemsControl  ItemsSource="{Binding Alerts}" Focusable="False">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <telerik:RadExpander IsExpanded="True" BorderThickness="1"  BorderBrush="{StaticResource SilverBorderBrush}"
@@ -111,7 +110,7 @@
                                         </Grid.ColumnDefinitions>
 
                                         <Image Grid.Column="0" Width="16" Height="16" Margin="0,0,5,0"
-                                               Source="{Binding Type, Converter={StaticResource NoteTypeToIconConverter}}"/>
+                                               Source="{Binding Type, Converter={StaticResource AlertTypeToIconConverter}}"/>
                                         <TextBlock Grid.Column="1" FontWeight="Bold" FontSize="14" Text="{Binding Title}"/>
                                         <TextBlock Grid.Column="2" FontWeight="Bold" FontSize="14" HorizontalAlignment="Right"
                                                    Text="{Binding Date, Converter={StaticResource DateTimeSimplifyConverter}}"/>
@@ -121,10 +120,10 @@
                                     <StackPanel Background="White">
                                         <TextBlock VerticalAlignment="Center" TextWrapping="Wrap" Margin="5" FontSize="14"
                                                    swtower:TextBlockWithMarkupExtension.InteractiveText="{Binding Message}"/>
-                                        <StackPanel Orientation="Horizontal" Visibility="{Binding DataContext.ShowNotifications, RelativeSource={RelativeSource AncestorType=ItemsControl}, Converter={StaticResource SilverVisibilityConverter}, ConverterParameter=True}">
+                                        <StackPanel Orientation="Horizontal" Visibility="{Binding DataContext.ShowAlerts, RelativeSource={RelativeSource AncestorType=ItemsControl}, Converter={StaticResource SilverVisibilityConverter}, ConverterParameter=True}">
                                             <Button Content="OK" Width="40" Height="22" Margin="5"
                                                     CommandParameter="{Binding}" 
-                                                    Command="{Binding DataContext.AcknowledgeNoteCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"/>
+                                                    Command="{Binding DataContext.AcknowledgeAlertCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"/>
                                         </StackPanel>
                                         <TextBlock VerticalAlignment="Center" TextWrapping="Wrap" Margin="5" FontWeight="Bold" FontSize="14" Text="{Binding AckStatus}"
                                                    Visibility="{Binding DataContext.ShowHistory, RelativeSource={RelativeSource AncestorType=ItemsControl}, Converter={StaticResource SilverVisibilityConverter}, ConverterParameter=True}"/>

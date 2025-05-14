@@ -156,7 +156,7 @@
                 if (this.viewState != value)
                 {
                     this.viewState = value;
-                    this.NotifyChangeOf(nameof(this.Alerts));
+                    this.NotifyChangeOf(nameof(this.ShowAlerts));
                     this.NotifyChangeOf(nameof(this.ShowHistory));
                 }
             }

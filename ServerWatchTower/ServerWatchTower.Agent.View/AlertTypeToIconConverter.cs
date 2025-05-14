@@ -5,7 +5,7 @@
     using System.Globalization;
     using System.Windows.Data;
 
-    public class NoteTypeToIconConverter : IValueConverter
+    public class AlertTypeToIconConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

@@ -196,6 +196,8 @@
             }
         }
 
+        #region Server
+
         /// <summary>
         /// Deletes the server for the specified GUID.
         /// </summary>
@@ -372,5 +374,92 @@
                 return (serverGUIDParam.Value != DBNull.Value) ? Convert.ToString(serverGUIDParam.Value) : string.Empty;
             }
         }
+
+        #endregion Server
+
+        #region Alert
+
+        /// <summary>
+        /// Loads the <see cref="Alert"/>s from the database.
+        /// </summary>
+        /// <returns>The list of the appropriate <see cref="Alert"/> instances.</returns>
+        public List<Alert> GetAlerts()
+        {
+            var result = new List<Alert>();
+
+            using (var cmd = this.CreateCommand("[dbo].[spListAlerts]"))
+            using (var r = cmd.ExecuteReader(CommandBehavior.SingleResult))
+            {
+                this.ReadAlerts(r, result);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Loads the <see cref="Alert"/>s history from the database.
+        /// </summary>
+        /// <returns>The list of the appropriate <see cref="Alert"/> instances.</returns>
+        public List<Alert> GetAlertsHistory()
+        {
+            var result = new List<Alert>();
+
+            using (var cmd = this.CreateCommand("[dbo].[spListAlertsHistory]"))
+            using (var r = cmd.ExecuteReader(CommandBehavior.SingleResult))
+            {
+                this.ReadAlerts(r, result);
+            }
+
+            return result;
+        }
+
+        private void ReadAlerts(SqlDataReader r, List<Alert> result)
+        {
+
+            if (!r.HasRows)
+            {
+                return;
+            }
+
+            int idField = r.GetOrdinal("Id");
+            int titleField = r.GetOrdinal("Title");
+            int messageField = r.GetOrdinal("Message");
+            int dateField = r.GetOrdinal("Date");
+            int expirationDateField = r.GetOrdinal("ExpirationDate");
+            int typeField = r.GetOrdinal("Type");
+            int rightField = r.GetOrdinal("AccessRight");
+            int ackDateField = r.GetOrdinal("AckDate");
+
+            while (r.Read())
+            {
+                result.Add(new Alert()
+                {
+                    Id = r.GetInt32(idField),
+                    Title = r.GetTrimmedString(titleField),
+                    Message = r.GetNString(messageField),
+                    Date = r.GetDateTime(dateField),
+                    ExpirationDate = r.GetNDateTime(expirationDateField),
+                    AcknowledgedOn = r.GetNDateTime(ackDateField),
+                    Type = (AlertType)r.GetString(typeField)[0],
+                    AccessRights = r.GetNString(rightField)?.Split(',').TrimElements(),
+                });
+            }
+        }
+
+        /// <summary>
+        /// Saves that the user has acknowledged an alert from the alert view.
+        /// </summary>
+        /// <param name="alertId">The identifier of the note being acknowledged.</param>
+        public void AcknowledgeAlert(int alertId)
+        {
+            using (var cmd = this.CreateCommand("[dbo].[spAcknowledgeAlert]"))
+            {
+                cmd.Parameters.AddWithValue("@alertId", alertId);
+
+                this.ExecuteNonQuery(cmd);
+            }
+        }
+
+        #endregion Alert
     }
 }

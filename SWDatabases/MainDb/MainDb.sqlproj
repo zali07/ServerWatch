@@ -62,6 +62,7 @@
     <Folder Include="Scripts" />
     <Folder Include="Types" />
     <Folder Include="Synonyms" />
+    <Folder Include="Triggers" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Servers.sql" />
@@ -74,6 +75,18 @@
     <Build Include="Stored Procedures\spSaveServer.sql" />
     <Build Include="Types\ServerType.sql" />
     <Build Include="Synonyms\svUser.sql" />
+    <Build Include="Stored Procedures\spListAlertsHistory.sql" />
+    <Build Include="Stored Procedures\spAcknowledgeAlert.sql" />
+    <Build Include="Stored Procedures\spListAlerts.sql" />
+    <Build Include="Tables\Alerts.sql" />
+    <Build Include="Tables\AlertsAck.sql" />
+    <Build Include="Stored Procedures\sp_CheckAlerts.sql" />
+    <Build Include="Tables\MirroringEntries.sql" />
+    <Build Include="Tables\DriverEntries.sql" />
+    <Build Include="Triggers\trg_SemaphoreOnDriverEntry.sql" />
+    <Build Include="Triggers\trg_SemaphoreOnMirroringEntry.sql" />
+    <Build Include="Tables\ServerSemaphores.sql" />
+    <Build Include="Triggers\trg_InsertAlertOnSemaphoreChange.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Config.data.sql" />

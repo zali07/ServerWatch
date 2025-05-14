@@ -78,7 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DateTimeSimplifyConverter.cs" />
-    <Compile Include="NoteTypeToIconConverter.cs" />
+    <Compile Include="AlertTypeToIconConverter.cs" />
     <Compile Include="ServerEditView.xaml.cs">
       <DependentUpon>ServerEditView.xaml</DependentUpon>
     </Compile>

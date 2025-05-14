@@ -9,6 +9,8 @@
     /// </summary>
     public interface IAgentDataService
     {
+        #region Server
+
         /// <summary>
         /// Deletes the server asynchronously.
         /// </summary>
@@ -46,5 +48,27 @@
         /// </summary>
         /// <param name="server">The data of the server to be saved in an editable <see cref="ServerE"/> instance.</param>
         Task<string> SaveServerAsync(ServerE server);
+
+        #endregion Server
+
+        #region Alert
+
+        /// <summary>
+        /// Starts a task of loading the list of the current alerts from the database.
+        /// </summary>
+        Task<List<Alert>> GetAlertsAsync();
+
+        /// <summary>
+        /// Starts a task of loading the list of the alerts history from the database.
+        /// </summary>
+        Task<List<Alert>> GetAlertsHistoryAsync();
+
+        /// <summary>
+        /// Acknowledges the alert with the specified ID asynchronously.
+        /// </summary>
+        /// <param name="alertId"></param>
+        Task AcknowledgeAlertAsync(int alertId);
+
+        #endregion Alert
     }
 }

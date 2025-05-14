@@ -12,7 +12,7 @@ namespace ServerWatchWS.Controllers
     {
         private readonly ApplicationDbContext _context = context;
 
-        private readonly string downloadUrl = "http://192.168.1.138:5000/downloads/ServerWatchAgent.exe";
+        private readonly string downloadUrl = "http://192.168.1.128:5000/downloads/ServerWatchAgent.exe";
 
         [HttpGet("getAgentUpdateInfo")]
         public async Task<IActionResult> GetUpdateInfo()
