@@ -5,7 +5,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    DECLARE @Now smalldatetime = GETUTCDATE();
+    DECLARE @Now smalldatetime = GETDATE();
 
     INSERT INTO dbo.Alerts ([Key], Title, Message, Date, Type)
     SELECT 
@@ -29,4 +29,15 @@ BEGIN
     WHERE 
         i.Status <> d.Status -- Only if status actually changed
         AND i.Status IN (1, 2); -- Only log if it's a warning or error
+
+    UPDATE a
+    SET a.Flag = 1 -- Cancelled
+    FROM dbo.Alerts a
+        JOIN inserted i ON a.[Key] = i.ServerGUID + '-' + i.Component
+        JOIN deleted d ON i.Id = d.Id
+    WHERE 
+        i.Status = 0
+        AND d.Status IN (1, 2) -- Previous was degraded
+        AND a.Flag = 0
+        AND a.Type IN ('W', 'E');
 END

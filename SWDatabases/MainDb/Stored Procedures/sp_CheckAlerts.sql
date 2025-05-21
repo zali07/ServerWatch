@@ -2,7 +2,7 @@
 AS
 BEGIN
     SET NOCOUNT ON;
-    DECLARE @Now smalldatetime = GETUTCDATE();
+    DECLARE @Now smalldatetime = GETDATE();
 
     -- Ensure required components exist per approved server
     INSERT INTO dbo.ServerSemaphores (ServerGUID, Component, Status, Message)

@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[Alerts]
 (
 	[Id]              int IDENTITY(1, 1) NOT NULL	PRIMARY KEY,
-	[Key]             nvarchar(32)       NULL,
+	[Key]             nvarchar(64)       NULL,
     [Title]           nvarchar(50)       NOT NULL,
     [Message]         nvarchar(MAX)      NOT NULL,
 	[Info]            nvarchar(MAX)      NULL,

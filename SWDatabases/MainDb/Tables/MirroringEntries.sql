@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[MirroringEntries]
 (
 	[Id]					int IDENTITY(1,1)	NOT NULL PRIMARY KEY,
-	[ServerGUID]			nvarchar(36)		NULL,
+	[ServerGUID]			nvarchar(36)		NOT NULL,
 	[DatabaseName]			nvarchar(64)		NULL,
 	[Role]					int					NULL,
 	[MirroringState]		int					NULL,

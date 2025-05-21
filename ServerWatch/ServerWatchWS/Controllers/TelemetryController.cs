@@ -1,7 +1,5 @@
-﻿using CosysLib.ExceptionManagement;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using ServerWatchWS.Data;
 using ServerWatchWS.Model;
@@ -10,9 +8,15 @@ namespace ServerWatchWS.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TelemetryController(ApplicationDbContext context) : Controller
+    public class TelemetryController : Controller
     {
-        private readonly ApplicationDbContext _context = context;
+        private readonly DataLayer _dataLayer;
+
+        public TelemetryController(IConfiguration configuration)
+        {
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            _dataLayer = new DataLayer(connectionString!);
+        }
 
         [HttpPost("postDriverData")]
         public async Task<IActionResult> PostDriverData()
@@ -26,8 +30,7 @@ namespace ServerWatchWS.Controllers
                 entry.TS = DateTime.UtcNow;
             }
 
-            _context.DriverEntries.AddRange(entries!);
-            await _context.SaveChangesAsync();
+            await _dataLayer.InsertDriverEntriesAsync(entries!);
 
             return Ok();
         }
@@ -44,10 +47,9 @@ namespace ServerWatchWS.Controllers
                 entry.TS = DateTime.UtcNow;
             }
 
-            _context.MirroringEntries.AddRange(entries!);
-            await _context.SaveChangesAsync();
+            await _dataLayer.InsertMirroringEntriesAsync(entries!);
 
-            return Ok("Data inserted successfully.");
+            return Ok();
         }
 
         private async Task<(IActionResult? result, List<T>? data, string? guid)> AuthenticateAndParseRequest<T>() where T : class
@@ -85,7 +87,8 @@ namespace ServerWatchWS.Controllers
                 return (Unauthorized("Missing server guid."), null, null);
             }
 
-            var server = await _context.Servers.FirstOrDefaultAsync(s => s.GUID == guid);
+            var server = await _dataLayer.GetServerByGUID(guid);
+
             if (server == null)
             {
                 return (Unauthorized("Unknown agent."), null, null);

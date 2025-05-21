@@ -87,6 +87,10 @@
     <Build Include="Triggers\trg_SemaphoreOnMirroringEntry.sql" />
     <Build Include="Tables\ServerSemaphores.sql" />
     <Build Include="Triggers\trg_InsertAlertOnSemaphoreChange.sql" />
+    <Build Include="Stored Procedures\spInsertDriverEntries.sql" />
+    <Build Include="Types\DriverEntryTableType.sql" />
+    <Build Include="Stored Procedures\spInsertMirroringEntries.sql" />
+    <Build Include="Types\MirroringEntryTableType.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Config.data.sql" />

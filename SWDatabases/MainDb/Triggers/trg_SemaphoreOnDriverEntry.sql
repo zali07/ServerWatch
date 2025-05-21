@@ -29,7 +29,7 @@ BEGIN
         THEN UPDATE SET 
             target.Status = src.NewStatus,
             target.Message = ISNULL(src.Problem, 'OK'),
-            target.UpdatedAt = GETUTCDATE()
+            target.UpdatedAt = GETDATE()
     WHEN NOT MATCHED
         THEN INSERT (ServerGUID, Component, Status, Message)
              VALUES (src.ServerGUID, 'Driver', src.NewStatus, ISNULL(src.Problem, 'OK'));
