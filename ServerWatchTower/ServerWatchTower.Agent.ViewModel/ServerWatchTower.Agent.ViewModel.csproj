@@ -81,7 +81,14 @@
       <DependentUpon>ServerCatalogViewModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AlertViewModel.cs" />
+    <Compile Include="AlertsViewModel.cs">
+      <DependentUpon>AlertsViewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AlertsViewModel.generated.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AlertsViewModel.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -95,6 +102,10 @@
     <Content Include="ServerCatalogViewModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ServerCatalogViewModel.generated.cs</LastGenOutput>
+    </Content>
+    <Content Include="AlertsViewModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AlertsViewModel.generated.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>

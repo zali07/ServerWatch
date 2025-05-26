@@ -1,0 +1,30 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".generated.cs" #>
+<#@ include file="$(SolutionDir)Templates\ViewModelClass.tt" #>
+<#+
+
+string ModuleName = "Agent";
+
+string ViewName = "Alerts";
+
+string ClassComment = @"The view model class of the Server Alerts.";
+
+List<PropertyBase> Properties = new List<PropertyBase>()
+{
+	new ModuleConfigProperty(),
+	new ModuleRightsProperty(),
+
+	new ImportServiceProperty("IAgentDataService", "AgentDataService", "Gets or sets the <see cref=\"IAgentDataService\"/> implementation to be used by the view model."),
+
+	new BitProperty(Access.ReadOnly, "IsCurrentListEmpty", @"Gets or sets the property which represents whether the current list in view is empty."),
+	new BitProperty(Access.ReadOnly, "IsLoadingArchive", @"Gets or sets the property which represents whether the archive is currently loading."),
+
+	new CommandProperty("OpenContractCommand", true, @"Gets the open contract command."),
+	new CommandProperty("AcknowledgeAlertCommand", true, @"Gets the command of acknowledging and hiding an alert on the alert view."),
+	new CommandProperty("OpenHistoryCommand", true, @"Gets the command of opening the alerts history."),
+	new CommandProperty("RefreshCommand", @"Gets the command of refreshing the content of the view."),
+};
+
+InitializationType InitializationType = InitializationType.Default;
+
+#>
