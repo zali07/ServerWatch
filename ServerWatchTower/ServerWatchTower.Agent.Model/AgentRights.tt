@@ -1,0 +1,15 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".generated.cs" #>
+<#@ include file="$(SolutionDir)Templates\ModuleRightsClass.tt" #>
+<#+
+
+string ModuleName = "Agent";
+
+string ClassName = "AgentRights";
+
+List<RightProperty> Rights = new List<RightProperty>()
+{
+
+};
+
+#>

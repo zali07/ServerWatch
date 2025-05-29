@@ -1,0 +1,42 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".generated.cs" #>
+<#@ include file="$(SolutionDir)Templates\ViewModelClass.tt" #>
+<#+
+
+string ModuleName = "Agent";
+
+string ViewName = "ServerCatalog";
+
+string ClassComment = @"The view model class of the Server Catalog.";
+
+List<PropertyBase> Properties = new List<PropertyBase>()
+{
+	new OpenArgsProperty("ServerCatalogViewArgs", false),
+
+	new ModuleConfigProperty(),
+	new ModuleRightsProperty(),
+
+
+	new ImportCatalogProperty("Agent", "ServerCatalog", "Catalog"),
+
+	new BackgroundLoaderProperty("ServerCatalogFilterArgs", "SynchronizationResult", "ContentLoader", 400,
+		@"The background loader which will load the partners corresponding to the filtering criteria from the database into the <see cref=""Content""/> collection."),
+
+	new ImportServiceProperty("IAgentDataService", "AgentDataService", "Gets or sets the <see cref=\"IAgentDataService\"/> implementation to be used by the view model."),
+
+	new SimpleActionProperty(Access.Public, "string", "QuickFilter", "", @"Gets or sets the quick filtering condition of the <see cref=""Content""/> collection view, which will only include the items which contain the text of this property."),
+
+	new BitProperty(Access.ReadOnly, "IsInSelectionMode", @"Gets a value indicating whether the catalog has been opened in selection mode."),
+	new BitProperty(Access.ReadOnly, "IsItemEditable", @"Gets a value indicating whether the currently selected item of the catalog can be edited."),
+	new BitProperty(Access.ReadOnly, "IsSelectablesOnlyFilterAvailable", @"Gets a value indicating whether the <see cref=""SelectablesOnly""/> filtering property is available and can be set for the current instance of the catalog."),
+	new BitActionProperty(Access.Public, "SelectablesOnly", @"Gets or sets a value indicating whether only the items available for selection should be displayed in the catalog."),
+
+	new CommandProperty("RefreshCommand", @"Gets the command of refreshing the content of the catalog."),
+	new CommandProperty("OpenItemCommand", @"Gets the command which starts editing the currently selected item from the catalog."),
+	new CommandProperty("SelectItemCommand", @"Gets the command of selecting the current item and returning it to the caller ComboBox."),
+	new CommandProperty("DefaultItemCommand", @"Gets the default command on the current item, which is usually bound to the item double-click event."),
+};
+
+InitializationType InitializationType = InitializationType.Default;
+
+#>

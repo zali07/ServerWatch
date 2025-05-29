@@ -1,0 +1,15 @@
+﻿<swtower:SilverApplication  x:Class="ServerWatchTower.App"
+                            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                            xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+                            xmlns:swtower="clr-namespace:Cosys.SilverLib.Shell;assembly=Cosys.SilverLib.Shell"
+                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <swtower:SilverApplication.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Cosys.SilverLib.View;Component/ConvertersResourceDictionary.xaml"/>
+                <ResourceDictionary Source="/Cosys.SilverLib.View;component/Themes/OfficeBlack/SilverResourceDictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </swtower:SilverApplication.Resources>
+</swtower:SilverApplication>

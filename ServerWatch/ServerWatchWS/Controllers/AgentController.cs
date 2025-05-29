@@ -8,11 +8,21 @@ namespace ServerWatchWS.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AgentController(ApplicationDbContext context) : Controller
+    public class AgentController : Controller
     {
-        private readonly ApplicationDbContext _context = context;
+        private readonly ApplicationDbContext _context;
+        private readonly string downloadUrl;
 
-        private readonly string downloadUrl = "http://192.168.1.138:5000/downloads/ServerWatchAgent.exe";
+        public AgentController(ApplicationDbContext context, IConfiguration configuration)
+        {
+            _context = context;
+            downloadUrl = configuration.GetValue<string>("UpdatePath")!;
+
+            if (string.IsNullOrEmpty(downloadUrl))
+            {
+                throw new InvalidOperationException("Update path is not configured.");
+            }
+        }
 
         [HttpGet("getAgentUpdateInfo")]
         public async Task<IActionResult> GetUpdateInfo()

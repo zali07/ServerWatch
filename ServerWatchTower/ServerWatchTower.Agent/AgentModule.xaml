@@ -1,0 +1,28 @@
+﻿<ModuleBase x:Class="ServerWatchTower.Agent.AgentModule"
+            xmlns="clr-namespace:Cosys.SilverLib.Core;assembly=Cosys.SilverLib.Core"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			xmlns:local="clr-namespace:ServerWatchTower.Agent"
+            xmlns:model="clr-namespace:ServerWatchTower.Agent.Model;assembly=ServerWatchTower.Agent.Model"
+            SystemName="Agent"
+            Icon="/Cosys.SilverLib.View;Component/Images/24/registry.png"
+            SmallIcon="/Cosys.SilverLib.View;Component/Images/16/registry.png">
+
+    <ModuleBase.DbDirectAssemblies>
+        <ModuleAssembly Name="ServerWatchTower.Agent.Data" PublicKeyToken="5d2be421dac4144e" />
+    </ModuleBase.DbDirectAssemblies>
+
+    <ModuleBase.ModuleAssemblies>
+        <ModuleAssembly Name="ServerWatchTower.Agent.Model" PublicKeyToken="5d2be421dac4144e" />
+        <ModuleAssembly Name="ServerWatchTower.Agent.View" PublicKeyToken="5d2be421dac4144e" />
+        <ModuleAssembly Name="ServerWatchTower.Agent.ViewModel" PublicKeyToken="5d2be421dac4144e" />
+    </ModuleBase.ModuleAssemblies>
+
+    <ModuleBase.Switchboard>
+        <SwitchboardItem Code="Servers" Name="Servers"
+                         Target="View" Contract="ServerWatchTower.Agent.ServerCatalogView"/>
+		<SwitchboardItem Code="Alerts" Name="Alerts"
+                         Target="View" Contract="ServerWatchTower.Agent.AlertsView"/>
+		<SwitchboardItem Code="Reports" Name="Reports"
+                         Target="View" Contract="ServerWatchTower.Agent.ReportsView"/>
+    </ModuleBase.Switchboard>
+</ModuleBase>

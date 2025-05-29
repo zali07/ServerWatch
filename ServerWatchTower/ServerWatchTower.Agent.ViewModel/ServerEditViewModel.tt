@@ -1,0 +1,38 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".generated.cs" #>
+<#@ include file="$(SolutionDir)Templates\ViewModelClass.tt" #>
+<#+
+
+string ModuleName = "Agent";
+
+string ViewName = "ServerEdit";
+
+string ClassComment = @"The view model class of the Server Edit.";
+
+List<PropertyBase> Properties = new List<PropertyBase>()
+{
+	new OpenArgsProperty("ServerEditViewArgs", false),
+
+	new ModuleConfigProperty(),
+	new ModuleRightsProperty(),
+
+	new ImportServiceProperty("IAgentDataService", "AgentDataService", "Gets or sets the <see cref=\"IAgentDataService\"/> implementation to be used by the view model."),
+
+	new ImportCatalogProperty("Agent", "ServerCatalog", "Catalog"),
+
+	new EditItemProperty("ServerE"),
+
+	new BitActionProperty(Access.ReadOnly, "IsReadOnly", "Gets a value indicating whether the <see cref=\"Item\"/> is read only, which happens when the user does not have the rights to update it, or it is being saved in the background."),
+	new BitNegationProperty("IsEditable", "IsReadOnly", "Gets a value indicating whether the <see cref=\"Item\"/> can be edited."),
+
+	new SimpleActionProperty(Access.Public, "int", "ViewPanelIndex", "Gets or sets the index of the panel (tab page) being selected on the view."),
+
+	new CommandProperty("RefreshCommand", @"Gets the command of refreshing the content of the catalog."),
+	new CommandProperty("SaveAndCloseCommand", "Gets the command of saving the changes made to the item and closing the editing View."),
+
+	new AllowClosingProperty()
+};
+
+InitializationType InitializationType = InitializationType.Default;
+
+#>

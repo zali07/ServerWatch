@@ -12,7 +12,7 @@ namespace ServerWatchWS.Model
         public string? ServerGUID { get; set; }
 
         [JsonPropertyName("DeviceId")]
-        public uint DeviceId { get; set; }
+        public long DeviceId { get; set; }
         
         [JsonPropertyName("FriendlyName")]
         public string? FriendlyName { get; set; }
@@ -45,10 +45,10 @@ namespace ServerWatchWS.Model
         public int? WearLevel { get; set; }
 
         [JsonPropertyName("ReadLatencyMax")]
-        public ulong? ReadLatencyMax { get; set; }
+        public decimal ReadLatencyMax { get; set; }
         
         [JsonPropertyName("WriteLatencyMax")]
-        public ulong? WriteLatencyMax { get; set; }
+        public decimal WriteLatencyMax { get; set; }
 
         [Column(TypeName = "smalldatetime")]
         public DateTime? TS { get; set; }

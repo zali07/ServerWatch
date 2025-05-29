@@ -1,0 +1,32 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".generated.cs" #>
+<#@ include file="$(SolutionDir)Templates\FreezableEquatableDataClass.tt" #>
+<#+
+
+string ModuleName = "Agent";
+
+string ClassName = "Server";
+
+string ClassComment = "Data class containing the main data of a server.";
+
+List<FieldInfo> Fields = new List<FieldInfo>()
+{
+	new FieldInfo("string", "gUID", @"The corresponding GUID of the server."),
+	new FieldInfo("string", "publicKey", @"The corresponding publicKey for the server used for authentication."),
+	new FieldInfo("string", "partner", @"The corresponding partner for the server."),
+	new FieldInfo("string", "serverName", @"The corresponding server name of the server."),
+	new FieldInfo("string", "windows", @"The corresponding windows version of the server."),
+	new FieldInfo("int", "flag", @"The flags of the server."),
+	new FieldInfo("string", "state", @"The state of the server."),
+};
+
+List<FlagInfo> Flags = new List<FlagInfo>()
+{
+	new FlagInfo("flag", "IsApproved", @"if the server was approved for telemetric data gathering by an administrator", 1),
+};
+
+string KeyFieldName = "gUID";
+
+bool IsVersioned = false;
+
+#>
