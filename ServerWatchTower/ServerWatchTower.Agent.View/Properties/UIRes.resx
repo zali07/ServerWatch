@@ -123,6 +123,9 @@
   <data name="CapArchives" xml:space="preserve">
     <value>Archives</value>
   </data>
+  <data name="CapReports" xml:space="preserve">
+    <value>Reports</value>
+  </data>
   <data name="ChkHasBackupDataGather" xml:space="preserve">
     <value>Backups</value>
   </data>

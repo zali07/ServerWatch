@@ -77,6 +77,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ReportsView.xaml.cs">
+      <DependentUpon>ReportsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DateTimeSimplifyConverter.cs" />
     <Compile Include="AlertTypeToIconConverter.cs" />
     <Compile Include="ServerEditView.xaml.cs">
@@ -94,6 +97,7 @@
     <Compile Include="AlertsView.xaml.cs">
       <DependentUpon>AlertsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StatusToColorConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -107,6 +111,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="ReportsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ServerEditView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

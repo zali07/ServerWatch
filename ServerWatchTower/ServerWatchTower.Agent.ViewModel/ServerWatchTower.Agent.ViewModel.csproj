@@ -53,6 +53,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ReportsViewModel.cs">
+      <DependentUpon>ReportsViewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReportsViewModel.generated.cs">
+      <DependentUpon>ReportsViewModel.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Properties\Res.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -95,6 +103,10 @@
     <None Include="SWTower.snk" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ReportsViewModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ReportsViewModel.generated.cs</LastGenOutput>
+    </Content>
     <Content Include="ServerEditViewModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ServerEditViewModel.generated.cs</LastGenOutput>

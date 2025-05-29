@@ -91,7 +91,18 @@
         {
             return this.RunOnAuthorizedDataLayerAsync(dl => dl.AcknowledgeAlert(alertId));
         }
+
         #endregion Alert
+
+        #region Report
+
+        /// <inheritdoc/>
+        public Task<List<ServerComponentStatus>> GetServerComponentStatusesAsync()
+        {
+            return this.RunOnDataLayerAsync(dl => dl.GetServerComponentStatuses());
+        }
+
+        #endregion Report
 
         #region Background task starting methods
 

@@ -461,5 +461,36 @@
         }
 
         #endregion Alert
+
+        #region Report
+
+        /// <summary>
+        /// Fetches the statuses of all server components from the database.
+        /// </summary>
+        /// <returns>A list of server component statuses.</returns>
+        public List<ServerComponentStatus> GetServerComponentStatuses()
+        {
+            var result = new List<ServerComponentStatus>();
+
+            using (var cmd = this.CreateCommand("[dbo].[spGetServerComponentStatuses]"))
+            using (var r = cmd.ExecuteReader())
+            {
+
+                while (r.Read())
+                {
+                    result.Add(new ServerComponentStatus
+                    {
+                        ServerGuid = r.GetNString(r.GetOrdinal("GUID")),
+                        ServerName = r.GetNString(r.GetOrdinal("ServerName")),
+                        ComponentName = r.GetNString(r.GetOrdinal("Component")),
+                        Status = r.GetNString(r.GetOrdinal("Status"))
+                    });
+                }
+            }
+
+            return result;
+        }
+
+        #endregion Report
     }
 }

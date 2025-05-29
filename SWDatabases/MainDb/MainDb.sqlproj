@@ -91,6 +91,7 @@
     <Build Include="Types\DriverEntryTableType.sql" />
     <Build Include="Stored Procedures\spInsertMirroringEntries.sql" />
     <Build Include="Types\MirroringEntryTableType.sql" />
+    <Build Include="Stored Procedures\spGetServerComponentStatuses.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Config.data.sql" />

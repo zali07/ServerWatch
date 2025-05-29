@@ -1,0 +1,26 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".generated.cs" #>
+<#@ include file="$(SolutionDir)Templates\ViewModelClass.tt" #>
+<#+
+
+string ModuleName = "Agent";
+
+string ViewName = "Reports";
+
+string ClassComment = @"The view model class of the Server Reports.";
+
+List<PropertyBase> Properties = new List<PropertyBase>()
+{
+	new ModuleConfigProperty(),
+	new ModuleRightsProperty(),
+
+	new ImportServiceProperty("IAgentDataService", "AgentDataService", "Gets or sets the <see cref=\"IAgentDataService\"/> implementation to be used by the view model."),
+
+	new SimpleProperty(Access.ReadOnly, "System.Collections.ObjectModel.ObservableCollection<ServerCard>", "ServerCards", "Gets the collection of server cards to display."),
+
+	new CommandProperty("RefreshCommand", @"Gets the command of refreshing the server cards."),
+};
+
+InitializationType InitializationType = InitializationType.Default;
+
+#>

@@ -69,5 +69,15 @@
         Task AcknowledgeAlertAsync(int alertId);
 
         #endregion Alert
+
+        #region Report
+
+        /// <summary>
+        /// Fetches the statuses of all server components asynchronously.
+        /// </summary>
+        /// <returns>A task with a list of server component statuses.</returns>
+        Task<List<ServerComponentStatus>> GetServerComponentStatusesAsync();
+
+        #endregion Report
     }
 }

@@ -79,6 +79,15 @@ namespace ServerWatchTower.Agent.View.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reports.
+        /// </summary>
+        public static string CapReports {
+            get {
+                return ResourceManager.GetString("CapReports", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Backups.
         /// </summary>
         public static string ChkHasBackupDataGather {
