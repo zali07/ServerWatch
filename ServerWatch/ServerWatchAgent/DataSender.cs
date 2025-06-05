@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace ServerWatchAgent
 {
@@ -53,6 +54,11 @@ namespace ServerWatchAgent
             await SendRequestAsync(jsonPayload, "/api/telemetry/postDriverData", HttpMethod.Post);
         }
 
+        public async Task SendBackupDataAsync(string jsonPayload)
+        {
+            await SendRequestAsync(jsonPayload, "/api/telemetry/postBackupData", HttpMethod.Post);
+        }
+
         public async Task RegisterWithWebServiceAsync(string jsonPayload)
         {
             await SendRequestAsync(jsonPayload, "/api/agent/registerAgent", HttpMethod.Post, false);
@@ -62,6 +68,38 @@ namespace ServerWatchAgent
         {
             string responseContent = await SendRequestAsync(null, "/api/agent/getServerStatus", HttpMethod.Get);
             return responseContent.Contains("approved\":true");
+        }
+
+        public async Task<string> GetBackupFolderPathAsync()
+        {
+            // { "backupRootFolder": "c:\\Backups" }
+            string response = await SendRequestAsync(null, "/api/telemetry/getBackupConfig", HttpMethod.Get);
+
+            if (string.IsNullOrWhiteSpace(response))
+            {
+                throw new Exception("No response received for backup folder path.");
+            }
+
+            try
+            {
+                var obj = JsonConvert.DeserializeObject<BackupFolderResponse>(response);
+
+                if (obj == null || string.IsNullOrWhiteSpace(obj.backupRootFolder))
+                {
+                    throw new Exception("Invalid backup folder path response.");
+                }
+
+                return obj.backupRootFolder;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to parse backup folder path response.", ex);
+            }
+        }
+
+        private class BackupFolderResponse
+        {
+            public string backupRootFolder { get; set; }
         }
     }
 }
