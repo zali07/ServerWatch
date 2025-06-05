@@ -52,6 +52,16 @@ namespace ServerWatchWS.Controllers
             return Ok();
         }
 
+        [HttpGet("getBackupConfig")]
+        public IActionResult GetBackupConfig()
+        {
+            var backupRootFolder = @"c:\Backups";
+
+            
+
+            return Ok(new { backupRootFolder });
+        }
+
         private async Task<(IActionResult? result, List<T>? data, string? guid)> AuthenticateAndParseRequest<T>() where T : class
         {
             string? signature = Request.Headers["X-CosysKey"];

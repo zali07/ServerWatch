@@ -1,5 +1,6 @@
 ﻿using CosysLib.ExceptionManagement;
 using Newtonsoft.Json;
+using ServerWatchAgent.Backup;
 using ServerWatchAgent.Driver;
 using ServerWatchAgent.Mirroring;
 using System;
@@ -16,15 +17,18 @@ namespace ServerWatchAgent
         private Timer mirroringTimer;
         private Timer driverTimer;
         private Timer validationTimer;
+        private Timer backupCheckTimer;
 
         private readonly DataSender dataSender;
         private readonly Updater updater;
+        private readonly BackupDataCollector backupDataCollector;
 
         public MonitoringService()
         {
             InitializeComponent();
             dataSender = new DataSender();
             updater = new Updater();
+            backupDataCollector = new BackupDataCollector();
         }
 
         protected override void OnStart(string[] args)
@@ -46,6 +50,10 @@ namespace ServerWatchAgent
             validationTimer.Interval = 60000; // 1 min interval
             validationTimer.Elapsed += ValidateAndStartTimers;
             validationTimer.Start();
+
+            backupCheckTimer = new Timer();
+            backupCheckTimer.Interval = 24 * 60 * 60 * 1000; // 24 hours
+            backupCheckTimer.Elapsed += GatherAndSendBackupDataAsync;
         }
 
         private async void TryExecuteAsync(string operationType, Func<Task> action)
@@ -97,6 +105,23 @@ namespace ServerWatchAgent
             });
         }
 
+        private void GatherAndSendBackupDataAsync(object sender, ElapsedEventArgs e)
+        {
+            TryExecuteAsync("BackupStatusReporting", async () =>
+            {
+                string latestBackupFolder = await dataSender.GetBackupFolderPathAsync();
+
+                if (!string.IsNullOrWhiteSpace(latestBackupFolder))
+                {
+                    backupDataCollector.UpdateBackupFolderPath(latestBackupFolder);
+                }
+
+                var result = await backupDataCollector.BackupCheckAndGetResultAsync();
+                var jsonData = JsonConvert.SerializeObject(result);
+                await dataSender.SendBackupDataAsync(jsonData);
+            });
+        }
+
         private void CheckForUpdates(object sender, ElapsedEventArgs e)
         {
             TryExecuteAsync("FetchUpdateInfo", async () =>
@@ -109,6 +134,7 @@ namespace ServerWatchAgent
         {
             mirroringTimer.Start();
             driverTimer.Start();
+            backupCheckTimer.Start();
         }
 
         private NameValueCollection CollectRequestInfo(params ValueTuple<string, string>[] operationInfo)
@@ -156,6 +182,13 @@ namespace ServerWatchAgent
                 validationTimer.Stop();
                 validationTimer.Dispose();
                 validationTimer = null;
+            }
+
+            if (backupCheckTimer != null)
+            {
+                backupCheckTimer.Stop();
+                backupCheckTimer.Dispose();
+                backupCheckTimer = null;
             }
         }
     }

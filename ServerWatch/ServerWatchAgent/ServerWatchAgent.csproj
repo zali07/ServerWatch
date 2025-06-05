@@ -73,6 +73,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Backup\BackupDataCollector.cs" />
     <Compile Include="DataSender.cs" />
     <Compile Include="Driver\DriverDataCollector.cs" />
     <Compile Include="KeyContainerManager.cs" />
