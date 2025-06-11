@@ -24,7 +24,20 @@ namespace ServerWatchAgent
         /// </summary>
         static KeyContainerManager()
         {
-            _guid = LoadOrCreateGuid();
+            try
+            {
+                _guid = LoadOrCreateGuid();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to initialize KeyContainerManager.", ex);
+            }
+        }
+
+        public static void Initialize()
+        {
+            // This forces the static constructor to run
+            var dummy = Guid;
         }
 
         /// <summary>

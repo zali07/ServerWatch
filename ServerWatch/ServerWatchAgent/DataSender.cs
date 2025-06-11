@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Configuration;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace ServerWatchAgent
 {
@@ -15,7 +15,8 @@ namespace ServerWatchAgent
 
             using (var client = new HttpClient(handler))
             {
-                client.BaseAddress = new Uri(ConfigurationManager.AppSettings["BaseApiUrl"]);
+                var baseUri = ConfigurationManager.AppSettings["BaseApiUrl"];
+                client.BaseAddress = new Uri(baseUri);
 
                 var request = new HttpRequestMessage(method, url);
 
@@ -46,34 +47,33 @@ namespace ServerWatchAgent
 
         public async Task SendMirroringDataAsync(string jsonPayload)
         {
-            await SendRequestAsync(jsonPayload, "/api/telemetry/postMirroringData", HttpMethod.Post);
+            await SendRequestAsync(jsonPayload, "/ServerWatchWS/api/telemetry/postMirroringData", HttpMethod.Post);
         }
 
         public async Task SendDriverDataAsync(string jsonPayload)
         {
-            await SendRequestAsync(jsonPayload, "/api/telemetry/postDriverData", HttpMethod.Post);
+            await SendRequestAsync(jsonPayload, "/ServerWatchWS/api/telemetry/postDriverData", HttpMethod.Post);
         }
 
         public async Task SendBackupDataAsync(string jsonPayload)
         {
-            await SendRequestAsync(jsonPayload, "/api/telemetry/postBackupData", HttpMethod.Post);
+            await SendRequestAsync(jsonPayload, "/ServerWatchWS/api/telemetry/postBackupData", HttpMethod.Post);
         }
 
         public async Task RegisterWithWebServiceAsync(string jsonPayload)
         {
-            await SendRequestAsync(jsonPayload, "/api/agent/registerAgent", HttpMethod.Post, false);
+            await SendRequestAsync(jsonPayload, "/ServerWatchWS/api/agent/registerAgent", HttpMethod.Post, false);
         }
 
         public async Task<bool> CheckApprovalStatusAsync()
         {
-            string responseContent = await SendRequestAsync(null, "/api/agent/getServerStatus", HttpMethod.Get);
+            string responseContent = await SendRequestAsync(null, "/ServerWatchWS/api/agent/getServerStatus", HttpMethod.Get);
             return responseContent.Contains("approved\":true");
         }
 
         public async Task<string> GetBackupFolderPathAsync()
         {
-            // { "backupRootFolder": "c:\\Backups" }
-            string response = await SendRequestAsync(null, "/api/telemetry/getBackupConfig", HttpMethod.Get);
+            string response = await SendRequestAsync(null, "/ServerWatchWS/api/telemetry/getBackupConfig", HttpMethod.Get);
 
             if (string.IsNullOrWhiteSpace(response))
             {

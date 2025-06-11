@@ -13,46 +13,63 @@ namespace ServerWatchAgent
 {
     public partial class MonitoringService : ServiceBase
     {
+        private Timer validationTimer;
         private Timer checkUpdateTimer;
         private Timer mirroringTimer;
         private Timer driverTimer;
-        private Timer validationTimer;
         private Timer backupCheckTimer;
 
         private readonly DataSender dataSender;
         private readonly Updater updater;
-        private readonly BackupDataCollector backupDataCollector;
 
         public MonitoringService()
         {
             InitializeComponent();
             dataSender = new DataSender();
             updater = new Updater();
-            backupDataCollector = new BackupDataCollector();
+        }
+
+        public void DebugRun(string[] args)
+        {
+            OnStart(args);
+
+            Console.WriteLine("Service running... Press any key to stop.");
+            Console.ReadKey();
+
+            OnStop();
         }
 
         protected override void OnStart(string[] args)
         {
-            checkUpdateTimer = new Timer();
-            checkUpdateTimer.Interval = 15000; // 15 sec interval
-            checkUpdateTimer.Elapsed += CheckForUpdates;
-            checkUpdateTimer.Start();
-
-            mirroringTimer = new Timer();
-            mirroringTimer.Interval = 30000; // 30 sec interval
-            mirroringTimer.Elapsed += GatherAndSendMirroringDataAsync;
-
-            driverTimer = new Timer();
-            driverTimer.Interval = 20000; // 20 sec interval
-            driverTimer.Elapsed += GatherAndSendDriverDataAsync;
+            try
+            {
+                KeyContainerManager.Initialize();
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.Publish(ex, this.CollectRequestInfo(("OperationType", "KeyContainerInitialization")));
+            }
 
             validationTimer = new Timer();
-            validationTimer.Interval = 60000; // 1 min interval
+            validationTimer.Interval = 60 * 1000; // 1 minute
             validationTimer.Elapsed += ValidateAndStartTimers;
             validationTimer.Start();
 
+            checkUpdateTimer = new Timer();
+            checkUpdateTimer.Interval = 60 * 1000; // 1 minute
+            checkUpdateTimer.Elapsed += CheckForUpdates;
+            //checkUpdateTimer.Start();
+
+            mirroringTimer = new Timer();
+            mirroringTimer.Interval = 60 * 60 * 1000; // 1 hour
+            mirroringTimer.Elapsed += GatherAndSendMirroringDataAsync;
+
+            driverTimer = new Timer();
+            driverTimer.Interval = 60 * 60 * 1000; // 1 hour
+            driverTimer.Elapsed += GatherAndSendDriverDataAsync;
+
             backupCheckTimer = new Timer();
-            backupCheckTimer.Interval = 24 * 60 * 60 * 1000; // 24 hours
+            backupCheckTimer.Interval = 10 * 1000; // 24 hours
             backupCheckTimer.Elapsed += GatherAndSendBackupDataAsync;
         }
 
@@ -64,7 +81,16 @@ namespace ServerWatchAgent
             }
             catch (Exception ex)
             {
-                ExceptionManager.Publish(ex, this.CollectRequestInfo(("OperationtType", operationType)));
+                var requestInfo = this.CollectRequestInfo(("OperationType", operationType));
+                Exception current = ex;
+                int innerLevel = 0;
+                while (current != null)
+                {
+                    requestInfo.Add($"ServerWatchAgent.Exception.Level{innerLevel}", current.GetType().FullName + ": " + current.Message);
+                    current = current.InnerException;
+                    innerLevel++;
+                }
+                ExceptionManager.Publish(ex, requestInfo);
             }
         }
 
@@ -76,8 +102,15 @@ namespace ServerWatchAgent
 
                 if (!approved)
                 {
-                    await dataSender.RegisterWithWebServiceAsync(
-                        JsonConvert.SerializeObject(KeyContainerManager.GetPublicKey()));
+                    var serverToRegister = new ServerRegistration
+                    {
+                        GUID = KeyContainerManager.Guid,
+                        PublicKey = KeyContainerManager.GetPublicKey()
+                    };
+
+                    string json = JsonConvert.SerializeObject(serverToRegister);
+
+                    await dataSender.RegisterWithWebServiceAsync(json);
 
                     throw new Exception("ServerWatchAgent is not approved by server.");
                 }
@@ -113,10 +146,10 @@ namespace ServerWatchAgent
 
                 if (!string.IsNullOrWhiteSpace(latestBackupFolder))
                 {
-                    backupDataCollector.UpdateBackupFolderPath(latestBackupFolder);
+                    BackupDataCollector.UpdateBackupFolderPath(latestBackupFolder);
                 }
 
-                var result = await backupDataCollector.BackupCheckAndGetResultAsync();
+                var result = await BackupDataCollector.BackupCheckAndGetResultAsync();
                 var jsonData = JsonConvert.SerializeObject(result);
                 await dataSender.SendBackupDataAsync(jsonData);
             });
