@@ -68,6 +68,48 @@ namespace ServerWatchWS.Controllers
             return Ok();
         }
 
+        [HttpGet("getMirroringStatus")]
+        public Task<IActionResult> GetMirroringStatus() => GetApprovalStatus(4); // Bit 2
+
+        [HttpGet("getDriverStatus")]
+        public Task<IActionResult> GetDriverStatus() => GetApprovalStatus(8); // Bit 3
+
+        [HttpGet("getBackupStatus")]
+        public Task<IActionResult> GetBackupStatus() => GetApprovalStatus(16); // Bit 4
+
+        private async Task<IActionResult> GetApprovalStatus(int flagBit)
+        {
+            string? guid = Request.Headers["ServerGuid"];
+
+            if (string.IsNullOrWhiteSpace(guid))
+            {
+                return Unauthorized("Missing server guid.");
+            }
+
+            try
+            {
+                var agent = await _dataLayer.GetServerByGUID(guid);
+
+                if (agent == null)
+                {
+                    return Ok(new
+                    {
+                        approved = false,
+                        message = "Agent with the specified guid was not found. Please register it first."
+                    });
+                }
+
+                bool isApproved = (agent.Flag & flagBit) == flagBit;
+
+                return Ok(new { approved = isApproved });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "Internal server error", details = ex });
+            }
+        }
+
+
         [HttpGet("getBackupConfig")]
         public async Task<IActionResult> GetBackupConfig()
         {

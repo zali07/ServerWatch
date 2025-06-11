@@ -51,7 +51,7 @@ namespace ServerWatchAgent
             }
 
             validationTimer = new Timer();
-            validationTimer.Interval = 60 * 1000; // 1 minute
+            validationTimer.Interval = 30 * 1000; // 30 seconds
             validationTimer.Elapsed += ValidateAndStartTimers;
             validationTimer.Start();
 
@@ -61,15 +61,15 @@ namespace ServerWatchAgent
             checkUpdateTimer.Start();
 
             mirroringTimer = new Timer();
-            mirroringTimer.Interval = 60 * 1000; // 1 minute
+            mirroringTimer.Interval = 60 * 60 * 1000; // 1 hour
             mirroringTimer.Elapsed += GatherAndSendMirroringDataAsync;
 
             driverTimer = new Timer();
-            driverTimer.Interval = 60 * 1000; // 1 minute
+            driverTimer.Interval = 60 * 60 * 1000; // 1 hour
             driverTimer.Elapsed += GatherAndSendDriverDataAsync;
 
             backupCheckTimer = new Timer();
-            backupCheckTimer.Interval = 12* 60 * 60 * 1000; // 12 hour
+            backupCheckTimer.Interval = 12 * 60 * 60 * 1000; // 12 hour
             backupCheckTimer.Elapsed += GatherAndSendBackupDataAsync;
         }
 
@@ -124,8 +124,13 @@ namespace ServerWatchAgent
         {
             TryExecuteAsync("DriverStatusReporting", async () =>
             {
-                var jsonData = DriverDataCollector.CheckDriversOnServer();
-                await dataSender.SendDriverDataAsync(jsonData);
+                var allowed = await dataSender.CheckDriverApprovalStatusAsync();
+
+                if (allowed)
+                {
+                    var jsonData = DriverDataCollector.CheckDriversOnServer();
+                    await dataSender.SendDriverDataAsync(jsonData);
+                }
             });
         }
 
@@ -133,8 +138,13 @@ namespace ServerWatchAgent
         {
             TryExecuteAsync("MirroringStatusReporting", async () =>
             {
-                var jsonData = MirroringDataCollector.CheckMirroringOnServer();
-                await dataSender.SendMirroringDataAsync(jsonData);
+                var allowed = await dataSender.CheckMirroringApprovalStatusAsync();
+
+                if (allowed)
+                {
+                    var jsonData = MirroringDataCollector.CheckMirroringOnServer();
+                    await dataSender.SendMirroringDataAsync(jsonData);
+                }
             });
         }
 
@@ -142,16 +152,21 @@ namespace ServerWatchAgent
         {
             TryExecuteAsync("BackupStatusReporting", async () =>
             {
-                string latestBackupFolder = await dataSender.GetBackupFolderPathAsync();
+                var allowed = await dataSender.CheckBackupApprovalStatusAsync();
 
-                if (!string.IsNullOrWhiteSpace(latestBackupFolder))
+                if (allowed)
                 {
-                    BackupDataCollector.UpdateBackupFolderPath(latestBackupFolder);
-                }
+                    string latestBackupFolder = await dataSender.GetBackupFolderPathAsync();
 
-                var result = await BackupDataCollector.BackupCheckAndGetResultAsync();
-                var jsonData = JsonConvert.SerializeObject(result);
-                await dataSender.SendBackupDataAsync(jsonData);
+                    if (!string.IsNullOrWhiteSpace(latestBackupFolder))
+                    {
+                        BackupDataCollector.UpdateBackupFolderPath(latestBackupFolder);
+                    }
+
+                    var result = await BackupDataCollector.BackupCheckAndGetResultAsync();
+                    var jsonData = JsonConvert.SerializeObject(result);
+                    await dataSender.SendBackupDataAsync(jsonData);
+                }
             });
         }
 
@@ -185,6 +200,15 @@ namespace ServerWatchAgent
             }
 
             return requestInfo;
+        }
+
+        private void UpdateTimerInterval(Timer timer, double newInterval)
+        {
+            if (timer == null) return;
+
+            timer.Stop();
+            timer.Interval = newInterval;
+            timer.Start();
         }
 
         protected override void OnStop()

@@ -65,6 +65,24 @@ namespace ServerWatchAgent
             await SendRequestAsync(jsonPayload, "/ServerWatchWS/api/agent/registerAgent", HttpMethod.Post, false);
         }
 
+        public async Task<bool> CheckDriverApprovalStatusAsync()
+        {
+            string responseContent = await SendRequestAsync(null, "/ServerWatchWS/api/telemetry/getDriverStatus", HttpMethod.Get);
+            return responseContent.Contains("approved\":true");
+        }
+
+        public async Task<bool> CheckMirroringApprovalStatusAsync()
+        {
+            string responseContent = await SendRequestAsync(null, "/ServerWatchWS/api/telemetry/getMirroringStatus", HttpMethod.Get);
+            return responseContent.Contains("approved\":true");
+        }
+
+        public async Task<bool> CheckBackupApprovalStatusAsync()
+        {
+            string responseContent = await SendRequestAsync(null, "/ServerWatchWS/api/telemetry/getBackupStatus", HttpMethod.Get);
+            return responseContent.Contains("approved\":true");
+        }
+
         public async Task<bool> CheckApprovalStatusAsync()
         {
             string responseContent = await SendRequestAsync(null, "/ServerWatchWS/api/agent/getServerStatus", HttpMethod.Get);
