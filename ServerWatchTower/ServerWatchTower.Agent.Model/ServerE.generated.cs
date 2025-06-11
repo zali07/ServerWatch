@@ -203,6 +203,41 @@ namespace ServerWatchTower.Agent.Model
         }
 
         /// <summary>
+        /// Gets or sets the backup root on the server for the daily and weekly backups.
+        /// </summary>
+        /// <exception cref="ArgumentException">The specified value is not valid for this property.</exception>
+        [DataMember]
+        public string BackupRoot
+        {
+            get => this.data.backupRoot;
+            set
+            {
+                if (!this.IsEditing)
+                {
+                    this.data.backupRoot = value;
+                    return;
+                }
+
+                if (this.data.backupRoot != value)
+                {
+                    this.BackupRootBeforeUpdate(ref value);
+                    this.ValidateProperty(nameof(this.BackupRoot), ref value);
+
+                    if (this.data.backupRoot != value)
+                    {
+						var oldValue = this.data.backupRoot;
+
+                        this.data.backupRoot = value;
+
+                        this.BackupRootAfterUpdate(oldValue, value);
+                        this.NotifyChangeOf(nameof(this.BackupRoot));
+                        this.IsDirty = true;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the flags of the server.
         /// </summary>
         /// <exception cref="ArgumentException">The specified value is not valid for this property.</exception>
@@ -545,6 +580,16 @@ namespace ServerWatchTower.Agent.Model
         /// <content>
         /// This method will be ignored unless it gets implemented in another place.
         /// </content>
+        partial void BackupRootBeforeUpdate(ref string value);
+
+        /// <content>
+        /// This method will be ignored unless it gets implemented in another place.
+        /// </content>
+        partial void BackupRootAfterUpdate(string oldValue, string newValue);
+
+        /// <content>
+        /// This method will be ignored unless it gets implemented in another place.
+        /// </content>
         partial void FlagBeforeUpdate(ref int value);
 
         /// <content>
@@ -635,6 +680,11 @@ namespace ServerWatchTower.Agent.Model
             public string windows;
 
             /// <summary>
+            /// The backup root on the server for the daily and weekly backups.
+            /// </summary>
+            public string backupRoot;
+
+            /// <summary>
             /// The flags of the server.
             /// </summary>
             public int flag;
@@ -657,6 +707,7 @@ namespace ServerWatchTower.Agent.Model
                 this.partner = data.partner;
                 this.serverName = data.serverName;
                 this.windows = data.windows;
+                this.backupRoot = data.backupRoot;
                 this.flag = data.flag;
             }
         }

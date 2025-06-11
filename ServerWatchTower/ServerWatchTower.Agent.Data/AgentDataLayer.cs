@@ -151,6 +151,7 @@
                             new SqlMetaData("Partner", SqlDbType.NVarChar, -1),
                             new SqlMetaData("Server", SqlDbType.NVarChar, -1),
                             new SqlMetaData("Windows", SqlDbType.NVarChar, -1),
+                            new SqlMetaData("BackupRoot", SqlDbType.NVarChar, 255),
                             new SqlMetaData("Flag", SqlDbType.Int),
                         },
                         (record, item, index) =>
@@ -160,7 +161,8 @@
                             record.SetValue(2, DbNull(item.Partner, false));
                             record.SetValue(3, DbNull(item.ServerName, false));
                             record.SetValue(4, DbNull(item.Windows, false));
-                            record.SetValue(5, item.Flag);
+                            record.SetValue(5, DbNull(item.BackupRoot, false));
+                            record.SetValue(6, item.Flag);
                         }
                     );
 
@@ -248,6 +250,7 @@
                         Partner = r.GetNTrimmedString(r.GetOrdinal("Partner")),
                         ServerName = r.GetNString(r.GetOrdinal("Server")),
                         Windows = r.GetNTrimmedString(r.GetOrdinal("Windows")),
+                        BackupRoot = r.GetNTrimmedString(r.GetOrdinal("BackupRoot")),
                         Flag = r.GetInt32(r.GetOrdinal("Flag")),
                         State = r.GetNTrimmedString(r.GetOrdinal("State")),
                     };
@@ -278,6 +281,7 @@
                     int partnerField = r.GetOrdinal("Partner");
                     int serverNameField = r.GetOrdinal("Server");
                     int windowsField = r.GetOrdinal("Windows");
+                    int backupRootField = r.GetOrdinal("BackupRoot");
                     int flagField = r.GetOrdinal("Flag");
                     int stateField = r.GetOrdinal("State");
 
@@ -292,6 +296,7 @@
                             Partner = r.GetNTrimmedString(partnerField),
                             ServerName = r.GetNString(serverNameField),
                             Windows = r.GetNTrimmedString(windowsField),
+                            BackupRoot = r.GetNTrimmedString(backupRootField),
                             Flag = r.GetInt32(flagField),
                             State = r.GetNTrimmedString(stateField),
                         });
@@ -340,6 +345,7 @@
                         Partner = r.GetNTrimmedString(r.GetOrdinal("Partner")),
                         ServerName = r.GetNString(r.GetOrdinal("Server")),
                         Windows = r.GetNTrimmedString(r.GetOrdinal("Windows")),
+                        BackupRoot = r.GetNTrimmedString(r.GetOrdinal("BackupRoot")),
                         Flag = r.GetInt32(r.GetOrdinal("Flag")),
                     };
                 }

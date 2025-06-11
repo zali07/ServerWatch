@@ -5,6 +5,7 @@
 	[Partner]			nvarchar(max)	NULL,
 	[Server]			nvarchar(max)	NULL,
 	[Windows]			nvarchar(max)	NULL,
+	[BackupRoot]		nvarchar(255)	NULL,
 	[Flag]				int				NOT NULL
 )
 GO

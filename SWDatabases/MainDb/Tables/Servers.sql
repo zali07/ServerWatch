@@ -6,7 +6,7 @@
 	[Partner]		nvarchar(max)		NULL,
 	[Server]		nvarchar(max)		NULL,
 	[Windows]		nvarchar(max)		NULL,
-	[IsApproved]	bit					NOT NULL DEFAULT (0),
+	[BackupRoot]	nvarchar(255)		NULL,
 	[Flag]			int					NOT NULL DEFAULT (0),
 )
 GO
