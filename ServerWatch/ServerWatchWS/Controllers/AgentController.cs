@@ -127,7 +127,7 @@ namespace ServerWatchWS.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { error = "Internal server error", details = ex.Message });
+                return StatusCode(500, new { error = "Internal server error", details = ex });
             }
         }
     }

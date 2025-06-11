@@ -1,20 +1,8 @@
-using Microsoft.EntityFrameworkCore;
 using ServerWatchWS.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        sqlOptions => sqlOptions.EnableRetryOnFailure(
-            maxRetryCount: 5,
-            maxRetryDelay: TimeSpan.FromSeconds(5),
-            errorNumbersToAdd: null
-        )
-    )
-);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

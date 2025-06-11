@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using ServerWatchWS.Data;
 using ServerWatchWS.Model;
@@ -117,6 +116,16 @@ namespace ServerWatchWS.Controllers
             try
             {
                 entries = JsonConvert.DeserializeObject<List<T>>(body);
+
+                if (entries == null || entries.Count == 0)
+                {
+                    T? single = JsonConvert.DeserializeObject<T>(body);
+                    
+                    if (single != null)
+                    {
+                        entries = [single];
+                    }
+                }
             }
             catch
             {

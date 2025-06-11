@@ -66,6 +66,7 @@ namespace ServerWatchAgent.Mirroring
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.CommandText = getDatabases;
+                    cmd.CommandTimeout = 120;
 
                     using (SqlDataAdapter da = new SqlDataAdapter(cmd))
                     {
@@ -97,6 +98,7 @@ namespace ServerWatchAgent.Mirroring
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.CommandText = "MSDB.SYS.SP_DBMMONITORRESULTS";
+                    cmd.CommandTimeout = 120;
 
                     // runs the SP_DBMMONITORUPDATE before computing results so we don't have to call that sp separately
                     cmd.Parameters.Add(new SqlParameter("@update_table", 1));

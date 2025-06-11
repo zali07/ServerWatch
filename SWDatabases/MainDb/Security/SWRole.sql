@@ -1,1 +1,2 @@
 ﻿CREATE ROLE [SWRole] AUTHORIZATION [dbo];
+GO

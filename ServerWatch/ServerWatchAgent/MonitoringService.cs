@@ -58,18 +58,18 @@ namespace ServerWatchAgent
             checkUpdateTimer = new Timer();
             checkUpdateTimer.Interval = 60 * 1000; // 1 minute
             checkUpdateTimer.Elapsed += CheckForUpdates;
-            //checkUpdateTimer.Start();
+            checkUpdateTimer.Start();
 
             mirroringTimer = new Timer();
-            mirroringTimer.Interval = 60 * 60 * 1000; // 1 hour
+            mirroringTimer.Interval = 60 * 1000; // 1 minute
             mirroringTimer.Elapsed += GatherAndSendMirroringDataAsync;
 
             driverTimer = new Timer();
-            driverTimer.Interval = 60 * 60 * 1000; // 1 hour
+            driverTimer.Interval = 60 * 1000; // 1 minute
             driverTimer.Elapsed += GatherAndSendDriverDataAsync;
 
             backupCheckTimer = new Timer();
-            backupCheckTimer.Interval = 10 * 1000; // 24 hours
+            backupCheckTimer.Interval = 12* 60 * 60 * 1000; // 12 hour
             backupCheckTimer.Elapsed += GatherAndSendBackupDataAsync;
         }
 

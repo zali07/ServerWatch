@@ -1,13 +1,9 @@
 ﻿CREATE PROCEDURE [dbo].[spInsertBackupEntries]
-    @BackupEntries dbo.BackupEntryTableType READONLY
+    @BackupEntries AS dbo.BackupEntryTableType READONLY
 AS
 BEGIN
-    INSERT INTO BackupEntries
-    (
-        ServerGUID, DatabaseName, [Type], [Date], SizeGB, TS
-    )
-    SELECT  
-        ServerGUID, DatabaseName, [Type], [Date], SizeGB, TS
+    INSERT INTO BackupEntries(ServerGUID, DatabaseName, [Type], [Date], SizeGB, TS)
+    SELECT ServerGUID, DatabaseName, [Type], [Date], SizeGB, TS
     FROM @BackupEntries;
 END;
 

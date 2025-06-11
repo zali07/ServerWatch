@@ -19,7 +19,7 @@ namespace ServerWatchAgent
             {
                 client.BaseAddress = new Uri(ConfigurationManager.AppSettings["BaseApiUrl"]);
 
-                HttpResponseMessage response = await client.GetAsync("/api/agent/getAgentUpdateInfo");
+                HttpResponseMessage response = await client.GetAsync("/ServerWatchWS/api/agent/getAgentUpdateInfo");
 
                 if (!response.IsSuccessStatusCode)
                 {

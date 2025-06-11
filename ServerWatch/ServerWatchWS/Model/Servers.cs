@@ -12,7 +12,6 @@ namespace ServerWatchWS.Model
         public string? Server { get; set; }
         public string? Windows { get; set; }
         public string? BackupRoot { get; set; }
-        public bool IsApproved { get; set; }
         public int Flag { get; set; } = 0;
     }
 }
