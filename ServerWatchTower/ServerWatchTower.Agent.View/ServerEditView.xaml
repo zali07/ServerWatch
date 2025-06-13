@@ -18,7 +18,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </swtower:SilverViewBase.Resources>
-    
+
     <swtower:SilverViewBase.CommandBindings>
         <swtower:CommandToViewModelBinding Command="{x:Static Member=swtower:SilverCommands.SaveAndCloseView}" TargetCommand="SaveAndCloseCommand" />
         <swtower:CommandToViewModelBinding Command="{x:Static Member=swtower:SilverCommands.RefreshData}" TargetCommand="RefreshCommand" />
@@ -71,7 +71,7 @@
         <telerik:RadTabControl Name="TabControl" x:FieldModifier="private" Grid.Row="2" Grid.ColumnSpan="2" TabIndex="30"
                                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0, 10, 0, 0"
                                 HeaderBackground="{x:Null}" Background="{StaticResource SilverViewBackgroundBrush}"
-                                SelectedIndex="{Binding ViewPanelIndex, Mode=TwoWay}" d:SelectedIndex="0">
+                                SelectedIndex="{Binding ViewPanelIndex, Mode=TwoWay}" d:SelectedIndex="1">
             <telerik:RadTabItem Header="{x:Static Member=res:UIRes.TabGenericData}">
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                     <Grid Margin="5,10">
@@ -105,6 +105,11 @@
                         <TextBox    Name="WindowsBox" Grid.Row="2" Grid.Column="1" TabIndex="60" MaxLength="64"
                                     HorizontalAlignment="Left" VerticalAlignment="Center" Width="255" Margin="0,2"
                                     Text="{Binding Path=Item.Windows}"/>
+
+                        <Label Grid.Row="3" Content="{x:Static Member=res:UIRes.LblBackupRoot}" Target="{Binding ElementName=BackupRootBox}" />
+                        <TextBox    Name="BackupRootBox" Grid.Row="3" Grid.Column="1" TabIndex="60" MaxLength="64"
+                                    HorizontalAlignment="Left" VerticalAlignment="Center" Width="255" Margin="0,2"
+                                    Text="{Binding Path=Item.BackupRoot}"/>
 
                         <!--<Label Grid.Row="2" Content="{x:Static Member=res:UIRes.LblDefaultGest}" Target="{Binding ElementName=CodeGestBox}"/>
                         <telerik:RadComboBox Name="CodeGestBox" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Margin="0,2" TabIndex="60"
@@ -150,298 +155,135 @@
                 </ScrollViewer>
             </telerik:RadTabItem>
 
-            <!--<telerik:RadTabItem Header="{x:Static Member=local:UIRes.TabDeliveryLocations}" IsEnabled="{Binding IsMappingTabsEnabled}">
-                <Grid IsEnabled="{Binding HasEditLocationMappingRight}">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+            <telerik:RadTabItem Header="{x:Static Member=res:UIRes.TabMirroringData}">
+                <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="29*"/>
                     </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" MinHeight="60"/>
+                    </Grid.RowDefinitions>
 
-                    <Rectangle Grid.ColumnSpan="2" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="40" StrokeThickness="0" Fill="{StaticResource SilverViewBackgroundTopBrush}"/>
-
-                    <telerik:RadGridView Name="DeliveryLocationGrid" Margin="5" TabIndex="110" SelectionMode="Extended"
-                                         HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                         ItemsSource="{Binding Path=DeliveryLocations}" AutoGenerateColumns="False"
+                    <telerik:RadGridView Name="MirroringGrid" Margin="5,5,5,5" TabIndex="120"
+                                         ItemsSource="{Binding Path=MirroringEntries}" AutoGenerateColumns="False"
                                          CanUserReorderColumns="False" CanUserFreezeColumns="False" ShowGroupPanel="False"
-                                         CanUserDeleteRows="False" CanUserInsertRows="False"
-                                         SelectionChanged="DeliveryLocationGrid_SelectionChanged"
-                                         IsReadOnly="{Binding IsReadOnly}"
-                                         silver:GridViewPlus.UseColumnSelectionContextMenu="True">
-                        <telerik:RadGridView.ColumnGroups>
-                            <telerik:GridViewColumnGroup Name="DigiDoc" Header="{x:Static Member=local:UIRes.HdrElectronicInvoice}" />
-                            <telerik:GridViewColumnGroup Name="Mapping" Header="{x:Static Member=local:UIRes.HdrMapping}" />
-                        </telerik:RadGridView.ColumnGroups>
+                                         CanUserDeleteRows="False" CanUserInsertRows="False" IsReadOnly="True" Grid.ColumnSpan="2">
                         <telerik:RadGridView.Columns>
-                            <telerik:GridViewSelectColumn UniqueName="SelectColumn" silver:GridViewPlus.IsHidableByUser="False"/>
-                            <telerik:GridViewDataColumn Header="{x:Static Member=local:UIRes.HdrMappingOn}" UniqueName="HeaderIdCheckBox"
-                                                        ColumnGroupName="DigiDoc" IsGroupable="False" IsFilterable="False" DataMemberBinding="{Binding MapHeaderId}">
-                                <telerik:GridViewDataColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <CheckBox IsChecked="{Binding MapHeaderId, Mode=TwoWay}"
-                                                  ClickMode="Press"
-                                                  Focusable="False"
-                                                  HorizontalAlignment="Center"
-                                                  VerticalAlignment="Center"/>
-                                    </DataTemplate>
-                                </telerik:GridViewDataColumn.CellTemplate>
-                            </telerik:GridViewDataColumn>
-                            <telerik:GridViewDataColumn Header="{x:Static Member=local:UIRes.HdrHeaderPartnerId}" UniqueName="HeaderIdDeliveryLocation" DataMemberBinding="{Binding HeaderPartnerId}"
-                                                        ColumnGroupName="DigiDoc" IsGroupable="False" ShowDistinctFilters="False">
-                                <telerik:GridViewDataColumn.CellStyle>
-                                    <Style TargetType="telerik:GridViewCell">
-                                        <Setter Property="Background" Value="{Binding MapHeaderId, Converter={StaticResource GreenCellBackgroundConverter}}"/>
-                                    </Style>
-                                </telerik:GridViewDataColumn.CellStyle>
-                            </telerik:GridViewDataColumn>
-                            <telerik:GridViewDataColumn Header="{x:Static Member=local:UIRes.HdrMappingOn}" UniqueName="HeaderNameCheckBox"
-                                                        ColumnGroupName="DigiDoc" IsGroupable="False" IsFilterable="False" DataMemberBinding="{Binding MapHeaderName}">
-                                <telerik:GridViewDataColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <CheckBox IsChecked="{Binding MapHeaderName, Mode=TwoWay}"
-                                                  ClickMode="Press"
-                                                  Focusable="False"
-                                                  HorizontalAlignment="Center"
-                                                  VerticalAlignment="Center"/>
-                                    </DataTemplate>
-                                </telerik:GridViewDataColumn.CellTemplate>
-                            </telerik:GridViewDataColumn>
-                            <telerik:GridViewDataColumn Header="{x:Static Member=local:UIRes.HdrHeaderPartnerName}" UniqueName="HeaderNameDeliveryLocation" DataMemberBinding="{Binding HeaderPartnerName}"
-                                                        ColumnGroupName="DigiDoc" IsGroupable="False" ShowDistinctFilters="False">
-                                <telerik:GridViewDataColumn.CellStyle>
-                                    <Style TargetType="telerik:GridViewCell">
-                                        <Setter Property="Background" Value="{Binding MapHeaderName, Converter={StaticResource GreenCellBackgroundConverter}}"/>
-                                    </Style>
-                                </telerik:GridViewDataColumn.CellStyle>
-                            </telerik:GridViewDataColumn>
-                            <telerik:GridViewDataColumn Header="{x:Static Member=local:UIRes.HdrMappingOn}" UniqueName="IdLocCheckBox"
-                                                        ColumnGroupName="DigiDoc" IsGroupable="False" IsFilterable="False" DataMemberBinding="{Binding MapIdLoc}">
-                                <telerik:GridViewDataColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <CheckBox IsChecked="{Binding MapIdLoc, Mode=TwoWay}"
-                                                  ClickMode="Press"
-                                                  Focusable="False"
-                                                  HorizontalAlignment="Center"
-                                                  VerticalAlignment="Center"/>
-                                    </DataTemplate>
-                                </telerik:GridViewDataColumn.CellTemplate>
-                            </telerik:GridViewDataColumn>
-                            <telerik:GridViewDataColumn Header="{x:Static Member=local:UIRes.HdrDeliveryLocationCode}" UniqueName="IdDeliveryLocation" DataMemberBinding="{Binding IdDeliveryLocation}"
-                                                        ColumnGroupName="DigiDoc" IsGroupable="False" ShowDistinctFilters="False">
-                                <telerik:GridViewDataColumn.CellStyle>
-                                    <Style TargetType="telerik:GridViewCell">
-                                        <Setter Property="Background" Value="{Binding MapIdLoc, Converter={StaticResource GreenCellBackgroundConverter}}"/>
-                                    </Style>
-                                </telerik:GridViewDataColumn.CellStyle>
-                            </telerik:GridViewDataColumn>
-                            <telerik:GridViewDataColumn Header="{x:Static Member=local:UIRes.HdrMappingOn}" UniqueName="NameCheckBox"
-                                                        ColumnGroupName="DigiDoc" IsGroupable="False" IsFilterable="False" DataMemberBinding="{Binding MapName}">
-                                <telerik:GridViewDataColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <CheckBox IsChecked="{Binding MapName, Mode=TwoWay}"
-                                                  ClickMode="Press"
-                                                  Focusable="False"
-                                                  HorizontalAlignment="Center"
-                                                  VerticalAlignment="Center"/>
-                                    </DataTemplate>
-                                </telerik:GridViewDataColumn.CellTemplate>
-                            </telerik:GridViewDataColumn>
-                            <telerik:GridViewDataColumn Header="{x:Static Member=local:UIRes.HdrDeliveryLocationName}" UniqueName="PartnerName" DataMemberBinding="{Binding PartnerName}"
-                                                        ColumnGroupName="DigiDoc" IsGroupable="False" ShowDistinctFilters="False">
-                                <telerik:GridViewDataColumn.CellStyle>
-                                    <Style TargetType="telerik:GridViewCell">
-                                        <Setter Property="Background" Value="{Binding MapName, Converter={StaticResource GreenCellBackgroundConverter}}"/>
-                                    </Style>
-                                </telerik:GridViewDataColumn.CellStyle>
-                            </telerik:GridViewDataColumn>
-                            <telerik:GridViewDataColumn Header="{x:Static Member=local:UIRes.HdrMappingOn}" UniqueName="AddressCheckBox"
-                                                        ColumnGroupName="DigiDoc" IsGroupable="False" IsFilterable="False" DataMemberBinding="{Binding MapAddress}">
-                                <telerik:GridViewDataColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <CheckBox IsChecked="{Binding MapAddress, Mode=TwoWay}"
-                                                  ClickMode="Press"
-                                                  Focusable="False"
-                                                  HorizontalAlignment="Center"
-                                                  VerticalAlignment="Center"/>
-                                    </DataTemplate>
-                                </telerik:GridViewDataColumn.CellTemplate>
-                            </telerik:GridViewDataColumn>
-                            <telerik:GridViewDataColumn Header="{x:Static Member=local:UIRes.HdrCity}" UniqueName="City" DataMemberBinding="{Binding City}"
-                                                        ColumnGroupName="DigiDoc" IsGroupable="False" ShowDistinctFilters="False">
-                                <telerik:GridViewDataColumn.CellStyle>
-                                    <Style TargetType="telerik:GridViewCell">
-                                        <Setter Property="Background" Value="{Binding MapAddress, Converter={StaticResource GreenCellBackgroundConverter}}"/>
-                                    </Style>
-                                </telerik:GridViewDataColumn.CellStyle>
-                            </telerik:GridViewDataColumn>
-                            <telerik:GridViewDataColumn Header="{x:Static Member=local:UIRes.HdrAddress}" UniqueName="Address" DataMemberBinding="{Binding Address}"
-                                                        ColumnGroupName="DigiDoc" IsGroupable="False" ShowDistinctFilters="False">
-                                <telerik:GridViewDataColumn.CellStyle>
-                                    <Style TargetType="telerik:GridViewCell">
-                                        <Setter Property="Background" Value="{Binding MapAddress, Converter={StaticResource GreenCellBackgroundConverter}}"/>
-                                    </Style>
-                                </telerik:GridViewDataColumn.CellStyle>
-                            </telerik:GridViewDataColumn>
-                            <telerik:GridViewComboBoxColumn Header="{x:Static Member=local:UIRes.HdrDivision}" UniqueName="CodeGest" 
-                                                            IsGroupable="False" ShowDistinctFilters="False" ColumnGroupName="Mapping" 
-                                                            ItemTemplate="{StaticResource CodeGestComboBoxItemTemplate}"
-                                                            DataMemberBinding="{Binding CodeGest}" ItemsSource="{Binding Divisions}" 
-                                                            DisplayMemberPath="Name" SelectedValueMemberPath="Code" Width="360"
-                                                            IsComboBoxEditable="True" EditTriggers="CellClick" FilterMemberPath="Name"
-                                                            TextSearch.TextPath="Code">
-                                <telerik:GridViewComboBoxColumn.EditorStyle>
-                                    <Style TargetType="telerik:RadComboBox">
-                                        <Setter Property="IsFilteringEnabled" Value="True"/>
-                                        <Setter Property="StaysOpenOnEdit" Value="True"/>
-                                        <Setter Property="OpenDropDownOnFocus" Value="True"/>
-                                        <Setter Property="ItemsPanel">
-                                            <Setter.Value>
-                                                <ItemsPanelTemplate>
-                                                    <StackPanel/>
-                                                </ItemsPanelTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-                                </telerik:GridViewComboBoxColumn.EditorStyle>
-                            </telerik:GridViewComboBoxColumn>
-                            <telerik:GridViewComboBoxColumn Header="{x:Static Member=local:UIRes.HdrCostCenter}" UniqueName="CodeCen" 
-                                                            IsGroupable="False" ShowDistinctFilters="False" ColumnGroupName="Mapping"
-                                                            ItemTemplate="{StaticResource CodeCentComboBoxItemTemplate}"
-                                                            DataMemberBinding="{Binding CodeCen}" ItemsSource="{Binding CostCenters}" 
-                                                            DisplayMemberPath="Code" SelectedValueMemberPath="Code"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrDatabaseName}" UniqueName="DatabaseName" DataMemberBinding="{Binding DatabaseName}" 
+                                                        IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrRole}" UniqueName="Role" DataMemberBinding="{Binding Role}" 
+                                                        IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrMirroringState}" UniqueName="MirroringState" DataMemberBinding="{Binding MirroringState}" 
+                                                        IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrWitnessStatus}" UniqueName="WitnessStatus" DataMemberBinding="{Binding WitnessStatus}" 
+                                                        IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrLogGenerationRate}" UniqueName="LogGenerationRate" DataMemberBinding="{Binding LogGenerationRate}" 
+                                                        IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrUnsentLog}" UniqueName="UnsentLog" DataMemberBinding="{Binding UnsentLog}" 
+                                                        IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrSendRate}" UniqueName="SendRate" DataMemberBinding="{Binding SendRate}" 
+                                                        IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrUnrestoredLog}" UniqueName="UnrestoredLog" DataMemberBinding="{Binding UnrestoredLog}" 
+                                                        IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrRecoveryRate}" UniqueName="RecoveryRate" DataMemberBinding="{Binding RecoveryRate}" 
+                                                        IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrTransactionDelay}" UniqueName="TransactionDelay" DataMemberBinding="{Binding TransactionDelay}" 
+                                                        IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrTransactionsPerSec}" UniqueName="TransactionsPerSec" DataMemberBinding="{Binding TransactionsPerSec}" 
+                                                        IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrAverageDelay}" UniqueName="AverageDelay" DataMemberBinding="{Binding AverageDelay}" 
+                                                        IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrTimeRecorded}" UniqueName="TimeRecorded" DataMemberBinding="{Binding TimeRecorded}" 
+                                                        IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrTimeBehind}" UniqueName="TimeBehind" DataMemberBinding="{Binding TimeBehind}" 
+                                                        IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrLocalTime}" UniqueName="LocalTime" DataMemberBinding="{Binding LocalTime}" 
+                                                        IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrTS}" UniqueName="TS" DataMemberBinding="{Binding TS}" 
+                                                        IsGroupable="False" ShowDistinctFilters="False"/>
                         </telerik:RadGridView.Columns>
                     </telerik:RadGridView>
-
-                    <silver:CircularProgressBar Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                            x:FieldModifier="private" Name="ProgressBar" Width="20" Height="20" Margin="5"
-                            Visibility="{Binding IsLoading, Converter={StaticResource SilverVisibilityConverter}, ConverterParameter=True}"/>
-
-                    <Button Grid.Row="1" Margin="5" Padding="14,3" TabIndex="113" Name="AddDeliveryLocationButton"
-                            Content="{x:Static Member=local:UIRes.CmdAutoCompleteDeliveryLocations}" 
-                            Command="{Binding AutoCompleteDeliveryLocationsCommand}"
-                            HorizontalAlignment="Right"
-                            ToolTip="{x:Static Member=local:UIRes.StiAutoCompleteDeliveryLocations}"/>
                 </Grid>
             </telerik:RadTabItem>
 
-            <telerik:RadTabItem Header="{x:Static Member=local:UIRes.TabProducts}" IsEnabled="{Binding IsMappingTabsEnabled}">
+            <telerik:RadTabItem Header="{x:Static Member=res:UIRes.TabDriverData}">
                 <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="29*"/>
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" x:Name="sectorRow"/>
                         <RowDefinition Height="*" MinHeight="60"/>
-                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5,3,5,0">
-                        <Label Content="{x:Static Member=local:UIRes.LblSector}" Target="{Binding ElementName=SectorComboBox}"/>
-                        <telerik:RadComboBox x:FieldModifier="private" Name="SectorComboBox" TabIndex="115"
-                                                 VerticalAlignment="Bottom" Width="100"
-                                                 IsEditable="True" StaysOpenOnEdit="True" CanAutocompleteSelectItems="False" 
-                                                 IsTextSearchEnabled="True"
-                                                 ItemsSource="{Binding Sectors}"
-                                                 ItemTemplate="{StaticResource SectorComboBoxItemTemplate}"
-                                                 SelectedValuePath="Code" telerik:TextSearch.TextPath="Name"
-                                                 silver:StatusInfo.Description="{x:Static Member=local:UIRes.StiPersonPartner}">
-                            <telerik:RadComboBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <VirtualizingStackPanel />
-                                </ItemsPanelTemplate>
-                            </telerik:RadComboBox.ItemsPanel>
-                        </telerik:RadComboBox>
-                    </StackPanel>
-
-                    <StackPanel Margin="5" Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right">
-                        <CheckBox VerticalAlignment="Center" Margin="5,0,5,0" TabIndex="30" Name="IncludeMappedProductFromInvoiceCheckBox"
-                                  Content="{x:Static Member=local:UIRes.ChkIncludeMappedProductsFromInvoice}"
-                                  IsChecked="{Binding IsMappedProductFromInvoiceOnlyShown, Mode=TwoWay}" 
-                                  IsEnabled="{Binding IsMappingOpenWithInvoice}"/>
-                        <CheckBox VerticalAlignment="Center" Margin="5,0,5,0" TabIndex="30" Name="IncludeMappedProductCheckBox"
-                                  Content="{x:Static Member=local:UIRes.ChkIncludeMappedProducts}"
-                                  IsChecked="{Binding IsMappedProductShown, Mode=TwoWay}" />
-                    </StackPanel>
-
-                    <telerik:RadGridView Name="ProductGrid" Margin="5" TabIndex="120" Grid.Row="1"
-                                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                 ItemsSource="{Binding Path=Products}" AutoGenerateColumns="False"
-                                 CanUserReorderColumns="False" CanUserFreezeColumns="False" ShowGroupPanel="False"
-                                 CanUserDeleteRows="False" CanUserInsertRows="False" IsReadOnly="True"
-                                 silver:CommandLink.RowDoubleClickedCommand="{Binding EditProductCommand}">
-                        <telerik:RadGridView.ColumnGroups>
-                            <telerik:GridViewColumnGroup Name="DigiDoc" Header="{x:Static Member=local:UIRes.HdrElectronicInvoice}" />
-                            <telerik:GridViewColumnGroup Name="Mapping" Header="{x:Static Member=local:UIRes.HdrMapping}" />
-                        </telerik:RadGridView.ColumnGroups>
+                    <telerik:RadGridView Name="DriverGrid" Margin="5,5,5,5" TabIndex="120"
+                             ItemsSource="{Binding Path=DriverEntries}" AutoGenerateColumns="False"
+                             CanUserReorderColumns="False" CanUserFreezeColumns="False" ShowGroupPanel="False"
+                             CanUserDeleteRows="False" CanUserInsertRows="False" IsReadOnly="True" Grid.ColumnSpan="2">
                         <telerik:RadGridView.Columns>
-                            <telerik:GridViewDataColumn Header="{x:Static Member=local:UIRes.HdrPartnerProudctCode}" UniqueName="PInNom" DataMemberBinding="{Binding PCodePartner}" 
-                                                        IsGroupable="False" ShowDistinctFilters="False" ColumnGroupName="DigiDoc">
-                                <telerik:GridViewDataColumn.CellStyle>
-                                    <Style TargetType="telerik:GridViewCell">
-                                        <Setter Property="Background" Value="{Binding MapCodArt, Converter={StaticResource GreenCellBackgroundConverter}}"/>
-                                    </Style>
-                                </telerik:GridViewDataColumn.CellStyle>
-                            </telerik:GridViewDataColumn>
-                            <telerik:GridViewDataColumn Header="{x:Static Member=local:UIRes.HdrBarcode}" UniqueName="PBarcode" DataMemberBinding="{Binding PCodeStandard}" 
-                                                        IsGroupable="False" ShowDistinctFilters="False" ColumnGroupName="DigiDoc">
-                                <telerik:GridViewDataColumn.CellStyle>
-                                    <Style TargetType="telerik:GridViewCell">
-                                        <Setter Property="Background" Value="{Binding MapCodStandard, Converter={StaticResource GreenCellBackgroundConverter}}"/>
-                                    </Style>
-                                </telerik:GridViewDataColumn.CellStyle>
-                            </telerik:GridViewDataColumn>
-                            <telerik:GridViewDataColumn Header="{x:Static Member=local:UIRes.HdrPartialName}" UniqueName="PPartialName" DataMemberBinding="{Binding PatternName}" 
-                                                        IsGroupable="False" ShowDistinctFilters="False" ColumnGroupName="DigiDoc"
-                                                        IsVisible="{Binding Path=Config.CanMappingProductOnName}">
-                                <telerik:GridViewDataColumn.CellStyle>
-                                    <Style TargetType="telerik:GridViewCell">
-                                        <Setter Property="Background" Value="{Binding MapPatternName, Converter={StaticResource GreenCellBackgroundConverter}}"/>
-                                    </Style>
-                                </telerik:GridViewDataColumn.CellStyle>
-                            </telerik:GridViewDataColumn>
-                            <telerik:GridViewDataColumn Header="{x:Static Member=local:UIRes.HdrName}" UniqueName="PName" DataMemberBinding="{Binding PName}" 
-                                                        IsGroupable="False" ShowDistinctFilters="False" ColumnGroupName="DigiDoc">
-                                <telerik:GridViewDataColumn.CellStyle>
-                                    <Style TargetType="telerik:GridViewCell">
-                                        <Setter Property="Background" Value="{Binding MapName, Converter={StaticResource GreenCellBackgroundConverter}}"/>
-                                    </Style>
-                                </telerik:GridViewDataColumn.CellStyle>
-                            </telerik:GridViewDataColumn>
-                            <telerik:GridViewDataColumn Header="{x:Static Member=local:UIRes.HdrPartialDescription}" UniqueName="PPartialDescription" DataMemberBinding="{Binding PatternDescription}" 
-                                                        IsGroupable="False" ShowDistinctFilters="False" ColumnGroupName="DigiDoc"
-                                                        IsVisible="{Binding Path=Config.CanMappingProductOnName}">
-                                <telerik:GridViewDataColumn.CellStyle>
-                                    <Style TargetType="telerik:GridViewCell">
-                                        <Setter Property="Background" Value="{Binding MapDescription, Converter={StaticResource GreenCellBackgroundConverter}}"/>
-                                    </Style>
-                                </telerik:GridViewDataColumn.CellStyle>
-                            </telerik:GridViewDataColumn>
-                            <telerik:GridViewDataColumn Header="{x:Static Member=local:UIRes.HdrUM}" UniqueName="PUMCode" DataMemberBinding="{Binding UMCodeWithName}" 
-                                                        IsGroupable="False" ShowDistinctFilters="False" ColumnGroupName="DigiDoc"/>
-                            <telerik:GridViewDataColumn Header="{x:Static Member=local:UIRes.HdrProductName}" UniqueName="PProductName" DataMemberBinding="{Binding PNameProduct}" 
-                                                        IsGroupable="False" ShowDistinctFilters="False" ColumnGroupName="Mapping"/>
-                            <telerik:GridViewDataColumn Header="{x:Static Member=local:UIRes.HdrProductTypeSpecial}" UniqueName="PTypeSpecial" DataMemberBinding="{Binding PType}" 
-                                                        IsGroupable="False" ShowDistinctFilters="False" ColumnGroupName="Mapping"/>
-                            <telerik:GridViewDataColumn Header="{x:Static Member=local:UIRes.HdrUMDigiDoc}" UniqueName="PUM" DataMemberBinding="{Binding UM}" 
-                                                        IsGroupable="False" ShowDistinctFilters="False" ColumnGroupName="Mapping"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrDeviceId}" UniqueName="DeviceId" DataMemberBinding="{Binding DeviceId}" 
+                                            IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrFriendlyName}" UniqueName="FriendlyName" DataMemberBinding="{Binding FriendlyName}" 
+                                            IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrSerialNumber}" UniqueName="SerialNumber" DataMemberBinding="{Binding SerialNumber}" 
+                                            IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrModel}" UniqueName="Model" DataMemberBinding="{Binding Model}" 
+                                            IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrMediaType}" UniqueName="MediaType" DataMemberBinding="{Binding MediaType}" 
+                                            IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrHealthStatus}" UniqueName="HealthStatus" DataMemberBinding="{Binding HealthStatus}" 
+                                            IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrSizeGB}" UniqueName="SizeGB" DataMemberBinding="{Binding SizeGB}" 
+                                            IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrTemperature}" UniqueName="Temperature" DataMemberBinding="{Binding Temperature}" 
+                                            IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrTemperatureMax}" UniqueName="TemperatureMax" DataMemberBinding="{Binding TemperatureMax}" 
+                                            IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrPowerOnHours}" UniqueName="PowerOnHours" DataMemberBinding="{Binding PowerOnHours}" 
+                                            IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrWearLevel}" UniqueName="WearLevel" DataMemberBinding="{Binding WearLevel}" 
+                                            IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrReadLatencyMax}" UniqueName="ReadLatencyMax" DataMemberBinding="{Binding ReadLatencyMax}" 
+                                            IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrWriteLatencyMax}" UniqueName="WriteLatencyMax" DataMemberBinding="{Binding WriteLatencyMax}" 
+                                            IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrTS}" UniqueName="TS" DataMemberBinding="{Binding TS}" 
+                                            IsGroupable="False" ShowDistinctFilters="False"/>
                         </telerik:RadGridView.Columns>
                     </telerik:RadGridView>
-
-                    <Grid Grid.Row="2" Name="QuickFilterPanel" Background="{StaticResource FilterPanelBackgroundBrush}" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="auto"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Orientation="Horizontal" Margin="5">
-                            <telerik:Label Content="{x:Static Member=silver:UIStr.LblQuickFilter}" HorizontalAlignment="Left" Margin="5,0,5,0" VerticalAlignment="Center" Padding="0" Target="{Binding ElementName=quickFilterBox}" />
-                            <TextBox x:FieldModifier="private" Name="quickFilterBox" Width="150" TabIndex="20"
-                                     Text="{Binding QuickFilter, UpdateSourceTrigger=PropertyChanged}"
-                                     silver:StatusInfo.Description="{x:Static Member=core:UIRes.StiPartnerQuickFilter}"
-                                     PreviewKeyDown="QuickFilterBox_PreviewKeyDown" Height="22" VerticalAlignment="Top" />
-                        </StackPanel>
-                    </Grid>
                 </Grid>
-            </telerik:RadTabItem>-->
+            </telerik:RadTabItem>
+
+            <telerik:RadTabItem Header="{x:Static Member=res:UIRes.TabBackupData}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="29*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" MinHeight="60"/>
+                    </Grid.RowDefinitions>
+
+                    <telerik:RadGridView Name="BackupGrid" Margin="5,5,5,5" TabIndex="120"
+                             ItemsSource="{Binding Path=BackupEntries}" AutoGenerateColumns="False"
+                             CanUserReorderColumns="False" CanUserFreezeColumns="False" ShowGroupPanel="False"
+                             CanUserDeleteRows="False" CanUserInsertRows="False" IsReadOnly="True" Grid.ColumnSpan="2">
+                        <telerik:RadGridView.Columns>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrDatabaseName}" UniqueName="DatabaseName" DataMemberBinding="{Binding DatabaseName}" 
+                                            IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrType}" UniqueName="Type" DataMemberBinding="{Binding Type}" 
+                                            IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrDate}" UniqueName="Date" DataMemberBinding="{Binding Date}" 
+                                            IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrSizeGB}" UniqueName="SizeGB" DataMemberBinding="{Binding SizeGB}" 
+                                            IsGroupable="False" ShowDistinctFilters="False"/>
+                            <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrTS}" UniqueName="TS" DataMemberBinding="{Binding TS}" 
+                                            IsGroupable="False" ShowDistinctFilters="False"/>
+                        </telerik:RadGridView.Columns>
+                    </telerik:RadGridView>
+                </Grid>
+            </telerik:RadTabItem>
         </telerik:RadTabControl>
     </Grid>
 

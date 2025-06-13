@@ -1,7 +1,7 @@
-﻿namespace ServerWatchWS.Data
+﻿namespace ServerWatchAPI.Data
 {
     using Microsoft.Data.SqlClient;
-    using ServerWatchWS.Model;
+    using ServerWatchAPI.Model;
     using System.Collections.Generic;
     using System.Data;
 

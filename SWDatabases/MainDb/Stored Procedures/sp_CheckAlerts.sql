@@ -9,7 +9,7 @@ BEGIN
     SELECT 
         s.GUID, c.Component, 1, 'Monitoring not initialized for this component.'
     FROM dbo.Servers s
-    CROSS APPLY (VALUES ('Driver'), ('Mirroring')) AS c(Component)
+    CROSS APPLY (VALUES ('Driver'), ('Mirroring'), ('Backup')) AS c(Component)
     LEFT JOIN dbo.ServerSemaphores ss 
         ON ss.ServerGUID = s.GUID AND ss.Component = c.Component
     WHERE (s.Flag & 1) = 1 /* IsApproved */ AND ss.Id IS NULL;

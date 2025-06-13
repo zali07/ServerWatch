@@ -20,6 +20,10 @@ List<PropertyBase> Properties = new List<PropertyBase>()
 
 	new ImportCatalogProperty("Agent", "ServerCatalog", "Catalog"),
 
+	new SimpleProperty(Access.ReadOnly, "List<MirroringEntry>", "MirroringEntries", "Gets the collection of mirroring entries to display."),
+	new SimpleProperty(Access.ReadOnly, "List<DriverEntry>", "DriverEntries", "Gets the collection of driver entries to display."),
+	new SimpleProperty(Access.ReadOnly, "List<BackupEntry>", "BackupEntries", "Gets the collection of backup entries to display."),
+
 	new EditItemProperty("ServerE"),
 
 	new BitActionProperty(Access.ReadOnly, "IsReadOnly", "Gets a value indicating whether the <see cref=\"Item\"/> is read only, which happens when the user does not have the rights to update it, or it is being saved in the background."),

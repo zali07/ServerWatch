@@ -2,13 +2,12 @@
     @MirroringEntries dbo.MirroringEntryTableType READONLY
 AS
 BEGIN
-    INSERT INTO MirroringEntries (
-        ServerGUID, DatabaseName, Role, MirroringState, WitnessStatus, LogGenerationRate, UnsentLog, SendRate, UnrestoredLog,
-        RecoveryRate, TransactionDelay, TransactionsPerSec, AverageDelay, TimeRecorded, TimeBehind, LocalTime, TS
-    )
-    SELECT  
-        ServerGUID, DatabaseName, Role, MirroringState, WitnessStatus, LogGenerationRate, UnsentLog, SendRate, UnrestoredLog,
-        RecoveryRate, TransactionDelay, TransactionsPerSec, AverageDelay, TimeRecorded, TimeBehind, LocalTime, TS
+    INSERT INTO MirroringEntries ( ServerGUID, DatabaseName, [Role], MirroringState, WitnessStatus, LogGenerationRate,
+        UnsentLog, SendRate, UnrestoredLog, RecoveryRate, TransactionDelay, TransactionsPerSec, AverageDelay,
+        TimeRecorded, TimeBehind, LocalTime, TS)
+    SELECT ServerGUID, DatabaseName, [Role], MirroringState, WitnessStatus, LogGenerationRate, 
+        UnsentLog, SendRate, UnrestoredLog, RecoveryRate, TransactionDelay, TransactionsPerSec, AverageDelay,
+        TimeRecorded, TimeBehind, LocalTime, TS
     FROM @MirroringEntries;
 END;
 

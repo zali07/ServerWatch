@@ -4,8 +4,10 @@
     using ServerWatchTower.Agent.Model;
     using ServerWatchTower.Agent.ViewModel.Properties;
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using System.Windows;
+    using System.Windows.Threading;
 
     /// <summary>
     /// The view model class of the Server Edit.
@@ -42,6 +44,14 @@
         }
 
         /// <inheritdoc/>
+        partial void PreInitialize()
+        {
+            this.MirroringEntries = new List<MirroringEntry>();
+            this.DriverEntries = new List<DriverEntry>();
+            this.BackupEntries = new List<BackupEntry>();
+        }
+
+        /// <inheritdoc/>
         protected override async Task OnLoadAsync()
         {
             this.IsReadOnly = true;
@@ -72,6 +82,19 @@
             if (serverGuid != null)
             {
                 editableItem = await this.Catalog.GetEditableItemAsync(serverGuid);
+
+                MirroringEntries.Clear();
+                MirroringEntries = await this.AgentDataService.GetMirroringEntriesAsync(serverGuid);
+
+                BackupEntries.Clear();
+                BackupEntries = await this.AgentDataService.GetBackupEntriesAsync(serverGuid);
+
+                DriverEntries.Clear();
+                DriverEntries = await this.AgentDataService.GetDriverEntriesAsync(serverGuid);
+
+                this.NotifyChangeOf(nameof(MirroringEntries));
+                this.NotifyChangeOf(nameof(BackupEntries));
+                this.NotifyChangeOf(nameof(DriverEntries));
             }
             else
             {

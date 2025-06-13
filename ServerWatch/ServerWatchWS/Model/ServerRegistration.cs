@@ -1,4 +1,4 @@
-﻿namespace ServerWatchWS.Model
+﻿namespace ServerWatchAPI.Model
 {
     public class ServerRegistration
     {

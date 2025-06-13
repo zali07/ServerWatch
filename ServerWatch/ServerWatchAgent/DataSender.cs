@@ -47,51 +47,51 @@ namespace ServerWatchAgent
 
         public async Task SendMirroringDataAsync(string jsonPayload)
         {
-            await SendRequestAsync(jsonPayload, "/ServerWatchWS/api/telemetry/postMirroringData", HttpMethod.Post);
+            await SendRequestAsync(jsonPayload, "/Cosys.ServerWatch/Telemetry/postMirroringData", HttpMethod.Post);
         }
 
         public async Task SendDriverDataAsync(string jsonPayload)
         {
-            await SendRequestAsync(jsonPayload, "/ServerWatchWS/api/telemetry/postDriverData", HttpMethod.Post);
+            await SendRequestAsync(jsonPayload, "/Cosys.ServerWatch/Telemetry/postDriverData", HttpMethod.Post);
         }
 
         public async Task SendBackupDataAsync(string jsonPayload)
         {
-            await SendRequestAsync(jsonPayload, "/ServerWatchWS/api/telemetry/postBackupData", HttpMethod.Post);
+            await SendRequestAsync(jsonPayload, "/Cosys.ServerWatch/Telemetry/postBackupData", HttpMethod.Post);
         }
 
         public async Task RegisterWithWebServiceAsync(string jsonPayload)
         {
-            await SendRequestAsync(jsonPayload, "/ServerWatchWS/api/agent/registerAgent", HttpMethod.Post, false);
+            await SendRequestAsync(jsonPayload, "/Cosys.ServerWatch/Agent/registerAgent", HttpMethod.Post, false);
         }
 
         public async Task<bool> CheckDriverApprovalStatusAsync()
         {
-            string responseContent = await SendRequestAsync(null, "/ServerWatchWS/api/telemetry/getDriverStatus", HttpMethod.Get);
+            string responseContent = await SendRequestAsync(null, "/Cosys.ServerWatch/Telemetry/getDriverStatus", HttpMethod.Get);
             return responseContent.Contains("approved\":true");
         }
 
         public async Task<bool> CheckMirroringApprovalStatusAsync()
         {
-            string responseContent = await SendRequestAsync(null, "/ServerWatchWS/api/telemetry/getMirroringStatus", HttpMethod.Get);
+            string responseContent = await SendRequestAsync(null, "/Cosys.ServerWatch/Telemetry/getMirroringStatus", HttpMethod.Get);
             return responseContent.Contains("approved\":true");
         }
 
         public async Task<bool> CheckBackupApprovalStatusAsync()
         {
-            string responseContent = await SendRequestAsync(null, "/ServerWatchWS/api/telemetry/getBackupStatus", HttpMethod.Get);
+            string responseContent = await SendRequestAsync(null, "/Cosys.ServerWatch/Telemetry/getBackupStatus", HttpMethod.Get);
             return responseContent.Contains("approved\":true");
         }
 
         public async Task<bool> CheckApprovalStatusAsync()
         {
-            string responseContent = await SendRequestAsync(null, "/ServerWatchWS/api/agent/getServerStatus", HttpMethod.Get);
+            string responseContent = await SendRequestAsync(null, "/Cosys.ServerWatch/Agent/getServerStatus", HttpMethod.Get);
             return responseContent.Contains("approved\":true");
         }
 
         public async Task<string> GetBackupFolderPathAsync()
         {
-            string response = await SendRequestAsync(null, "/ServerWatchWS/api/telemetry/getBackupConfig", HttpMethod.Get);
+            string response = await SendRequestAsync(null, "/Cosys.ServerWatch/Telemetry/getBackupConfig", HttpMethod.Get);
 
             if (string.IsNullOrWhiteSpace(response))
             {

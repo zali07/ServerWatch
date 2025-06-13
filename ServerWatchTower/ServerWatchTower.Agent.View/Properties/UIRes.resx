@@ -141,20 +141,119 @@
   <data name="ChkIsDeleted" xml:space="preserve">
     <value>Deleted</value>
   </data>
+  <data name="HdrAverageDelay" xml:space="preserve">
+    <value>AverageDelay</value>
+  </data>
+  <data name="HdrBackupRoot" xml:space="preserve">
+    <value>BackupRoot</value>
+  </data>
+  <data name="HdrDatabaseName" xml:space="preserve">
+    <value>DatabaseName</value>
+  </data>
+  <data name="HdrDate" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="HdrDeviceId" xml:space="preserve">
+    <value>DeviceId</value>
+  </data>
+  <data name="HdrFriendlyName" xml:space="preserve">
+    <value>FriendlyName</value>
+  </data>
   <data name="HdrGuid" xml:space="preserve">
     <value>GUID</value>
+  </data>
+  <data name="HdrHealthStatus" xml:space="preserve">
+    <value>HealthStatus</value>
+  </data>
+  <data name="HdrLocalTime" xml:space="preserve">
+    <value>LocalTime</value>
+  </data>
+  <data name="HdrLogGenerationRate" xml:space="preserve">
+    <value>LogGenerationRate</value>
+  </data>
+  <data name="HdrMediaType" xml:space="preserve">
+    <value>MediaType</value>
+  </data>
+  <data name="HdrMirroringState" xml:space="preserve">
+    <value>MirroringState</value>
+  </data>
+  <data name="HdrModel" xml:space="preserve">
+    <value>Model</value>
   </data>
   <data name="HdrPartnerName" xml:space="preserve">
     <value>Partner</value>
   </data>
+  <data name="HdrPowerOnHours" xml:space="preserve">
+    <value>PowerOnHours</value>
+  </data>
+  <data name="HdrReadLatencyMax" xml:space="preserve">
+    <value>ReadLatencyMax</value>
+  </data>
+  <data name="HdrRecoveryRate" xml:space="preserve">
+    <value>RecoveryRate</value>
+  </data>
+  <data name="HdrRole" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="HdrSendRate" xml:space="preserve">
+    <value>SendRate</value>
+  </data>
+  <data name="HdrSerialNumber" xml:space="preserve">
+    <value>SerialNumber</value>
+  </data>
   <data name="HdrServerName" xml:space="preserve">
     <value>Server</value>
+  </data>
+  <data name="HdrSizeGB" xml:space="preserve">
+    <value>SizeGB</value>
+  </data>
+  <data name="HdrTemperature" xml:space="preserve">
+    <value>Temperature</value>
+  </data>
+  <data name="HdrTemperatureMax" xml:space="preserve">
+    <value>TemperatureMax</value>
+  </data>
+  <data name="HdrTimeBehind" xml:space="preserve">
+    <value>TimeBehind</value>
+  </data>
+  <data name="HdrTimeRecorded" xml:space="preserve">
+    <value>TimeRecorded</value>
+  </data>
+  <data name="HdrTransactionDelay" xml:space="preserve">
+    <value>TransactionDelay</value>
+  </data>
+  <data name="HdrTransactionsPerSec" xml:space="preserve">
+    <value>TransactionsPerSec</value>
+  </data>
+  <data name="HdrTS" xml:space="preserve">
+    <value>TS</value>
+  </data>
+  <data name="HdrType" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="HdrUnrestoredLog" xml:space="preserve">
+    <value>UnrestoredLog</value>
+  </data>
+  <data name="HdrUnsentLog" xml:space="preserve">
+    <value>UnsentLog</value>
+  </data>
+  <data name="HdrWearLevel" xml:space="preserve">
+    <value>WearLevel</value>
   </data>
   <data name="HdrWindowsVersion" xml:space="preserve">
     <value>Windows</value>
   </data>
+  <data name="HdrWitnessStatus" xml:space="preserve">
+    <value>WitnessStatus</value>
+  </data>
+  <data name="HdrWriteLatencyMax" xml:space="preserve">
+    <value>WriteLatencyMax</value>
+  </data>
   <data name="LblArchives" xml:space="preserve">
     <value>Archives</value>
+  </data>
+  <data name="LblBackupRoot" xml:space="preserve">
+    <value>BackupRoot</value>
   </data>
   <data name="LblGuid" xml:space="preserve">
     <value>GUID</value>
@@ -177,8 +276,17 @@
   <data name="MsgEmptyAlertList" xml:space="preserve">
     <value>You have no alerts.</value>
   </data>
+  <data name="TabBackupData" xml:space="preserve">
+    <value>Backup</value>
+  </data>
+  <data name="TabDriverData" xml:space="preserve">
+    <value>Drivers</value>
+  </data>
   <data name="TabGenericData" xml:space="preserve">
     <value>Generic Data</value>
+  </data>
+  <data name="TabMirroringData" xml:space="preserve">
+    <value>Mirroring</value>
   </data>
   <data name="TitleServers" xml:space="preserve">
     <value>Servers</value>

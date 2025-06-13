@@ -95,6 +95,10 @@
     <Build Include="Stored Procedures\spInsertBackupEntries.sql" />
     <Build Include="Tables\BackupEntries.sql" />
     <Build Include="Types\BackupEntryTableType.sql" />
+    <Build Include="Stored Procedures\spGetBackupEntries.sql" />
+    <Build Include="Stored Procedures\spGetDriverEntries.sql" />
+    <Build Include="Stored Procedures\spGetMirroringEntries.sql" />
+    <Build Include="Triggers\trg_SemaphoreOnBackupEntry.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Config.data.sql" />

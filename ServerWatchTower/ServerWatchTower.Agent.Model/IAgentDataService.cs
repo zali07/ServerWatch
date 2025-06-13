@@ -79,5 +79,21 @@
         Task<List<ServerComponentStatus>> GetServerComponentStatusesAsync();
 
         #endregion Report
+
+        #region Diagram
+
+        Task<List<MirroringEntry>> GetMirroringEntriesAsync();
+
+        Task<List<DriverEntry>> GetDriverEntriesAsync();
+
+        Task<List<BackupEntry>> GetBackupEntriesAsync();
+
+        Task<List<MirroringEntry>> GetMirroringEntriesAsync(string guid);
+
+        Task<List<DriverEntry>> GetDriverEntriesAsync(string guid);
+
+        Task<List<BackupEntry>> GetBackupEntriesAsync(string guid);
+
+        #endregion Diagram
     }
 }

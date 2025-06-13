@@ -104,6 +104,46 @@
 
         #endregion Report
 
+        #region Diagram
+
+        /// <inheritdoc/>
+        public Task<List<MirroringEntry>> GetMirroringEntriesAsync()
+        {
+            return this.RunOnDataLayerAsync(dl => dl.GetMirroringEntries());
+        }
+
+        /// <inheritdoc/>
+        public Task<List<MirroringEntry>> GetMirroringEntriesAsync(string guid)
+        {
+            return this.RunOnDataLayerAsync(dl => dl.GetMirroringEntries(guid));
+        }
+
+        /// <inheritdoc/>
+        public Task<List<DriverEntry>> GetDriverEntriesAsync()
+        {
+            return this.RunOnDataLayerAsync(dl => dl.GetDriverEntries());
+        }
+
+        /// <inheritdoc/>
+        public Task<List<DriverEntry>> GetDriverEntriesAsync(string guid)
+        {
+            return this.RunOnDataLayerAsync(dl => dl.GetDriverEntries(guid));
+        }
+
+        /// <inheritdoc/>
+        public Task<List<BackupEntry>> GetBackupEntriesAsync()
+        {
+            return this.RunOnDataLayerAsync(dl => dl.GetBackupEntries());
+        }
+
+        /// <inheritdoc/>
+        public Task<List<BackupEntry>> GetBackupEntriesAsync(string guid)
+        {
+            return this.RunOnDataLayerAsync(dl => dl.GetBackupEntries(guid));
+        }
+
+        #endregion Diagram
+
         #region Background task starting methods
 
         /// <summary>
