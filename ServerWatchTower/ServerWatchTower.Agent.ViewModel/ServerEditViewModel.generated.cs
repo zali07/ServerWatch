@@ -35,6 +35,24 @@ namespace ServerWatchTower.Agent.ViewModel
         private BitVector32 bitValues;
 
         /// <summary>
+        /// The field which stores the data of the <see cref="MirroringEntries"/> property. Should not be accessed directly.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private List<MirroringEntry> mirroringEntriesField;
+
+        /// <summary>
+        /// The field which stores the data of the <see cref="DriverEntries"/> property. Should not be accessed directly.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private List<DriverEntry> driverEntriesField;
+
+        /// <summary>
+        /// The field which stores the data of the <see cref="BackupEntries"/> property. Should not be accessed directly.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private List<BackupEntry> backupEntriesField;
+
+        /// <summary>
         /// The field which stores the data of the <see cref="Item"/> property. Should not be accessed directly.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -113,6 +131,57 @@ namespace ServerWatchTower.Agent.ViewModel
         }
 
         #endregion
+
+        /// <summary>
+        /// Gets the collection of mirroring entries to display.
+        /// </summary>
+        public List<MirroringEntry> MirroringEntries
+        {
+            get => this.mirroringEntriesField;
+
+            private set
+            {
+                if (this.mirroringEntriesField != value)
+                {
+                    this.mirroringEntriesField = value;
+                    this.NotifyChangeOf(nameof(this.MirroringEntries));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the collection of driver entries to display.
+        /// </summary>
+        public List<DriverEntry> DriverEntries
+        {
+            get => this.driverEntriesField;
+
+            private set
+            {
+                if (this.driverEntriesField != value)
+                {
+                    this.driverEntriesField = value;
+                    this.NotifyChangeOf(nameof(this.DriverEntries));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the collection of backup entries to display.
+        /// </summary>
+        public List<BackupEntry> BackupEntries
+        {
+            get => this.backupEntriesField;
+
+            private set
+            {
+                if (this.backupEntriesField != value)
+                {
+                    this.backupEntriesField = value;
+                    this.NotifyChangeOf(nameof(this.BackupEntries));
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the data item which will be displayed and optionally edited on the view.

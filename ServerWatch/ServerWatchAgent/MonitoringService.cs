@@ -29,16 +29,6 @@ namespace ServerWatchAgent
             updater = new Updater();
         }
 
-        public void DebugRun(string[] args)
-        {
-            OnStart(args);
-
-            Console.WriteLine("Service running... Press any key to stop.");
-            Console.ReadKey();
-
-            OnStop();
-        }
-
         protected override void OnStart(string[] args)
         {
             try
@@ -51,7 +41,7 @@ namespace ServerWatchAgent
             }
 
             validationTimer = new Timer();
-            validationTimer.Interval = 30 * 1000; // 30 seconds
+            validationTimer.Interval = 10 * 1000; // 10 seconds
             validationTimer.Elapsed += ValidateAndStartTimers;
             validationTimer.Start();
 
@@ -69,7 +59,7 @@ namespace ServerWatchAgent
             driverTimer.Elapsed += GatherAndSendDriverDataAsync;
 
             backupCheckTimer = new Timer();
-            backupCheckTimer.Interval = 12 * 60 * 60 * 1000; // 12 hour
+            backupCheckTimer.Interval = 60 * 60 * 1000; // 1 hour
             backupCheckTimer.Elapsed += GatherAndSendBackupDataAsync;
         }
 
@@ -82,14 +72,17 @@ namespace ServerWatchAgent
             catch (Exception ex)
             {
                 var requestInfo = this.CollectRequestInfo(("OperationType", operationType));
+
                 Exception current = ex;
                 int innerLevel = 0;
+
                 while (current != null)
                 {
                     requestInfo.Add($"ServerWatchAgent.Exception.Level{innerLevel}", current.GetType().FullName + ": " + current.Message);
                     current = current.InnerException;
                     innerLevel++;
                 }
+
                 ExceptionManager.Publish(ex, requestInfo);
             }
         }

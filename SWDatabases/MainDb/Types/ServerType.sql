@@ -2,9 +2,9 @@
 (
 	[GUID]				nvarchar(36)    NOT NULL PRIMARY KEY,
 	[PublicKey]			nvarchar(max)	NULL,
-	[Partner]			nvarchar(max)	NULL,
-	[Server]			nvarchar(max)	NULL,
-	[Windows]			nvarchar(max)	NULL,
+	[Partner]			nvarchar(255)	NULL,
+	[Server]			nvarchar(255)	NULL,
+	[Windows]			nvarchar(255)	NULL,
 	[BackupRoot]		nvarchar(255)	NULL,
 	[Flag]				int				NOT NULL
 )

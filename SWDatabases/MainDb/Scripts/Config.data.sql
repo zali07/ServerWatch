@@ -12,13 +12,13 @@ INSERT INTO @config (Property, [Value], [Description])
 
 /* Generic settings */
 
-SELECT N'DatabaseCode', N'test_company', N'ID of database.'
+SELECT N'DatabaseCode', N'Cosys', N'ID of database.'
 UNION ALL
 SELECT N'DatabaseVersion', N'1111', N'Current version of the database.'
 UNION ALL
 SELECT N'MinAppVersion', N'1111', N'Minimum SWTower version that is required to work with the database.'
 UNION ALL
-SELECT N'CompanyName', N'Test Company Ltd.', N'Company name which uses the application.'
+SELECT N'CompanyName', N'Cosys Computer Systems SRL.', N'Company name which uses the application.'
 
 /* Agent module */
 

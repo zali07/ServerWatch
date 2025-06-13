@@ -1,7 +1,7 @@
-﻿using ServerWatchWS.Model;
+﻿using ServerWatchAPI.Model;
 using System.Data;
 
-namespace ServerWatchWS.Data
+namespace ServerWatchAPI.Data
 {
     public static class TableTypeBuilder
     {

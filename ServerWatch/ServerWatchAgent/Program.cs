@@ -1,5 +1,4 @@
-﻿using System;
-using System.ServiceProcess;
+﻿using System.ServiceProcess;
 
 namespace ServerWatchAgent
 {
@@ -10,32 +9,14 @@ namespace ServerWatchAgent
         /// </summary>
         static void Main(string[] args)
         {
-            if (Environment.UserInteractive)
-            {
-                // Running as console application for debugging
-                MonitoringService service = new MonitoringService();
-                service.DebugRun(args);
-            }
-            else
-            {
-                ServiceBase[] ServicesToRun;
+            ServiceBase[] ServicesToRun;
 
-                ServicesToRun = new ServiceBase[]
-                {
+            ServicesToRun = new ServiceBase[]
+            {
                 new MonitoringService()
-                };
+            };
 
-                ServiceBase.Run(ServicesToRun);
-            }
-
-            //ServiceBase[] ServicesToRun;
-
-            //ServicesToRun = new ServiceBase[]
-            //{
-            //    new MonitoringService()
-            //};
-
-            //ServiceBase.Run(ServicesToRun);
+            ServiceBase.Run(ServicesToRun);
         }
     }
 }

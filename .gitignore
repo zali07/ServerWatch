@@ -368,3 +368,5 @@ ASALocalRun/
 /ServerWatchTower/Cosys.SilverLib.View.Tests
 /ServerWatchTower/Cosys.SilverLib.View
 /ServerWatchTower/Templates
+/ServerWatch/ServerWatchAPI/Downloads/ServerWatchAgent.exe
+/ServerWatch/ServerWatchWS/ServerWatchWS.csproj

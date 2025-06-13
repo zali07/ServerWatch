@@ -53,6 +53,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DiagramsViewModel.cs">
+      <DependentUpon>DiagramsViewModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DiagramsViewModel.generated.cs">
+      <DependentUpon>DiagramsViewModel.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="ReportsViewModel.cs">
       <DependentUpon>ReportsViewModel.tt</DependentUpon>
     </Compile>
@@ -103,6 +111,10 @@
     <None Include="SWTower.snk" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DiagramsViewModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DiagramsViewModel.generated.cs</LastGenOutput>
+    </Content>
     <Content Include="ReportsViewModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ReportsViewModel.generated.cs</LastGenOutput>

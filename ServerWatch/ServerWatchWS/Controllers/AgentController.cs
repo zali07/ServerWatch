@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using ServerWatchWS.Data;
-using ServerWatchWS.Model;
+using ServerWatchAPI.Data;
+using ServerWatchAPI.Model;
 using System.Diagnostics;
 
-namespace ServerWatchWS.Controllers
+namespace ServerWatchAPI.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class AgentController : Controller
     {
         private readonly DataLayer _dataLayer;

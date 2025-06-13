@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ServerWatchWS.Model
+namespace ServerWatchAPI.Model
 {
     public class Servers
     {

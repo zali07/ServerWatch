@@ -1,4 +1,4 @@
-using ServerWatchWS.Data;
+using ServerWatchAPI.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
