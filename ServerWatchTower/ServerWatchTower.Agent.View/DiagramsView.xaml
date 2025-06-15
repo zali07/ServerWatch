@@ -17,8 +17,24 @@
                 <ResourceDictionary Source="/Cosys.SilverLib.View;Component/ConvertersResourceDictionary.xaml"/>
                 <ResourceDictionary Source="/Cosys.SilverLib.View;component/Themes/OfficeBlack/SilverResourceDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            
+
             <local:StatusToColorConverter x:Key="StatusToColorConverter"/>
+
+            <DataTemplate x:Key="DiagramComboBoxItemTemplate">
+                <Grid Width="385">
+                    <TextBlock MaxWidth="80" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Code}"/>
+                    <TextBlock Margin="85,0,0,0" MaxWidth="300" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Name}"/>
+                    <Rectangle Margin="80, -3, 0, -2" Width="1" VerticalAlignment="Stretch" HorizontalAlignment="Left" Stroke="Silver"/>
+                </Grid>
+            </DataTemplate>
+
+            <DataTemplate x:Key="ServerComboBoxItemTemplate">
+                <Grid Width="385">
+                    <TextBlock MaxWidth="80" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Code}"/>
+                    <TextBlock Margin="85,0,0,0" MaxWidth="300" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Name}"/>
+                    <Rectangle Margin="80, -3, 0, -2" Width="1" VerticalAlignment="Stretch" HorizontalAlignment="Left" Stroke="Silver"/>
+                </Grid>
+            </DataTemplate>
         </ResourceDictionary>
     </swtower:SilverViewBase.Resources>
 
@@ -55,32 +71,86 @@
     </swtower:SilverViewBase.RibbonGroups>
 
     <Grid>
-        <ItemsControl ItemsSource="{Binding ServerCards}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel IsItemsHost="True" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Border Margin="10" Padding="10" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Width="350">
-                        <StackPanel>
-                            <TextBlock Text="{Binding ServerName}" FontWeight="Bold" FontSize="16" Margin="0,0,0,8"/>
-                            <ItemsControl ItemsSource="{Binding Components}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <DockPanel Margin="0,2">
-                                            <TextBlock Text="{Binding ComponentName}" Width="120"/>
-                                            <Ellipse Width="16" Height="16" Margin="8,0,0,0" HorizontalAlignment="Left"
-                                                     Fill="{Binding Status, Converter={StaticResource StatusToColorConverter}}"/>
-                                        </DockPanel>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
-                    </Border>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Name="FilterPanel" Grid.Row="0"  Margin="0,1,0,0" Background="{StaticResource FilterPanelBackgroundBrush}">
+            <StackPanel Orientation="Horizontal" Margin="5" Grid.Row="0" Grid.Column="0">
+                <telerik:Label Content="{x:Static Member=res:UIRes.LblPeriod}" 
+                               HorizontalAlignment="Left" Margin="0,0,5,0" VerticalAlignment="Center" Padding="0" HorizontalContentAlignment="Right"/>
+                <telerik:RadComboBox SelectedIndex="-1" HorizontalAlignment="Left" Margin="0"
+                                         Name="cmbMonth" 
+                                         VerticalAlignment="Center" Width="120"
+                                         StaysOpenOnEdit="True"
+                                         ItemsSource="{Binding StartPeriod}" DisplayMemberPath="Name" 
+                                         IsEditable="True" TabIndex="10" />
+                <Label Content="-" Height="26"/>
+                <telerik:RadComboBox Name="cmbEndPeriod" HorizontalAlignment="Stretch" Margin="0,0,10,0"
+                                         VerticalAlignment="Center" Width="120"
+                                         ItemsSource="{Binding EndPeriod}" DisplayMemberPath="Name" 
+                                         IsEditable="True" TabIndex="20" />
+
+                <Label Content="{x:Static Member=res:UIRes.LblServerName}" VerticalAlignment="Center" Target="{Binding ElementName=serverBox}"/>
+                <telerik:RadComboBox x:FieldModifier="private" Name="serverBox" Margin="2,0,10,0" TabIndex="30"
+                     VerticalAlignment="Center" Width="100" 
+                     IsEditable="True" StaysOpenOnEdit="True"
+                     CanKeyboardNavigationSelectItems="False" CanAutocompleteSelectItems="False"
+                     ItemsSource="{Binding Servers}" ItemTemplate="{StaticResource ServerComboBoxItemTemplate}"
+                     SelectedValuePath="Guid" telerik:TextSearch.TextPath="Name">
+                    <telerik:RadComboBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel />
+                        </ItemsPanelTemplate>
+                    </telerik:RadComboBox.ItemsPanel>
+                </telerik:RadComboBox>
+
+                <Label Content="{x:Static Member=res:UIRes.LblDiagram}" VerticalAlignment="Center" Target="{Binding ElementName=diagramBox}"/>
+                <telerik:RadComboBox x:FieldModifier="private" Name="diagramBox" Margin="2,0,10,0" TabIndex="30"
+                     VerticalAlignment="Center" Width="100" 
+                     IsEditable="True" StaysOpenOnEdit="True"
+                     CanKeyboardNavigationSelectItems="False" CanAutocompleteSelectItems="False"
+                     ItemsSource="{Binding Diagrams}" ItemTemplate="{StaticResource DiagramComboBoxItemTemplate}"
+                     SelectedValuePath="Code" telerik:TextSearch.TextPath="Name">
+                    <telerik:RadComboBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel />
+                        </ItemsPanelTemplate>
+                    </telerik:RadComboBox.ItemsPanel>
+                </telerik:RadComboBox>
+            </StackPanel>
+        </Grid>
+        
+        <Grid Grid.Row="1" Margin="5,0,5,5">
+            <ItemsControl ItemsSource="{Binding ServerCards}" Margin="0,0,0,10">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel IsItemsHost="True" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="10" Padding="10" BorderBrush="Gray" BorderThickness="1" CornerRadius="5" Width="350">
+                            <StackPanel>
+                                <TextBlock Text="{Binding ServerName}" FontWeight="Bold" FontSize="16" Margin="0,0,0,8"/>
+                                <ItemsControl ItemsSource="{Binding Components}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <DockPanel Margin="0,2">
+                                                <TextBlock Text="{Binding ComponentName}" Width="120"/>
+                                                <Ellipse Width="16" Height="16" Margin="8,0,0,0" HorizontalAlignment="Left"
+                                                         Fill="{Binding Status, Converter={StaticResource StatusToColorConverter}}"/>
+                                            </DockPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+        
     </Grid>
 </swtower:SilverViewBase>
