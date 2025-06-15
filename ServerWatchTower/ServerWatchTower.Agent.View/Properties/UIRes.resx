@@ -255,11 +255,17 @@
   <data name="LblBackupRoot" xml:space="preserve">
     <value>BackupRoot</value>
   </data>
+  <data name="LblDiagram" xml:space="preserve">
+    <value>Diagram</value>
+  </data>
   <data name="LblGuid" xml:space="preserve">
     <value>GUID</value>
   </data>
   <data name="LblPartnerName" xml:space="preserve">
     <value>Partner</value>
+  </data>
+  <data name="LblPeriod" xml:space="preserve">
+    <value>Period</value>
   </data>
   <data name="LblServerName" xml:space="preserve">
     <value>Server</value>

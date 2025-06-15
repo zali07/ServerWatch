@@ -475,6 +475,15 @@ namespace ServerWatchTower.Agent.View.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Diagram.
+        /// </summary>
+        public static string LblDiagram {
+            get {
+                return ResourceManager.GetString("LblDiagram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GUID.
         /// </summary>
         public static string LblGuid {
@@ -489,6 +498,15 @@ namespace ServerWatchTower.Agent.View.Properties {
         public static string LblPartnerName {
             get {
                 return ResourceManager.GetString("LblPartnerName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Period.
+        /// </summary>
+        public static string LblPeriod {
+            get {
+                return ResourceManager.GetString("LblPeriod", resourceCulture);
             }
         }
         
