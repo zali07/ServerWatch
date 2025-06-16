@@ -202,47 +202,6 @@ namespace ServerWatchTower.Agent.ViewModel
         }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="SelectablesOnly"/> filtering property is available and can be set for the current instance of the catalog.
-        /// </summary>
-        public bool IsSelectablesOnlyFilterAvailable
-        {
-            get => this.bitValues[4];
-
-            private set
-            {
-                if (this.bitValues[4] == value)
-                {
-                    return;
-                }
-
-                this.bitValues[4] = value;
-
-                this.Notify(ChangeOfProperty.IsSelectablesOnlyFilterAvailable);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether only the items available for selection should be displayed in the catalog.
-        /// </summary>
-        public bool SelectablesOnly
-        {
-            get => this.bitValues[8];
-            set
-            {
-                if (this.bitValues[8] == value)
-                {
-                    return;
-                }
-
-                this.bitValues[8] = value;
-
-                this.Notify(ChangeOfProperty.SelectablesOnly);
-
-                this.OnSelectablesOnlyChanged(value);
-            }
-        }
-
-        /// <summary>
         /// Gets the arguments passed to the view for initialization.
         /// </summary>
         private ServerCatalogViewArgs OpenArgs
@@ -346,11 +305,6 @@ namespace ServerWatchTower.Agent.ViewModel
         /// This method will be ignored unless it gets implemented in another place.
         /// </content>
         partial void OnQuickFilterChanged(string value);
-
-        /// <content>
-        /// This method will be ignored unless it gets implemented in another place.
-        /// </content>
-        partial void OnSelectablesOnlyChanged(bool value);
 
         /* Method stub: PreInitialize
 

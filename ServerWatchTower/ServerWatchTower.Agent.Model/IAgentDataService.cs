@@ -1,5 +1,6 @@
 ﻿namespace ServerWatchTower.Agent.Model
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -93,6 +94,8 @@
         Task<List<DriverEntry>> GetDriverEntriesAsync(string guid);
 
         Task<List<BackupEntry>> GetBackupEntriesAsync(string guid);
+
+        Task<List<ChartDataPoint>> GetDiagramDataAsync(string guid, string type, DateTime startD, DateTime endD);
 
         #endregion Diagram
     }

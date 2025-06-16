@@ -3,6 +3,7 @@
     using ServerWatchTower.Agent.Model;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using System.Windows.Threading;
 
@@ -15,6 +16,41 @@
         /// A timer which used to refreshes the data of the alerts every 5 min.
         /// </summary>
         private DispatcherTimer refreshTimer;
+
+        public List<string> AvailableDiagramTypes { get; set; } = new List<string> { "DriversTemperature", "DriversReadLatency", "DriversWriteLatency", "Mirroring", "Backups" };
+
+        private string _selectedDiagramType;
+        public string SelectedDiagramType
+        {
+            get => _selectedDiagramType;
+            set
+            {
+                _selectedDiagramType = value;
+                _ = this.LoadChartDataAsync();
+            }
+        }
+
+        public DateTime StartDate { get; set; } = DateTime.Today.AddDays(-7);
+        public DateTime EndDate { get; set; } = DateTime.Today;
+        public Server SelectedServer { get; set; }
+
+        public Action<IEnumerable<IGrouping<string, ChartDataPoint>>> UpdateChartCallback { get; set; }
+
+        private async Task LoadChartDataAsync()
+        {
+            if (this.SelectedServer == null || string.IsNullOrEmpty(this.SelectedDiagramType))
+                return;
+
+            var rawPoints = await this.AgentDataService.GetDiagramDataAsync(
+                this.SelectedServer.GUID,
+                this.SelectedDiagramType,
+                this.StartDate,
+                this.EndDate);
+
+            var groupedData = rawPoints.GroupBy(p => p.Category);
+
+            this.UpdateChartCallback?.Invoke(groupedData);
+        }
 
         /// <inheritdoc/>
         protected override void OnIsLoadingChanged()
@@ -67,24 +103,11 @@
 
             try
             {
-                //var servers = await this.AgentDataService.GetServerComponentStatusesAsync();
-                //this.ServerCards.Clear();
+                this.Servers = new List<Server>();
+                var serverResult = await this.AgentDataService.GetServersAsync(new ServerCatalogFilterArgs());
+                this.Servers = serverResult.Servers;
 
-                //foreach (var group in servers.GroupBy(s => s.ServerGuid))
-                //{
-                //    var displayName = group.Select(c => c.ServerName).FirstOrDefault(n => !string.IsNullOrEmpty(n)) ?? group.Key;
-
-                //    var card = new ServerCard
-                //    {
-                //        ServerName = displayName,
-                //        Components = group.Select(c => new ComponentStatus
-                //        {
-                //            ComponentName = c.ComponentName,
-                //            Status = c.Status
-                //        }).ToList()
-                //    };
-                //    this.ServerCards.Add(card);
-                //}
+                this.NotifyChangeOf(nameof(this.Servers));
             }
             finally
             {
@@ -113,26 +136,7 @@
 
             try
             {
-                //var servers = await this.AgentDataService.GetServerComponentStatusesAsync();
 
-                //this.ServerCards.Clear();
-
-                //foreach (var group in servers.GroupBy(s => s.ServerGuid))
-                //{
-                //    var displayName = group.Select(c => c.ServerName).FirstOrDefault(n => !string.IsNullOrEmpty(n)) ?? group.Key;
-
-                //    var card = new ServerCard
-                //    {
-                //        ServerName = displayName,
-                //        Components = group.Select(c => new ComponentStatus
-                //        {
-                //            ComponentName = c.ComponentName,
-                //            Status = c.Status
-                //        }).ToList()
-                //    };
-
-                //    this.ServerCards.Add(card);
-                //}
             }
             finally
             {

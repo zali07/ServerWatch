@@ -76,6 +76,10 @@
       <Project>{0ba0f1d2-d11f-4dc8-922d-f413977d6702}</Project>
       <Name>ServerWatchTower.Agent.Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ServerWatchTower.Agent.ViewModel\ServerWatchTower.Agent.ViewModel.csproj">
+      <Project>{6C532C8E-4C51-42CD-B683-4EB79E31CD82}</Project>
+      <Name>ServerWatchTower.Agent.ViewModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

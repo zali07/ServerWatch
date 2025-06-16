@@ -28,6 +28,12 @@ namespace ServerWatchTower.Agent.ViewModel
         #region Private fields
 
         /// <summary>
+        /// The field which stores the data of the <see cref="Servers"/> property. Should not be accessed directly.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private List<Server> serversField;
+
+        /// <summary>
         /// The field which stores the data of the <see cref="MirroringEntries"/> property. Should not be accessed directly.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -93,6 +99,23 @@ namespace ServerWatchTower.Agent.ViewModel
         }
 
         #endregion
+
+        /// <summary>
+        /// Gets the collection of server card entries to display.
+        /// </summary>
+        public List<Server> Servers
+        {
+            get => this.serversField;
+
+            private set
+            {
+                if (this.serversField != value)
+                {
+                    this.serversField = value;
+                    this.NotifyChangeOf(nameof(this.Servers));
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the collection of mirroring entries to display.

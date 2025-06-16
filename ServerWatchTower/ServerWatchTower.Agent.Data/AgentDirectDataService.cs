@@ -142,6 +142,13 @@
             return this.RunOnDataLayerAsync(dl => dl.GetBackupEntries(guid));
         }
 
+
+        /// <inheritdoc/>
+        public Task<List<ChartDataPoint>> GetDiagramDataAsync(string guid, string type, DateTime startD, DateTime endD)
+        {
+            return this.RunOnDataLayerAsync(dl => dl.GetDiagramData(guid, type, startD, endD));
+        }
+
         #endregion Diagram
 
         #region Background task starting methods

@@ -54,6 +54,15 @@
     <Reference Include="Telerik.Windows.Controls, Version=2012.3.1404.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
       <HintPath>..\packages\Telerik.Windows.Controls.Xaml.2012.3.1404\lib\net40\Telerik.Windows.Controls.dll</HintPath>
     </Reference>
+    <Reference Include="Telerik.Windows.Controls.Chart">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Telerik\RadControls for WPF Q3 2012\Binaries\WPF40\Telerik.Windows.Controls.Chart.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.Charting">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Telerik\RadControls for WPF Q3 2012\Binaries\WPF40\Telerik.Windows.Controls.Charting.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.DataVisualization">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Telerik\RadControls for WPF Q3 2012\Binaries\WPF40\Telerik.Windows.Controls.DataVisualization.dll</HintPath>
+    </Reference>
     <Reference Include="Telerik.Windows.Controls.Docking, Version=2012.3.1404.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
       <HintPath>..\packages\Telerik.Windows.Controls.Docking.Xaml.2012.3.1404\lib\net40\Telerik.Windows.Controls.Docking.dll</HintPath>
     </Reference>
@@ -147,6 +156,10 @@
     <ProjectReference Include="..\ServerWatchTower.Agent.Model\ServerWatchTower.Agent.Model.csproj">
       <Project>{0BA0F1D2-D11F-4DC8-922D-F413977D6702}</Project>
       <Name>ServerWatchTower.Agent.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServerWatchTower.Agent.ViewModel\ServerWatchTower.Agent.ViewModel.csproj">
+      <Project>{6C532C8E-4C51-42CD-B683-4EB79E31CD82}</Project>
+      <Name>ServerWatchTower.Agent.ViewModel</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

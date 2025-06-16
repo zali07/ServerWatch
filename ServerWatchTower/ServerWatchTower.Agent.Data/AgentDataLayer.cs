@@ -259,9 +259,9 @@
         }
 
         /// <summary>
-        /// Loads the <see cref="PartnerMapping"/>s from the database.
+        /// Loads the <see cref="Server"/>s from the database.
         /// </summary>
-        /// <returns>The list of the appropriate <see cref="PartnerMapping"/> instances.</returns>
+        /// <returns>The list of the appropriate <see cref="Server"/> instances.</returns>
         public (List<Server> Servers, string controlTipText) GetServers(ServerCatalogFilterArgs filter)
         {
             var result = new List<Server>();
@@ -709,6 +709,39 @@
                             TimeBehind = r.GetNDateTime(r.GetOrdinal("TimeBehind")),
                             LocalTime = r.GetNDateTime(r.GetOrdinal("LocalTime")),
                             TS = r.GetNDateTime(r.GetOrdinal("TS"))
+                        });
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public List<ChartDataPoint> GetDiagramData(string guid, string type, DateTime startD, DateTime endD)
+        {
+            if (string.IsNullOrEmpty(guid) || string.IsNullOrEmpty(type) || startD == default || endD == default || startD > endD)
+            {
+                throw new ArgumentException("Invalid parameters for diagram data retrieval.");
+            }
+
+            var result = new List<ChartDataPoint>();
+
+            using (var cmd = this.CreateCommand("[dbo].[spGetDiagramData]"))
+            {
+                cmd.Parameters.Add("@ServerGUID", SqlDbType.NVarChar, 36).Value = guid;
+                cmd.Parameters.Add("@Type", SqlDbType.NVarChar, 50).Value = type;
+                cmd.Parameters.Add("@StartDate", SqlDbType.DateTime).Value = startD;
+                cmd.Parameters.Add("@EndDate", SqlDbType.DateTime).Value = endD;
+
+                using (var r = cmd.ExecuteReader())
+                {
+                    while (r.Read())
+                    {
+                        result.Add(new ChartDataPoint
+                        {
+                            Label = r.GetNString(r.GetOrdinal("Label")),
+                            Value = r.IsDBNull(r.GetOrdinal("Value")) ? 0 : Convert.ToDouble(r[r.GetOrdinal("Value")]),
+                            Category = r.GetNString(r.GetOrdinal("Category"))
                         });
                     }
                 }
