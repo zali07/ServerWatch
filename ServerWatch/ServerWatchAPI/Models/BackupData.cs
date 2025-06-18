@@ -19,6 +19,8 @@ namespace ServerWatchAPI.Model
         public string Type { get; set; }
 
         [JsonPropertyName("Date")]
+        [Column(TypeName = "datetime2")]
+
         public DateTime Date { get; set; }
 
         [JsonPropertyName("SizeGB")]

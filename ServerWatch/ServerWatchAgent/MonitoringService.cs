@@ -63,6 +63,16 @@ namespace ServerWatchAgent
             backupCheckTimer.Elapsed += GatherAndSendBackupDataAsync;
         }
 
+        public void DebugRun(string[] args)
+        {
+            OnStart(args);
+
+            Console.WriteLine("Service running... Press any key to stop.");
+            Console.ReadKey();
+
+            OnStop();
+        }
+
         private async void TryExecuteAsync(string operationType, Func<Task> action)
         {
             try

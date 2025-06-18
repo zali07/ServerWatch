@@ -88,15 +88,39 @@ namespace ServerWatchAgent.Backup
                     var fileName = Path.GetFileNameWithoutExtension(file);
 
                     var parts = fileName.Split('_');
+                    if (parts.Length < 7) continue;
 
-                    if (parts.Length < 8) continue;
+                    // parts[0] = dbName
+                    // parts[1] = "backup"
+                    // parts[2] = yyyy
+                    // parts[3] = MM
+                    // parts[4] = dd
+                    // parts[5] = HHmmss
+                    // parts[6] = (rest/unique)
 
-                    // [dbName, backup, yyyy, MM, dd, HH, mm, ss]
-                    if (int.TryParse(parts[5], out int hour) &&
-                        int.TryParse(parts[6], out int minute) &&
-                        int.TryParse(parts[7], out int second))
+                    string year = parts[2];
+                    string month = parts[3];
+                    string day = parts[4];
+                    string time = parts[5];
+
+                    if (time.Length != 6) continue;
+
+                    if (int.TryParse(year, out int y) &&
+                        int.TryParse(month, out int m) &&
+                        int.TryParse(day, out int d) &&
+                        int.TryParse(time.Substring(0, 2), out int hour) &&
+                        int.TryParse(time.Substring(2, 2), out int minute) &&
+                        int.TryParse(time.Substring(4, 2), out int second))
                     {
-                        var fileDateTime = new DateTime(date.Year, date.Month, date.Day, hour, minute, second);
+                        DateTime fileDateTime;
+                        try
+                        {
+                            fileDateTime = new DateTime(y, m, d, hour, minute, second);
+                        }
+                        catch
+                        {
+                            continue;
+                        }
 
                         if (!lastTime.HasValue || fileDateTime > lastTime.Value)
                         {
@@ -117,7 +141,7 @@ namespace ServerWatchAgent.Backup
                     {
                         DatabaseName = dbName,
                         Type = type,
-                        Date = date,
+                        Date = lastTime.Value,
                         SizeGB = (size / (1024.0 * 1024.0 * 1024.0)).ToString("F2")
                     });
                 }

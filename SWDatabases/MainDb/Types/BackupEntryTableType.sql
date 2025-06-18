@@ -3,7 +3,7 @@
 	ServerGUID		nvarchar(36)        NOT NULL,
 	DatabaseName	nvarchar(255)		NULL,
 	[Type]			nvarchar(8)         NULL, -- 'Daily' or 'Weekly'
-	[Date]			smalldatetime       NULL,
+	[Date]			datetime2(0)		NULL,
 	SizeGB			nvarchar(255)       NULL,
 	TS				smalldatetime       NULL
 )

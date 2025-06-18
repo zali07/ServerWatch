@@ -99,6 +99,7 @@
     <Build Include="Stored Procedures\spGetDriverEntries.sql" />
     <Build Include="Stored Procedures\spGetMirroringEntries.sql" />
     <Build Include="Triggers\trg_SemaphoreOnBackupEntry.sql" />
+    <Build Include="Stored Procedures\spGetDiagramData.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Config.data.sql" />

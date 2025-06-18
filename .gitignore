@@ -370,3 +370,4 @@ ASALocalRun/
 /ServerWatch/ServerWatchAPI/Downloads/ServerWatchAgent.exe
 /ServerWatch/ServerWatchWS/ServerWatchWS.csproj
 /ServerWatch/ServerWatchAgent/bin/Release/Driver/getDriveData.ps1
+/ServerWatch/ServerWatchWS/ServerWatchWS.csproj
