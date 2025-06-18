@@ -205,15 +205,6 @@ namespace ServerWatchAgent
             return requestInfo;
         }
 
-        private void UpdateTimerInterval(Timer timer, double newInterval)
-        {
-            if (timer == null) return;
-
-            timer.Stop();
-            timer.Interval = newInterval;
-            timer.Start();
-        }
-
         protected override void OnStop()
         {
             if (checkUpdateTimer != null)

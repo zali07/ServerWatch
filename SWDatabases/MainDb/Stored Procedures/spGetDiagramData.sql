@@ -43,20 +43,7 @@ BEGIN
         GROUP BY CONVERT(nvarchar(10), [TS], 120), [FriendlyName]
         ORDER BY [Label], [Category]
     END
-    ELSE IF @Type = 'Mirroring'
-    BEGIN
-        SELECT
-            CONVERT(nvarchar(10), [TS], 120) AS [Label],
-            MAX(ISNULL([TransactionDelay], 0)) AS [Value],
-            ISNULL([DatabaseName], 'Unknown') AS [Category]
-        FROM [dbo].[MirroringEntries]
-        WHERE [ServerGUID] = @ServerGUID
-          AND [TS] BETWEEN @StartDate AND @EndDate
-          AND [TransactionDelay] IS NOT NULL
-        GROUP BY CONVERT(nvarchar(10), [TS], 120), [DatabaseName]
-        ORDER BY [Label], [Category]
-    END
-    ELSE IF @Type = 'Backups'
+    ELSE IF @Type = 'BackupsSizeGB'
     BEGIN
         SELECT
             CONVERT(nvarchar(10), [TS], 120) AS [Label],
@@ -71,7 +58,7 @@ BEGIN
     END
     ELSE
     BEGIN
-        RAISERROR('Unsupported type. Use ''Drivers'', ''Mirroring'', or ''Backups''.', 16, 1);
+        RAISERROR('Unsupported type. Use a valid type that is indicated in the procedure.', 16, 1);
         RETURN;
     END
 END
