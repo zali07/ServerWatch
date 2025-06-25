@@ -17,7 +17,7 @@
         /// </summary>
         private DispatcherTimer refreshTimer;
 
-        public List<string> AvailableDiagramTypes { get; set; } = new List<string> { "DriversTemperature", "DriversReadLatency", "DriversWriteLatency", "BackupsSizeGB" };
+        public List<string> AvailableDiagramTypes { get; set; } = new List<string> { "DriversTemperature", "DriversReadLatency", "DriversWriteLatency", "BackupsSizeGB", "BackupsTS" };
 
         private string _selectedDiagramType;
         public string SelectedDiagramType
