@@ -10,7 +10,7 @@ BEGIN
         RETURN;
     END
 
-	SELECT  [GUID], PublicKey, [Partner], [Server], [Windows], IsApproved, Flag,
+	SELECT  [GUID], PublicKey, [Partner], [Server], [Windows], BackupRoot, Flag,
 			[State] =
 				 CASE WHEN Flag = 0 /*Initialized*/ then 'i' else '' END
 				+CASE when (Flag & 1 /*Is approved*/) <> 0 then 'a' else '' END

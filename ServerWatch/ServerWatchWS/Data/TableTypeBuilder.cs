@@ -1,7 +1,7 @@
-﻿using ServerWatchWS.Model;
+﻿using ServerWatchAPI.Model;
 using System.Data;
 
-namespace ServerWatchWS.Data
+namespace ServerWatchAPI.Data
 {
     public static class TableTypeBuilder
     {
@@ -90,6 +90,31 @@ namespace ServerWatchWS.Data
                     (object?)entry.TimeRecorded ?? DBNull.Value,
                     (object?)entry.TimeBehind ?? DBNull.Value,
                     (object?)entry.LocalTime ?? DBNull.Value,
+                    entry.TS ?? DateTime.UtcNow
+                );
+            }
+
+            return table;
+        }
+
+        public static DataTable CreateBackupEntryTable(IEnumerable<BackupData> entries)
+        {
+            var table = new DataTable();
+            table.Columns.Add("ServerGUID", typeof(string));
+            table.Columns.Add("DatabaseName", typeof(string));
+            table.Columns.Add("Type", typeof(string));
+            table.Columns.Add("Date", typeof(DateTime));
+            table.Columns.Add("SizeGB", typeof(string));
+            table.Columns.Add("TS", typeof(DateTime));
+
+            foreach (var entry in entries)
+            {
+                table.Rows.Add(
+                    entry.ServerGUID,
+                    entry.DatabaseName,
+                    entry.Type,
+                    entry.Date,
+                    entry.SizeGB,
                     entry.TS ?? DateTime.UtcNow
                 );
             }

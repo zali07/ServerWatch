@@ -44,18 +44,31 @@ namespace ServerWatchAgent.Driver
 
             //File.Delete(sharedTempFile);
 
-            JToken driversData;
-
             try
             {
-                driversData = JToken.Parse(output);
+                var parsed = JToken.Parse(output);
+
+                JArray arrayOutput;
+
+                if (parsed.Type == JTokenType.Array)
+                {
+                    arrayOutput = (JArray)parsed;
+                }
+                else if (parsed.Type == JTokenType.Object)
+                {
+                    arrayOutput = new JArray(parsed);
+                }
+                else
+                {
+                    throw new Exception("Unexpected JSON structure: expected object or array.");
+                }
+
+                return JsonConvert.SerializeObject(arrayOutput, Formatting.Indented);
             }
             catch
             {
                 throw new Exception($"Unexpected JSON format from PowerShell script.\nOutput: {output}\n");
             }
-
-            return JsonConvert.SerializeObject(driversData, Formatting.Indented);
         }
     }
 }

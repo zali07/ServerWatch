@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ServerWatchWS.Model
+namespace ServerWatchAPI.Model
 {
     public class Servers
     {
@@ -11,6 +11,7 @@ namespace ServerWatchWS.Model
         public string? Partner { get; set; }
         public string? Server { get; set; }
         public string? Windows { get; set; }
-        public bool IsApproved { get; set; }
+        public string? BackupRoot { get; set; }
+        public int Flag { get; set; } = 0;
     }
 }

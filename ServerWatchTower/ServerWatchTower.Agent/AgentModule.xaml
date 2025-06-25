@@ -24,5 +24,7 @@
                          Target="View" Contract="ServerWatchTower.Agent.AlertsView"/>
 		<SwitchboardItem Code="Reports" Name="Reports"
                          Target="View" Contract="ServerWatchTower.Agent.ReportsView"/>
+		<SwitchboardItem Code="Diagrams" Name="Diagrams"
+				         Target="View" Contract="ServerWatchTower.Agent.DiagramsView"/>
     </ModuleBase.Switchboard>
 </ModuleBase>

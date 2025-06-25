@@ -133,11 +133,119 @@ namespace ServerWatchTower.Agent.View.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AverageDelay.
+        /// </summary>
+        public static string HdrAverageDelay {
+            get {
+                return ResourceManager.GetString("HdrAverageDelay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BackupRoot.
+        /// </summary>
+        public static string HdrBackupRoot {
+            get {
+                return ResourceManager.GetString("HdrBackupRoot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DatabaseName.
+        /// </summary>
+        public static string HdrDatabaseName {
+            get {
+                return ResourceManager.GetString("HdrDatabaseName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date.
+        /// </summary>
+        public static string HdrDate {
+            get {
+                return ResourceManager.GetString("HdrDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DeviceId.
+        /// </summary>
+        public static string HdrDeviceId {
+            get {
+                return ResourceManager.GetString("HdrDeviceId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FriendlyName.
+        /// </summary>
+        public static string HdrFriendlyName {
+            get {
+                return ResourceManager.GetString("HdrFriendlyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GUID.
         /// </summary>
         public static string HdrGuid {
             get {
                 return ResourceManager.GetString("HdrGuid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HealthStatus.
+        /// </summary>
+        public static string HdrHealthStatus {
+            get {
+                return ResourceManager.GetString("HdrHealthStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LocalTime.
+        /// </summary>
+        public static string HdrLocalTime {
+            get {
+                return ResourceManager.GetString("HdrLocalTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LogGenerationRate.
+        /// </summary>
+        public static string HdrLogGenerationRate {
+            get {
+                return ResourceManager.GetString("HdrLogGenerationRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MediaType.
+        /// </summary>
+        public static string HdrMediaType {
+            get {
+                return ResourceManager.GetString("HdrMediaType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MirroringState.
+        /// </summary>
+        public static string HdrMirroringState {
+            get {
+                return ResourceManager.GetString("HdrMirroringState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Model.
+        /// </summary>
+        public static string HdrModel {
+            get {
+                return ResourceManager.GetString("HdrModel", resourceCulture);
             }
         }
         
@@ -151,11 +259,173 @@ namespace ServerWatchTower.Agent.View.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PowerOnHours.
+        /// </summary>
+        public static string HdrPowerOnHours {
+            get {
+                return ResourceManager.GetString("HdrPowerOnHours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ReadLatencyMax.
+        /// </summary>
+        public static string HdrReadLatencyMax {
+            get {
+                return ResourceManager.GetString("HdrReadLatencyMax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RecoveryRate.
+        /// </summary>
+        public static string HdrRecoveryRate {
+            get {
+                return ResourceManager.GetString("HdrRecoveryRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Role.
+        /// </summary>
+        public static string HdrRole {
+            get {
+                return ResourceManager.GetString("HdrRole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SendRate.
+        /// </summary>
+        public static string HdrSendRate {
+            get {
+                return ResourceManager.GetString("HdrSendRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SerialNumber.
+        /// </summary>
+        public static string HdrSerialNumber {
+            get {
+                return ResourceManager.GetString("HdrSerialNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server.
         /// </summary>
         public static string HdrServerName {
             get {
                 return ResourceManager.GetString("HdrServerName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SizeGB.
+        /// </summary>
+        public static string HdrSizeGB {
+            get {
+                return ResourceManager.GetString("HdrSizeGB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Temperature.
+        /// </summary>
+        public static string HdrTemperature {
+            get {
+                return ResourceManager.GetString("HdrTemperature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TemperatureMax.
+        /// </summary>
+        public static string HdrTemperatureMax {
+            get {
+                return ResourceManager.GetString("HdrTemperatureMax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TimeBehind.
+        /// </summary>
+        public static string HdrTimeBehind {
+            get {
+                return ResourceManager.GetString("HdrTimeBehind", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TimeRecorded.
+        /// </summary>
+        public static string HdrTimeRecorded {
+            get {
+                return ResourceManager.GetString("HdrTimeRecorded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TransactionDelay.
+        /// </summary>
+        public static string HdrTransactionDelay {
+            get {
+                return ResourceManager.GetString("HdrTransactionDelay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TransactionsPerSec.
+        /// </summary>
+        public static string HdrTransactionsPerSec {
+            get {
+                return ResourceManager.GetString("HdrTransactionsPerSec", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TS.
+        /// </summary>
+        public static string HdrTS {
+            get {
+                return ResourceManager.GetString("HdrTS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string HdrType {
+            get {
+                return ResourceManager.GetString("HdrType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UnrestoredLog.
+        /// </summary>
+        public static string HdrUnrestoredLog {
+            get {
+                return ResourceManager.GetString("HdrUnrestoredLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UnsentLog.
+        /// </summary>
+        public static string HdrUnsentLog {
+            get {
+                return ResourceManager.GetString("HdrUnsentLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WearLevel.
+        /// </summary>
+        public static string HdrWearLevel {
+            get {
+                return ResourceManager.GetString("HdrWearLevel", resourceCulture);
             }
         }
         
@@ -169,11 +439,47 @@ namespace ServerWatchTower.Agent.View.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to WitnessStatus.
+        /// </summary>
+        public static string HdrWitnessStatus {
+            get {
+                return ResourceManager.GetString("HdrWitnessStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WriteLatencyMax.
+        /// </summary>
+        public static string HdrWriteLatencyMax {
+            get {
+                return ResourceManager.GetString("HdrWriteLatencyMax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Archives.
         /// </summary>
         public static string LblArchives {
             get {
                 return ResourceManager.GetString("LblArchives", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BackupRoot.
+        /// </summary>
+        public static string LblBackupRoot {
+            get {
+                return ResourceManager.GetString("LblBackupRoot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Diagram.
+        /// </summary>
+        public static string LblDiagram {
+            get {
+                return ResourceManager.GetString("LblDiagram", resourceCulture);
             }
         }
         
@@ -192,6 +498,15 @@ namespace ServerWatchTower.Agent.View.Properties {
         public static string LblPartnerName {
             get {
                 return ResourceManager.GetString("LblPartnerName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Period.
+        /// </summary>
+        public static string LblPeriod {
+            get {
+                return ResourceManager.GetString("LblPeriod", resourceCulture);
             }
         }
         
@@ -241,11 +556,38 @@ namespace ServerWatchTower.Agent.View.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Backup.
+        /// </summary>
+        public static string TabBackupData {
+            get {
+                return ResourceManager.GetString("TabBackupData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drivers.
+        /// </summary>
+        public static string TabDriverData {
+            get {
+                return ResourceManager.GetString("TabDriverData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Generic Data.
         /// </summary>
         public static string TabGenericData {
             get {
                 return ResourceManager.GetString("TabGenericData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mirroring.
+        /// </summary>
+        public static string TabMirroringData {
+            get {
+                return ResourceManager.GetString("TabMirroringData", resourceCulture);
             }
         }
         

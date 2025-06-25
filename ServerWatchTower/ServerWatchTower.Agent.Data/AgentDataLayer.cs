@@ -151,6 +151,7 @@
                             new SqlMetaData("Partner", SqlDbType.NVarChar, -1),
                             new SqlMetaData("Server", SqlDbType.NVarChar, -1),
                             new SqlMetaData("Windows", SqlDbType.NVarChar, -1),
+                            new SqlMetaData("BackupRoot", SqlDbType.NVarChar, 255),
                             new SqlMetaData("Flag", SqlDbType.Int),
                         },
                         (record, item, index) =>
@@ -160,7 +161,8 @@
                             record.SetValue(2, DbNull(item.Partner, false));
                             record.SetValue(3, DbNull(item.ServerName, false));
                             record.SetValue(4, DbNull(item.Windows, false));
-                            record.SetValue(5, item.Flag);
+                            record.SetValue(5, DbNull(item.BackupRoot, false));
+                            record.SetValue(6, item.Flag);
                         }
                     );
 
@@ -244,10 +246,11 @@
                     return new Server()
                     {
                         GUID = r.GetNString(r.GetOrdinal("GUID")),
-                        PublicKey= r.GetNTrimmedString(r.GetOrdinal("PublicKey")),
+                        PublicKey = r.GetNTrimmedString(r.GetOrdinal("PublicKey")),
                         Partner = r.GetNTrimmedString(r.GetOrdinal("Partner")),
                         ServerName = r.GetNString(r.GetOrdinal("Server")),
                         Windows = r.GetNTrimmedString(r.GetOrdinal("Windows")),
+                        BackupRoot = r.GetNTrimmedString(r.GetOrdinal("BackupRoot")),
                         Flag = r.GetInt32(r.GetOrdinal("Flag")),
                         State = r.GetNTrimmedString(r.GetOrdinal("State")),
                     };
@@ -256,9 +259,9 @@
         }
 
         /// <summary>
-        /// Loads the <see cref="PartnerMapping"/>s from the database.
+        /// Loads the <see cref="Server"/>s from the database.
         /// </summary>
-        /// <returns>The list of the appropriate <see cref="PartnerMapping"/> instances.</returns>
+        /// <returns>The list of the appropriate <see cref="Server"/> instances.</returns>
         public (List<Server> Servers, string controlTipText) GetServers(ServerCatalogFilterArgs filter)
         {
             var result = new List<Server>();
@@ -278,6 +281,7 @@
                     int partnerField = r.GetOrdinal("Partner");
                     int serverNameField = r.GetOrdinal("Server");
                     int windowsField = r.GetOrdinal("Windows");
+                    int backupRootField = r.GetOrdinal("BackupRoot");
                     int flagField = r.GetOrdinal("Flag");
                     int stateField = r.GetOrdinal("State");
 
@@ -292,6 +296,7 @@
                             Partner = r.GetNTrimmedString(partnerField),
                             ServerName = r.GetNString(serverNameField),
                             Windows = r.GetNTrimmedString(windowsField),
+                            BackupRoot = r.GetNTrimmedString(backupRootField),
                             Flag = r.GetInt32(flagField),
                             State = r.GetNTrimmedString(stateField),
                         });
@@ -340,6 +345,7 @@
                         Partner = r.GetNTrimmedString(r.GetOrdinal("Partner")),
                         ServerName = r.GetNString(r.GetOrdinal("Server")),
                         Windows = r.GetNTrimmedString(r.GetOrdinal("Windows")),
+                        BackupRoot = r.GetNTrimmedString(r.GetOrdinal("BackupRoot")),
                         Flag = r.GetInt32(r.GetOrdinal("Flag")),
                     };
                 }
@@ -492,5 +498,258 @@
         }
 
         #endregion Report
+
+        #region Diagram
+
+        public List<BackupEntry> GetBackupEntries()
+        {
+            var result = new List<BackupEntry>();
+
+            using (var cmd = this.CreateCommand("[dbo].[spGetBackupEntries]"))
+            using (var r = cmd.ExecuteReader())
+            {
+                while (r.Read())
+                {
+                    result.Add(new BackupEntry
+                    {
+                        Id = r.GetInt32(r.GetOrdinal("Id")),
+                        ServerGUID = r.GetString(r.GetOrdinal("ServerGUID")),
+                        DatabaseName = r.GetNString(r.GetOrdinal("DatabaseName")),
+                        Type = r.GetNString(r.GetOrdinal("Type")),
+                        Date = r.GetNDateTime(r.GetOrdinal("Date")),
+                        SizeGB = r.GetNString(r.GetOrdinal("SizeGB")),
+                        TS = r.GetNDateTime(r.GetOrdinal("TS"))
+                    });
+                }
+            }
+
+            return result;
+        }
+
+        public List<DriverEntry> GetDriverEntries()
+        {
+            var result = new List<DriverEntry>();
+
+            using (var cmd = this.CreateCommand("[dbo].[spGetDriverEntries]"))
+            using (var r = cmd.ExecuteReader())
+            { 
+                while (r.Read())
+                {
+                    result.Add(new DriverEntry
+                    {
+                        Id = r.GetInt32(r.GetOrdinal("Id")),
+                        ServerGUID = r.GetString(r.GetOrdinal("ServerGUID")),
+                        DeviceId = r.GetNInt64(r.GetOrdinal("DeviceId")),
+                        FriendlyName = r.GetNString(r.GetOrdinal("FriendlyName")),
+                        SerialNumber = r.GetNString(r.GetOrdinal("SerialNumber")),
+                        Model = r.GetNString(r.GetOrdinal("Model")),
+                        MediaType = r.GetNString(r.GetOrdinal("MediaType")),
+                        HealthStatus = r.GetNString(r.GetOrdinal("HealthStatus")),
+                        SizeGB = r.GetNString(r.GetOrdinal("SizeGB")),
+                        Temperature = r.GetNInt32(r.GetOrdinal("Temperature")),
+                        TemperatureMax = r.GetNInt32(r.GetOrdinal("TemperatureMax")),
+                        PowerOnHours = r.GetNInt32(r.GetOrdinal("PowerOnHours")),
+                        WearLevel = r.GetNInt32(r.GetOrdinal("WearLevel")),
+                        ReadLatencyMax = r.GetNDecimal(r.GetOrdinal("ReadLatencyMax")),
+                        WriteLatencyMax = r.GetNDecimal(r.GetOrdinal("WriteLatencyMax")),
+                        TS = r.GetNDateTime(r.GetOrdinal("TS"))
+                    });
+                }    
+            }
+
+            return result;
+        }
+
+        public List<MirroringEntry> GetMirroringEntries()
+        {
+            var result = new List<MirroringEntry>();
+
+            using (var cmd = this.CreateCommand("[dbo].[spGetMirroringEntries]"))
+            using (var r = cmd.ExecuteReader())
+            {
+                while (r.Read())
+                {
+                    result.Add(new MirroringEntry
+                    {
+                        Id = r.GetInt32(r.GetOrdinal("Id")),
+                        ServerGUID = r.GetString(r.GetOrdinal("ServerGUID")),
+                        DatabaseName = r.GetNString(r.GetOrdinal("DatabaseName")),
+                        Role = r.GetNInt32(r.GetOrdinal("Role")),
+                        MirroringState = r.GetNInt32(r.GetOrdinal("MirroringState")),
+                        WitnessStatus = r.GetNInt32(r.GetOrdinal("WitnessStatus")),
+                        LogGenerationRate = r.GetNInt32(r.GetOrdinal("LogGenerationRate")),
+                        UnsentLog = r.GetNInt32(r.GetOrdinal("UnsentLog")),
+                        SendRate = r.GetNInt32(r.GetOrdinal("SendRate")),
+                        UnrestoredLog = r.GetNInt32(r.GetOrdinal("UnrestoredLog")),
+                        RecoveryRate = r.GetNInt32(r.GetOrdinal("RecoveryRate")),
+                        TransactionDelay = r.GetNInt32(r.GetOrdinal("TransactionDelay")),
+                        TransactionsPerSec = r.GetNInt32(r.GetOrdinal("TransactionsPerSec")),
+                        AverageDelay = r.GetNInt32(r.GetOrdinal("AverageDelay")),
+                        TimeRecorded = r.GetNDateTime(r.GetOrdinal("TimeRecorded")),
+                        TimeBehind = r.GetNDateTime(r.GetOrdinal("TimeBehind")),
+                        LocalTime = r.GetNDateTime(r.GetOrdinal("LocalTime")),
+                        TS = r.GetNDateTime(r.GetOrdinal("TS"))
+                    });
+                }
+            }
+
+            return result;
+        }
+
+        public List<BackupEntry> GetBackupEntries(string guid)
+        {
+            if (string.IsNullOrEmpty(guid))
+            {
+                throw new ArgumentNullException(nameof(guid));
+            }
+
+            var result = new List<BackupEntry>();
+
+            using (var cmd = this.CreateCommand("[dbo].[spGetBackupEntries]"))
+            {
+                cmd.Parameters.Add("@ServerGUID", SqlDbType.NVarChar, 36).Value = guid;
+
+                using (var r = cmd.ExecuteReader())
+                {
+                    while (r.Read())
+                    {
+                        result.Add(new BackupEntry
+                        {
+                            Id = r.GetInt32(r.GetOrdinal("Id")),
+                            ServerGUID = r.GetString(r.GetOrdinal("ServerGUID")),
+                            DatabaseName = r.GetNString(r.GetOrdinal("DatabaseName")),
+                            Type = r.GetNString(r.GetOrdinal("Type")),
+                            Date = r.GetNDateTime(r.GetOrdinal("Date")),
+                            SizeGB = r.GetNString(r.GetOrdinal("SizeGB")),
+                            TS = r.GetNDateTime(r.GetOrdinal("TS"))
+                        });
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public List<DriverEntry> GetDriverEntries(string guid)
+        {
+            if (string.IsNullOrEmpty(guid))
+            {
+                throw new ArgumentNullException(nameof(guid));
+            }
+
+            var result = new List<DriverEntry>();
+
+            using (var cmd = this.CreateCommand("[dbo].[spGetDriverEntries]"))
+            {
+                cmd.Parameters.Add("@ServerGUID", SqlDbType.NVarChar, 36).Value = guid;
+
+                using (var r = cmd.ExecuteReader())
+                {
+                    while (r.Read())
+                    {
+                        result.Add(new DriverEntry
+                        {
+                            Id = r.GetInt32(r.GetOrdinal("Id")),
+                            ServerGUID = r.GetString(r.GetOrdinal("ServerGUID")),
+                            DeviceId = r.GetNInt64(r.GetOrdinal("DeviceId")),
+                            FriendlyName = r.GetNString(r.GetOrdinal("FriendlyName")),
+                            SerialNumber = r.GetNString(r.GetOrdinal("SerialNumber")),
+                            Model = r.GetNString(r.GetOrdinal("Model")),
+                            MediaType = r.GetNString(r.GetOrdinal("MediaType")),
+                            HealthStatus = r.GetNString(r.GetOrdinal("HealthStatus")),
+                            SizeGB = r.GetNString(r.GetOrdinal("SizeGB")),
+                            Temperature = r.GetNInt32(r.GetOrdinal("Temperature")),
+                            TemperatureMax = r.GetNInt32(r.GetOrdinal("TemperatureMax")),
+                            PowerOnHours = r.GetNInt32(r.GetOrdinal("PowerOnHours")),
+                            WearLevel = r.GetNInt32(r.GetOrdinal("WearLevel")),
+                            ReadLatencyMax = r.GetNDecimal(r.GetOrdinal("ReadLatencyMax")),
+                            WriteLatencyMax = r.GetNDecimal(r.GetOrdinal("WriteLatencyMax")),
+                            TS = r.GetNDateTime(r.GetOrdinal("TS"))
+                        });
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public List<MirroringEntry> GetMirroringEntries(string guid)
+        {
+            if (string.IsNullOrEmpty(guid))
+            {
+                throw new ArgumentNullException(nameof(guid));
+            }
+            var result = new List<MirroringEntry>();
+
+            using (var cmd = this.CreateCommand("[dbo].[spGetMirroringEntries]"))
+            {
+                cmd.Parameters.Add("@ServerGUID", SqlDbType.NVarChar, 36).Value = guid;
+
+                using (var r = cmd.ExecuteReader())
+                {
+                    while (r.Read())
+                    {
+                        result.Add(new MirroringEntry
+                        {
+                            Id = r.GetInt32(r.GetOrdinal("Id")),
+                            ServerGUID = r.GetString(r.GetOrdinal("ServerGUID")),
+                            DatabaseName = r.GetNString(r.GetOrdinal("DatabaseName")),
+                            Role = r.GetNInt32(r.GetOrdinal("Role")),
+                            MirroringState = r.GetNInt32(r.GetOrdinal("MirroringState")),
+                            WitnessStatus = r.GetNInt32(r.GetOrdinal("WitnessStatus")),
+                            LogGenerationRate = r.GetNInt32(r.GetOrdinal("LogGenerationRate")),
+                            UnsentLog = r.GetNInt32(r.GetOrdinal("UnsentLog")),
+                            SendRate = r.GetNInt32(r.GetOrdinal("SendRate")),
+                            UnrestoredLog = r.GetNInt32(r.GetOrdinal("UnrestoredLog")),
+                            RecoveryRate = r.GetNInt32(r.GetOrdinal("RecoveryRate")),
+                            TransactionDelay = r.GetNInt32(r.GetOrdinal("TransactionDelay")),
+                            TransactionsPerSec = r.GetNInt32(r.GetOrdinal("TransactionsPerSec")),
+                            AverageDelay = r.GetNInt32(r.GetOrdinal("AverageDelay")),
+                            TimeRecorded = r.GetNDateTime(r.GetOrdinal("TimeRecorded")),
+                            TimeBehind = r.GetNDateTime(r.GetOrdinal("TimeBehind")),
+                            LocalTime = r.GetNDateTime(r.GetOrdinal("LocalTime")),
+                            TS = r.GetNDateTime(r.GetOrdinal("TS"))
+                        });
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public List<ChartDataPoint> GetDiagramData(string guid, string type, DateTime startD, DateTime endD)
+        {
+            if (string.IsNullOrEmpty(guid) || string.IsNullOrEmpty(type) || startD == default || endD == default || startD > endD)
+            {
+                throw new ArgumentException("Invalid parameters for diagram data retrieval.");
+            }
+
+            var result = new List<ChartDataPoint>();
+
+            using (var cmd = this.CreateCommand("[dbo].[spGetDiagramData]"))
+            {
+                cmd.Parameters.Add("@ServerGUID", SqlDbType.NVarChar, 36).Value = guid;
+                cmd.Parameters.Add("@Type", SqlDbType.NVarChar, 50).Value = type;
+                cmd.Parameters.Add("@StartDate", SqlDbType.DateTime).Value = startD;
+                cmd.Parameters.Add("@EndDate", SqlDbType.DateTime).Value = endD;
+
+                using (var r = cmd.ExecuteReader())
+                {
+                    while (r.Read())
+                    {
+                        result.Add(new ChartDataPoint
+                        {
+                            Label = r.GetNString(r.GetOrdinal("Label")),
+                            Value = r.IsDBNull(r.GetOrdinal("Value")) ? 0 : Convert.ToDouble(r[r.GetOrdinal("Value")]),
+                            Category = r.GetNString(r.GetOrdinal("Category"))
+                        });
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        #endregion Diagram
     }
 }

@@ -112,6 +112,8 @@
                                             DataMemberBinding="{Binding ServerName}" IsGroupable="False" ShowDistinctFilters="False" />
                 <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrWindowsVersion}" UniqueName="Windows"
                                             DataMemberBinding="{Binding Windows}" IsGroupable="False" ShowDistinctFilters="False" />
+                <telerik:GridViewDataColumn Header="{x:Static Member=res:UIRes.HdrBackupRoot}" UniqueName="BackupRoot"
+                                            DataMemberBinding="{Binding BackupRoot}" IsGroupable="False" ShowDistinctFilters="False" />
                 <telerik:GridViewDataColumn Header="{x:Static Member=swtower:UIStr.HdrFlags}" UniqueName="Flag" CellStyle="{StaticResource FlagColumnStyle}"
                                             DataMemberBinding="{Binding State}" IsGroupable="False" ShowDistinctFilters="False" />
             </telerik:RadGridView.Columns>

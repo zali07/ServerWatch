@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace ServerWatchWS.Model
+namespace ServerWatchAPI.Model
 {
     public class DriverData
     {
@@ -44,9 +44,11 @@ namespace ServerWatchWS.Model
         [JsonPropertyName("WearLevel")]
         public int? WearLevel { get; set; }
 
+        [Column(TypeName = "decimal(20,0)")]
         [JsonPropertyName("ReadLatencyMax")]
         public decimal ReadLatencyMax { get; set; }
-        
+
+        [Column(TypeName = "decimal(20,0)")]
         [JsonPropertyName("WriteLatencyMax")]
         public decimal WriteLatencyMax { get; set; }
 

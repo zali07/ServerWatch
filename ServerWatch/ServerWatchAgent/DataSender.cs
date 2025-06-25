@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Configuration;
 using System.Net.Http;
 using System.Text;
@@ -15,7 +16,8 @@ namespace ServerWatchAgent
 
             using (var client = new HttpClient(handler))
             {
-                client.BaseAddress = new Uri(ConfigurationManager.AppSettings["BaseApiUrl"]);
+                var baseUri = ConfigurationManager.AppSettings["BaseApiUrl"];
+                client.BaseAddress = new Uri(baseUri);
 
                 var request = new HttpRequestMessage(method, url);
 
@@ -46,12 +48,17 @@ namespace ServerWatchAgent
 
         public async Task SendMirroringDataAsync(string jsonPayload)
         {
-            await SendRequestAsync(jsonPayload, "/api/telemetry/postMirroringData", HttpMethod.Post);
+            await SendRequestAsync(jsonPayload, "/Cosys.ServerWatch/Telemetry/postMirroringData", HttpMethod.Post);
         }
 
         public async Task SendDriverDataAsync(string jsonPayload)
         {
-            await SendRequestAsync(jsonPayload, "/api/telemetry/postDriverData", HttpMethod.Post);
+            await SendRequestAsync(jsonPayload, "/Cosys.ServerWatch/Telemetry/postDriverData", HttpMethod.Post);
+        }
+
+        public async Task SendBackupDataAsync(string jsonPayload)
+        {
+            await SendRequestAsync(jsonPayload, "/Cosys.ServerWatch/Telemetry/postBackupData", HttpMethod.Post);
         }
 
         public async Task SendBackupDataAsync(string jsonPayload)
@@ -61,19 +68,36 @@ namespace ServerWatchAgent
 
         public async Task RegisterWithWebServiceAsync(string jsonPayload)
         {
-            await SendRequestAsync(jsonPayload, "/api/agent/registerAgent", HttpMethod.Post, false);
+            await SendRequestAsync(jsonPayload, "/Cosys.ServerWatch/Agent/registerAgent", HttpMethod.Post, false);
+        }
+
+        public async Task<bool> CheckDriverApprovalStatusAsync()
+        {
+            string responseContent = await SendRequestAsync(null, "/Cosys.ServerWatch/Telemetry/getDriverStatus", HttpMethod.Get);
+            return responseContent.Contains("approved\":true");
+        }
+
+        public async Task<bool> CheckMirroringApprovalStatusAsync()
+        {
+            string responseContent = await SendRequestAsync(null, "/Cosys.ServerWatch/Telemetry/getMirroringStatus", HttpMethod.Get);
+            return responseContent.Contains("approved\":true");
+        }
+
+        public async Task<bool> CheckBackupApprovalStatusAsync()
+        {
+            string responseContent = await SendRequestAsync(null, "/Cosys.ServerWatch/Telemetry/getBackupStatus", HttpMethod.Get);
+            return responseContent.Contains("approved\":true");
         }
 
         public async Task<bool> CheckApprovalStatusAsync()
         {
-            string responseContent = await SendRequestAsync(null, "/api/agent/getServerStatus", HttpMethod.Get);
+            string responseContent = await SendRequestAsync(null, "/Cosys.ServerWatch/Agent/getServerStatus", HttpMethod.Get);
             return responseContent.Contains("approved\":true");
         }
 
         public async Task<string> GetBackupFolderPathAsync()
         {
-            // { "backupRootFolder": "c:\\Backups" }
-            string response = await SendRequestAsync(null, "/api/telemetry/getBackupConfig", HttpMethod.Get);
+            string response = await SendRequestAsync(null, "/Cosys.ServerWatch/Telemetry/getBackupConfig", HttpMethod.Get);
 
             if (string.IsNullOrWhiteSpace(response))
             {

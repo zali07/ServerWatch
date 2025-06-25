@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace ServerWatchWS
+namespace ServerWatchAPI
 {
     public static class SignatureHelper
     {

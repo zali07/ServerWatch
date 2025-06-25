@@ -13,10 +13,10 @@ namespace ServerWatchAgent
 {
     public partial class MonitoringService : ServiceBase
     {
+        private Timer validationTimer;
         private Timer checkUpdateTimer;
         private Timer mirroringTimer;
         private Timer driverTimer;
-        private Timer validationTimer;
         private Timer backupCheckTimer;
 
         private readonly DataSender dataSender;
@@ -33,27 +33,46 @@ namespace ServerWatchAgent
 
         protected override void OnStart(string[] args)
         {
+            try
+            {
+                KeyContainerManager.Initialize();
+            }
+            catch (Exception ex)
+            {
+                ExceptionManager.Publish(ex, this.CollectRequestInfo(("OperationType", "KeyContainerInitialization")));
+            }
+
+            validationTimer = new Timer();
+            validationTimer.Interval = 10 * 1000; // 10 seconds
+            validationTimer.Elapsed += ValidateAndStartTimers;
+            validationTimer.Start();
+
             checkUpdateTimer = new Timer();
-            checkUpdateTimer.Interval = 15000; // 15 sec interval
+            checkUpdateTimer.Interval = 60 * 1000; // 1 minute
             checkUpdateTimer.Elapsed += CheckForUpdates;
             checkUpdateTimer.Start();
 
             mirroringTimer = new Timer();
-            mirroringTimer.Interval = 30000; // 30 sec interval
+            mirroringTimer.Interval = 60 * 60 * 1000; // 1 hour
             mirroringTimer.Elapsed += GatherAndSendMirroringDataAsync;
 
             driverTimer = new Timer();
-            driverTimer.Interval = 20000; // 20 sec interval
+            driverTimer.Interval = 60 * 60 * 1000; // 1 hour
             driverTimer.Elapsed += GatherAndSendDriverDataAsync;
 
-            validationTimer = new Timer();
-            validationTimer.Interval = 60000; // 1 min interval
-            validationTimer.Elapsed += ValidateAndStartTimers;
-            validationTimer.Start();
-
             backupCheckTimer = new Timer();
-            backupCheckTimer.Interval = 24 * 60 * 60 * 1000; // 24 hours
+            backupCheckTimer.Interval = 60 * 60 * 1000; // 1 hour
             backupCheckTimer.Elapsed += GatherAndSendBackupDataAsync;
+        }
+
+        public void DebugRun(string[] args)
+        {
+            OnStart(args);
+
+            Console.WriteLine("Service running... Press any key to stop.");
+            Console.ReadKey();
+
+            OnStop();
         }
 
         private async void TryExecuteAsync(string operationType, Func<Task> action)
@@ -64,7 +83,19 @@ namespace ServerWatchAgent
             }
             catch (Exception ex)
             {
-                ExceptionManager.Publish(ex, this.CollectRequestInfo(("OperationtType", operationType)));
+                var requestInfo = this.CollectRequestInfo(("OperationType", operationType));
+
+                Exception current = ex;
+                int innerLevel = 0;
+
+                while (current != null)
+                {
+                    requestInfo.Add($"ServerWatchAgent.Exception.Level{innerLevel}", current.GetType().FullName + ": " + current.Message);
+                    current = current.InnerException;
+                    innerLevel++;
+                }
+
+                ExceptionManager.Publish(ex, requestInfo);
             }
         }
 
@@ -76,8 +107,15 @@ namespace ServerWatchAgent
 
                 if (!approved)
                 {
-                    await dataSender.RegisterWithWebServiceAsync(
-                        JsonConvert.SerializeObject(KeyContainerManager.GetPublicKey()));
+                    var serverToRegister = new ServerRegistration
+                    {
+                        GUID = KeyContainerManager.Guid,
+                        PublicKey = KeyContainerManager.GetPublicKey()
+                    };
+
+                    string json = JsonConvert.SerializeObject(serverToRegister);
+
+                    await dataSender.RegisterWithWebServiceAsync(json);
 
                     throw new Exception("ServerWatchAgent is not approved by server.");
                 }
@@ -91,8 +129,13 @@ namespace ServerWatchAgent
         {
             TryExecuteAsync("DriverStatusReporting", async () =>
             {
-                var jsonData = DriverDataCollector.CheckDriversOnServer();
-                await dataSender.SendDriverDataAsync(jsonData);
+                var allowed = await dataSender.CheckDriverApprovalStatusAsync();
+
+                if (allowed)
+                {
+                    var jsonData = DriverDataCollector.CheckDriversOnServer();
+                    await dataSender.SendDriverDataAsync(jsonData);
+                }
             });
         }
 
@@ -100,8 +143,35 @@ namespace ServerWatchAgent
         {
             TryExecuteAsync("MirroringStatusReporting", async () =>
             {
-                var jsonData = MirroringDataCollector.CheckMirroringOnServer();
-                await dataSender.SendMirroringDataAsync(jsonData);
+                var allowed = await dataSender.CheckMirroringApprovalStatusAsync();
+
+                if (allowed)
+                {
+                    var jsonData = MirroringDataCollector.CheckMirroringOnServer();
+                    await dataSender.SendMirroringDataAsync(jsonData);
+                }
+            });
+        }
+
+        private void GatherAndSendBackupDataAsync(object sender, ElapsedEventArgs e)
+        {
+            TryExecuteAsync("BackupStatusReporting", async () =>
+            {
+                var allowed = await dataSender.CheckBackupApprovalStatusAsync();
+
+                if (allowed)
+                {
+                    string latestBackupFolder = await dataSender.GetBackupFolderPathAsync();
+
+                    if (!string.IsNullOrWhiteSpace(latestBackupFolder))
+                    {
+                        BackupDataCollector.UpdateBackupFolderPath(latestBackupFolder);
+                    }
+
+                    var result = await BackupDataCollector.BackupCheckAndGetResultAsync();
+                    var jsonData = JsonConvert.SerializeObject(result);
+                    await dataSender.SendBackupDataAsync(jsonData);
+                }
             });
         }
 

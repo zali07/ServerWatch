@@ -5,8 +5,6 @@ VisualStudioVersion = 17.12.35514.174
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerWatchAgent", "ServerWatchAgent\ServerWatchAgent.csproj", "{D3B8C2DB-2CC2-49F0-8ED3-FA29389FB5CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerWatchAgentUpdater", "ServerWatchAgentUpdater\ServerWatchAgentUpdater.csproj", "{94B0A496-A712-4B4A-8C5C-CCF122C7F531}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deploy", "Deploy", "{3A0EE5A2-DB19-4A12-A8E7-057A4EF7751F}"
 	ProjectSection(SolutionItems) = preProject
 		deployService.txt = deployService.txt
@@ -18,6 +16,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventLogSourceCreator", "Ev
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ServerWatchSetup", "ServerWatchSetup\ServerWatchSetup.vdproj", "{962816D3-8C5A-C2CA-B8FB-C999DBD684F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerWatchAPI", "ServerWatchAPI\ServerWatchAPI.csproj", "{AA570EF3-9D77-4EE4-BAEE-3C5335D2D8DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerWatchAgentUpdater", "ServerWatchAgentUpdater\ServerWatchAgentUpdater.csproj", "{79D42B4E-24D9-4A89-A74C-2A9E1EEAA752}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,18 +30,25 @@ Global
 		{D3B8C2DB-2CC2-49F0-8ED3-FA29389FB5CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3B8C2DB-2CC2-49F0-8ED3-FA29389FB5CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3B8C2DB-2CC2-49F0-8ED3-FA29389FB5CF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{94B0A496-A712-4B4A-8C5C-CCF122C7F531}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{94B0A496-A712-4B4A-8C5C-CCF122C7F531}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{94B0A496-A712-4B4A-8C5C-CCF122C7F531}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{94B0A496-A712-4B4A-8C5C-CCF122C7F531}.Release|Any CPU.Build.0 = Release|Any CPU
 		{46CB5BEE-BA10-4A1D-ADA5-69B65C860F96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{46CB5BEE-BA10-4A1D-ADA5-69B65C860F96}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA4B02E9-019D-49C4-9FF2-7898124E7FDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BA4B02E9-019D-49C4-9FF2-7898124E7FDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{962816D3-8C5A-C2CA-B8FB-C999DBD684F8}.Debug|Any CPU.ActiveCfg = Debug
 		{962816D3-8C5A-C2CA-B8FB-C999DBD684F8}.Release|Any CPU.ActiveCfg = Release
+		{AA570EF3-9D77-4EE4-BAEE-3C5335D2D8DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA570EF3-9D77-4EE4-BAEE-3C5335D2D8DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA570EF3-9D77-4EE4-BAEE-3C5335D2D8DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA570EF3-9D77-4EE4-BAEE-3C5335D2D8DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79D42B4E-24D9-4A89-A74C-2A9E1EEAA752}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79D42B4E-24D9-4A89-A74C-2A9E1EEAA752}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79D42B4E-24D9-4A89-A74C-2A9E1EEAA752}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79D42B4E-24D9-4A89-A74C-2A9E1EEAA752}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1790F495-2A23-4B1D-B402-F1D0E18276C7}
 	EndGlobalSection
 EndGlobal

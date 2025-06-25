@@ -1,5 +1,6 @@
 ﻿namespace ServerWatchTower.Agent.Model
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -79,5 +80,23 @@
         Task<List<ServerComponentStatus>> GetServerComponentStatusesAsync();
 
         #endregion Report
+
+        #region Diagram
+
+        Task<List<MirroringEntry>> GetMirroringEntriesAsync();
+
+        Task<List<DriverEntry>> GetDriverEntriesAsync();
+
+        Task<List<BackupEntry>> GetBackupEntriesAsync();
+
+        Task<List<MirroringEntry>> GetMirroringEntriesAsync(string guid);
+
+        Task<List<DriverEntry>> GetDriverEntriesAsync(string guid);
+
+        Task<List<BackupEntry>> GetBackupEntriesAsync(string guid);
+
+        Task<List<ChartDataPoint>> GetDiagramDataAsync(string guid, string type, DateTime startD, DateTime endD);
+
+        #endregion Diagram
     }
 }

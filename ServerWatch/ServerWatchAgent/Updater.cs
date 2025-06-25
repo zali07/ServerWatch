@@ -19,7 +19,7 @@ namespace ServerWatchAgent
             {
                 client.BaseAddress = new Uri(ConfigurationManager.AppSettings["BaseApiUrl"]);
 
-                HttpResponseMessage response = await client.GetAsync("/api/agent/getAgentUpdateInfo");
+                HttpResponseMessage response = await client.GetAsync("/Cosys.ServerWatch/Agent/getAgentUpdateInfo");
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -29,11 +29,11 @@ namespace ServerWatchAgent
 
                 string jsonPayload = await response.Content.ReadAsStringAsync();
 
-                CheckForUpdates(jsonPayload);
+                await CheckForUpdates(jsonPayload);
             }
         }
 
-        private async void CheckForUpdates(string jsonPayload)
+        private async Task CheckForUpdates(string jsonPayload)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace ServerWatchAgent
 
         private void StartUpdaterProcess(string serviceName, string newExePath, string oldExePath)
         {
-            var updaterExePath = @"C:\Users\Zalan\Desktop\Disszertáció\ServerWatch\ServerWatch\ServerWatchAgentUpdater\bin\Debug\netcoreapp3.1\ServerWatchAgentUpdater.exe";
+            var updaterExePath = @"C:\Program Files (x86)\Cosys\ServerWatch\ServerWatchAgentUpdater.exe";
 
             // arguments:  <serviceName> <newExePath> <targetExePath>
             var processInfo = new ProcessStartInfo

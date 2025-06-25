@@ -9,10 +9,10 @@ BEGIN
     SELECT 
         s.GUID, c.Component, 1, 'Monitoring not initialized for this component.'
     FROM dbo.Servers s
-    CROSS APPLY (VALUES ('Driver'), ('Mirroring')) AS c(Component)
+    CROSS APPLY (VALUES ('Driver'), ('Mirroring'), ('Backup')) AS c(Component)
     LEFT JOIN dbo.ServerSemaphores ss 
         ON ss.ServerGUID = s.GUID AND ss.Component = c.Component
-    WHERE s.IsApproved = 1 AND ss.Id IS NULL;
+    WHERE (s.Flag & 1) = 1 /* IsApproved */ AND ss.Id IS NULL;
 
     -- Check for stale semaphores: data not updated in last 12 hours
     MERGE dbo.ServerSemaphores AS target
@@ -25,7 +25,7 @@ BEGIN
         FROM dbo.Servers s
         JOIN dbo.ServerSemaphores ss ON ss.ServerGUID = s.GUID
         WHERE 
-            s.IsApproved = 1
+            (s.Flag & 1) = 1 /* IsApproved */
             AND ss.UpdatedAt < DATEADD(HOUR, -12, @Now)
             AND ss.Status <> 2 -- Avoid overwriting existing critical errors
     ) AS src

@@ -54,7 +54,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackupEntry.cs" />
+    <Compile Include="ChartDataPoint.cs" />
+    <Compile Include="DiagramDataPoint.cs" />
+    <Compile Include="DriverEntry.cs" />
     <Compile Include="IAgentDataService.cs" />
+    <Compile Include="MirroringEntry.cs" />
     <Compile Include="Properties\Res.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

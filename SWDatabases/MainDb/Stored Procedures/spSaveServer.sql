@@ -26,8 +26,8 @@ BEGIN
 	BEGIN TRAN
 		-- saving the changes made to the server (update)
 		UPDATE s
-		SET [Partner] = x.[Partner], [Server] = x.[Server],
-			[Windows] = x.[Windows], Flag = x.Flag
+		SET [Partner] = x.[Partner], [Server] = x.[Server], [Windows] = x.[Windows],
+			BackupRoot = x.BackupRoot, Flag = x.Flag
 		FROM dbo.Servers s
 			INNER JOIN @server x ON (s.[GUID] = x.[GUID]);
 		IF @@ERROR <> 0 BEGIN ROLLBACK RETURN END;

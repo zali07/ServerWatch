@@ -51,6 +51,12 @@ namespace ServerWatchTower.Agent.Model
         private string windows;
 
         /// <summary>
+        /// The backup root on the server for the daily and weekly backups.
+        /// </summary>
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string backupRoot;
+
+        /// <summary>
         /// The flags of the server.
         /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -118,6 +124,16 @@ namespace ServerWatchTower.Agent.Model
         {
             get => this.windows;
             set => this.AssertNotFrozen().windows = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the backup root on the server for the daily and weekly backups.
+        /// </summary>
+        [DataMember]
+        public string BackupRoot
+        {
+            get => this.backupRoot;
+            set => this.AssertNotFrozen().backupRoot = value;
         }
 
         /// <summary>
@@ -210,6 +226,7 @@ namespace ServerWatchTower.Agent.Model
 				&& this.partner == other.partner
 				&& this.serverName == other.serverName
 				&& this.windows == other.windows
+				&& this.backupRoot == other.backupRoot
 				&& this.flag == other.flag
 				&& this.state == other.state;
         }
@@ -303,6 +320,11 @@ namespace ServerWatchTower.Agent.Model
             if (this.windows != null)
             {
                 hashCode ^= this.windows.GetHashCode();
+            }
+
+            if (this.backupRoot != null)
+            {
+                hashCode ^= this.backupRoot.GetHashCode();
             }
 
             if (this.flag != null)

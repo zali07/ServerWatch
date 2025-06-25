@@ -355,7 +355,6 @@ ASALocalRun/
 /ServerWatch/EventLogSourceCreator/obj
 /ServerWatch/ServerWatchWS/wwwroot/downloads/ServerWatchAgent.exe
 /.vs
-/ServerWatch/ServerWatchSetup
 /ServerWatch/ServerWatchWS/Properties/PublishProfiles
 /ServerWatch/ServerWatchWS/GlobalSuppressions.cs
 /ServerWatchTower/Cosys.SilverLib.Core
@@ -368,3 +367,7 @@ ASALocalRun/
 /ServerWatchTower/Cosys.SilverLib.View.Tests
 /ServerWatchTower/Cosys.SilverLib.View
 /ServerWatchTower/Templates
+/ServerWatch/ServerWatchAPI/Downloads/ServerWatchAgent.exe
+/ServerWatch/ServerWatchWS/ServerWatchWS.csproj
+/ServerWatch/ServerWatchAgent/bin/Release/Driver/getDriveData.ps1
+/ServerWatch/ServerWatchWS/ServerWatchWS.csproj
