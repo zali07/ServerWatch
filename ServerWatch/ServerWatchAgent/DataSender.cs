@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace ServerWatchAgent
 {
@@ -58,6 +59,11 @@ namespace ServerWatchAgent
         public async Task SendBackupDataAsync(string jsonPayload)
         {
             await SendRequestAsync(jsonPayload, "/Cosys.ServerWatch/Telemetry/postBackupData", HttpMethod.Post);
+        }
+
+        public async Task SendBackupDataAsync(string jsonPayload)
+        {
+            await SendRequestAsync(jsonPayload, "/api/telemetry/postBackupData", HttpMethod.Post);
         }
 
         public async Task RegisterWithWebServiceAsync(string jsonPayload)
