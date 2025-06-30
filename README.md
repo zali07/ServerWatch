@@ -1,5 +1,5 @@
 # ServerWatch
-ServerWatch was developed as part of my Master’s thesis in Computer Science at Sapientia Hungarian University of Transylvania.
+ServerWatch was developed as part of my Master’s thesis in Software Engineering at Sapientia Hungarian University of Transylvania.
 
 _Lightweight, extensible server health monitoring and alerting for Windows environments_
 
