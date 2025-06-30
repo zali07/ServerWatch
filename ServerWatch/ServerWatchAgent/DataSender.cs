@@ -61,11 +61,6 @@ namespace ServerWatchAgent
             await SendRequestAsync(jsonPayload, "/Cosys.ServerWatch/Telemetry/postBackupData", HttpMethod.Post);
         }
 
-        public async Task SendBackupDataAsync(string jsonPayload)
-        {
-            await SendRequestAsync(jsonPayload, "/api/telemetry/postBackupData", HttpMethod.Post);
-        }
-
         public async Task RegisterWithWebServiceAsync(string jsonPayload)
         {
             await SendRequestAsync(jsonPayload, "/Cosys.ServerWatch/Agent/registerAgent", HttpMethod.Post, false);

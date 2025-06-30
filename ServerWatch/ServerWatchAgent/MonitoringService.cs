@@ -175,23 +175,6 @@ namespace ServerWatchAgent
             });
         }
 
-        private void GatherAndSendBackupDataAsync(object sender, ElapsedEventArgs e)
-        {
-            TryExecuteAsync("BackupStatusReporting", async () =>
-            {
-                string latestBackupFolder = await dataSender.GetBackupFolderPathAsync();
-
-                if (!string.IsNullOrWhiteSpace(latestBackupFolder))
-                {
-                    backupDataCollector.UpdateBackupFolderPath(latestBackupFolder);
-                }
-
-                var result = await backupDataCollector.BackupCheckAndGetResultAsync();
-                var jsonData = JsonConvert.SerializeObject(result);
-                await dataSender.SendBackupDataAsync(jsonData);
-            });
-        }
-
         private void CheckForUpdates(object sender, ElapsedEventArgs e)
         {
             TryExecuteAsync("FetchUpdateInfo", async () =>
